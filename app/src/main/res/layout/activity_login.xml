@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@drawable/background"
+    tools:context=".LoginActivity">
+
+    <ImageView
+        android:id="@+id/iv_login"
+        android:layout_width="301dp"
+        android:layout_height="253dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="36dp"
+        android:src="@drawable/ic_logins" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_NIP"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:boxBackgroundColor="#FFFFFF"
+        android:layout_below="@+id/iv_login"
+        android:layout_marginTop="16dp">
+
+        <EditText
+            android:id="@+id/et_NIP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="NIP"
+            android:inputType="textEmailAddress" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+    
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_kata_sandi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:boxBackgroundColor="#FFFFFF"
+        android:layout_below="@+id/til_NIP"
+        android:layout_marginTop="16dp"
+        app:passwordToggleEnabled="true"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        
+        <EditText
+            android:id="@+id/et_kata_sandi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="Kata Sandi"/>
+        
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tv_lupa_kata_sandi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/til_kata_sandi"
+        android:text="Lupa Password?"
+        android:layout_alignParentEnd="true"/>
+
+    <Button
+        android:id="@+id/btn_masuk"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_lupa_kata_sandi"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#00878a"
+        android:text="Masuk"
+        android:textColor="#FFFFFF" />
+
+</RelativeLayout>
