@@ -20,6 +20,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".DataDokter"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        
         <activity android:name=".RoomDokter"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".RoomAdmin"
