@@ -14,12 +14,15 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +38,10 @@ public class DataAdmin extends AppCompatActivity {
     String url_admin = "https://dbradiologi.000webhostapp.com/api/users/admindata";
 
     AdapterAdmin adapterAdmin;
+    TextView kosong;
+    RecyclerView recyclerView;
+
+    private SwipeRefreshLayout SwipeRefreshAdmin;
 
     private List<ListitemAdmin> adminList;
     String nip;
@@ -44,10 +51,29 @@ public class DataAdmin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_admin);
 
+        SwipeRefreshAdmin = findViewById(R.id.swipe_admin);
+        SwipeRefreshAdmin.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
+        SwipeRefreshAdmin.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        SwipeRefreshAdmin.setRefreshing(false);
+
+                        dataAdminReq();
+                    }
+                },4000);
+            }
+        });
+
         nip = SharedPreferenceManager.getStringPreferences(getApplicationContext(), "nip");
+        Log.i("regina", nip);
         adapterAdmin = new AdapterAdmin(getApplicationContext());
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerAdmin);
+        kosong = findViewById(R.id.teks_kosong);
+
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerAdmin);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapterAdmin);
@@ -55,15 +81,19 @@ public class DataAdmin extends AppCompatActivity {
             @Override
             public void onItemClick(ListitemAdmin listitemAdmin) {
                 Intent intent = new Intent(DataAdmin.this, TerimaAdmin.class);
+                intent.putExtra("norekam", listitemAdmin.getNoRekam());
+                intent.putExtra("namalengkap", listitemAdmin.getNamaLengkap());
+                intent.putExtra("tanggalahir", listitemAdmin.getTangLahir());
+                intent.putExtra("gender", listitemAdmin.getGender());
+                intent.putExtra("gambar", listitemAdmin.getGambar());
                 startActivity(intent);
             }
         });
 
         adminList = new ArrayList<>();
-
-//        adminRequest();
         dataAdminReq();
 
+//        adminRequest();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -76,23 +106,41 @@ public class DataAdmin extends AppCompatActivity {
     }
 
     public void dataAdminReq() {
+        adminList.clear();
         StringRequest request = new StringRequest(Request.Method.POST, url_admin,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.i("regina", response);
                         try {
                             JSONObject objectResponse = new JSONObject(response);
-                            JSONArray array = objectResponse.getJSONArray("data");
-                            for (int i = 0; i < array.length(); i++) {
-                                ListitemAdmin modelAdmin = new ListitemAdmin();
-                                modelAdmin.setNoRekam(array.getJSONObject(i).optString("norekam"));
-                                modelAdmin.setNamaLengkap(array.getJSONObject(i).optString("namapasien"));
-                                adminList.add(modelAdmin);
+                            String objek = objectResponse.getString("status");
+                            Log.i("regina", objek);
+                            if (objectResponse.getString("status").equals("kosong")) {
+                                Log.i("regina", "kosong");
+                                kosong.setVisibility(View.VISIBLE);
+                                recyclerView.setVisibility(View.GONE);
+                            } else if (objectResponse.getString("status").equals("sukses")){
+                                Log.i("regina", "tidak kosong");
+                                kosong.setVisibility(View.GONE);
+                                recyclerView.setVisibility(View.VISIBLE);
+                                JSONArray array = objectResponse.getJSONArray("data");
+                                adapterAdmin.clear();
+                                for (int i = 0; i < array.length(); i++) {
+                                    ListitemAdmin modelAdmin = new ListitemAdmin();
+                                    modelAdmin.setNoRekam(array.getJSONObject(i).optString("norekam"));
+                                    modelAdmin.setNamaLengkap(array.getJSONObject(i).optString("namapasien"));
+                                    modelAdmin.setTangLahir(array.getJSONObject(i).optString("tanglahir"));
+                                    modelAdmin.setGender(array.getJSONObject(i).optString("gender"));
+                                    modelAdmin.setGambar(array.getJSONObject(i).optString("gambar"));
+                                    adminList.add(modelAdmin);
+                                }
+                                adapterAdmin.addAll(adminList);
+                                adapterAdmin.notifyDataSetChanged();
                             }
-                            adapterAdmin.addAll(adminList);
-                            adapterAdmin.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            Log.i("regina", e.getMessage());
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -110,22 +158,5 @@ public class DataAdmin extends AppCompatActivity {
         };
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         queue.add(request);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.optionmenu, menu);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId()==R.id.daftar) {
-            startActivity(new Intent(this, RegisterActivity.class));
-        } else if (item.getItemId() == R.id.keluar) {
-            startActivity(new Intent(this, LogoutActivity.class));
-        }
-
-        return true;
     }
 }

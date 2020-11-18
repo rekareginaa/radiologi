@@ -43,6 +43,11 @@ public class AdapterAdmin extends RecyclerView.Adapter<AdapterAdmin.ViewHolder> 
         }
     }
 
+    void clear() {
+        listitemAdmins.clear();
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final ListitemAdmin listitemAdmin = listitemAdmins.get(position);
@@ -80,7 +85,7 @@ public class AdapterAdmin extends RecyclerView.Adapter<AdapterAdmin.ViewHolder> 
 
             noRekam = (TextView) itemView.findViewById(R.id.noRekam);
             namaLengkap = (TextView) itemView.findViewById(R.id.namaLengkap);
-            adminHolder = itemView.findViewById(R.id.admin);
+            adminHolder = itemView.findViewById(R.id.dokter);
         }
     }
 

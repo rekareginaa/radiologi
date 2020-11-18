@@ -44,6 +44,11 @@ public class AdapterDokter extends RecyclerView.Adapter<AdapterDokter.ViewHolder
         }
     }
 
+    void clear() {
+        listitemDokters.clear();
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final ListitemDokter listitemDokter = listitemDokters.get(position);

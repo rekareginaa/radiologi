@@ -33,9 +33,16 @@ import java.util.Locale;
 
 public class TampilkanDataPasienActivity extends PDFCreatorActivity {
 
+    String norekaM, namaLengkaP, tangLahiR, gendeR;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        norekaM = getIntent().getStringExtra("norekam");
+        namaLengkaP = getIntent().getStringExtra("namalengkap");
+        tangLahiR = getIntent().getStringExtra("tanggalahir");
+        gendeR = getIntent().getStringExtra("gender");
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
@@ -207,7 +214,7 @@ public class TampilkanDataPasienActivity extends PDFCreatorActivity {
         horizontalView.addView(text2);
 
         PDFTextView noRekamMedik = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.SMALL);
-        noRekamMedik.setText(": 097392035827429");
+        noRekamMedik.setText(":  " + norekaM);
         noRekamMedik.getView().setGravity(Gravity.LEFT);
         noRekamMedik.getView().setPadding(0, 20, 0, 0);
         noRekamMedik.setLayout(new LinearLayout.LayoutParams(
@@ -232,7 +239,7 @@ public class TampilkanDataPasienActivity extends PDFCreatorActivity {
         horizontalView1.addView(text3);
 
         PDFTextView namaPasien = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.SMALL);
-        namaPasien.setText(": Naruto Uzumaki");
+        namaPasien.setText(":  " + namaLengkaP);
         namaPasien.getView().setGravity(Gravity.LEFT);
         namaPasien.getView().setPadding(0, 10, 0, 0);
         namaPasien.setLayout(new LinearLayout.LayoutParams(
@@ -257,7 +264,7 @@ public class TampilkanDataPasienActivity extends PDFCreatorActivity {
         horizontalView2.addView(text4);
 
         PDFTextView tanggalLahir = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.SMALL);
-        tanggalLahir.setText(": ddmmyyyy");
+        tanggalLahir.setText(":  " + tangLahiR);
         tanggalLahir.getView().setGravity(Gravity.LEFT);
         tanggalLahir.getView().setPadding(0, 10, 0, 0);
         tanggalLahir.setLayout(new LinearLayout.LayoutParams(
@@ -282,7 +289,7 @@ public class TampilkanDataPasienActivity extends PDFCreatorActivity {
         horizontalView3.addView(text5);
 
         PDFTextView jenisKelamin = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.SMALL);
-        jenisKelamin.setText(": Pria");
+        jenisKelamin.setText(":  " + gendeR);
         jenisKelamin.getView().setGravity(Gravity.LEFT);
         jenisKelamin.getView().setPadding(0, 10, 0, 0);
         jenisKelamin.setLayout(new LinearLayout.LayoutParams(
@@ -307,7 +314,7 @@ public class TampilkanDataPasienActivity extends PDFCreatorActivity {
         horizontalView4.addView(text6);
 
         PDFTextView gambarPemeriksaan = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.SMALL);
-        gambarPemeriksaan.setText(": iii");
+        gambarPemeriksaan.setText(":  ");
         gambarPemeriksaan.getView().setGravity(Gravity.LEFT);
         gambarPemeriksaan.getView().setPadding(0, 10, 0, 0);
         gambarPemeriksaan.setLayout(new LinearLayout.LayoutParams(
@@ -343,7 +350,7 @@ public class TampilkanDataPasienActivity extends PDFCreatorActivity {
         horizontalView5.addView(text7);
 
         PDFTextView hasilPemeriksaan = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.SMALL);
-        hasilPemeriksaan.setText(": iii");
+        hasilPemeriksaan.setText(":  ");
         hasilPemeriksaan.getView().setPadding(0, 10, 0, 0);
         hasilPemeriksaan.setLayout(new LinearLayout.LayoutParams(
                 0,

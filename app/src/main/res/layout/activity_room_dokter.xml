@@ -31,7 +31,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="No. Rekam Medik"/>
 
@@ -48,7 +48,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Nama"/>
 
@@ -65,12 +65,12 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Tanggal Lahir"/>
 
                     <TextView
-                        android:id="@+id/tv_tglahir"
+                        android:id="@+id/tv_tgllahir"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
@@ -82,7 +82,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Jenis Kelamin"/>
 
@@ -99,15 +99,35 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="16.00dp"
             app:cardCornerRadius="16.00dp">
 
             <com.github.chrisbanes.photoview.PhotoView
-                android:id="@+id/photo_view"
+                android:id="@+id/photo_viiew"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
+                android:scaleType="centerInside"
                 android:src="@drawable/splash"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16.00dp"
+            signature:cardCornerRadius="16.00dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <EditText
+                    android:id="@+id/et_diagnosa"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:hint="Hasil Pemeriksaan"/>
+            </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
@@ -135,7 +155,8 @@
                     android:id="@+id/signature_pad"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    android:padding="50dp"/>
+                    android:layout_margin="30dp"
+                    android:background="@color/blue_grey_50"/>
 
                 <LinearLayout
                     android:id="@+id/buttons_container"

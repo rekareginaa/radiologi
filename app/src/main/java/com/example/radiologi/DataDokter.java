@@ -3,9 +3,11 @@ package com.example.radiologi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -30,6 +32,7 @@ public class DataDokter extends AppCompatActivity {
 
     AdapterDokter adapterDokter;
 
+    private SwipeRefreshLayout SwipeRefresh;
     private List<ListitemDokter> dokterList;
     String nip;
 
@@ -37,6 +40,22 @@ public class DataDokter extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_dokter);
+
+        SwipeRefresh = findViewById(R.id.swipe);
+        SwipeRefresh.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
+        SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        SwipeRefresh.setRefreshing(false);
+
+                        dataDokterReq();
+                    }
+                },4000);
+            }
+        });
 
         nip = SharedPreferenceManager.getStringPreferences(getApplicationContext(), "nip");
         adapterDokter = new AdapterDokter(getApplicationContext());
@@ -49,6 +68,12 @@ public class DataDokter extends AppCompatActivity {
             @Override
             public void onItemClick(ListitemDokter listitemDokter) {
                 Intent intent = new Intent(DataDokter.this, RoomDokter.class);
+                intent.putExtra("norekam", listitemDokter.getNoRekam());
+                intent.putExtra("namalengkap", listitemDokter.getNamaLengkap());
+                intent.putExtra("tanggalahir", listitemDokter.getTangLahir());
+                Log.i("regina", listitemDokter.getTangLahir());
+                intent.putExtra("gender", listitemDokter.getGender());
+                intent.putExtra("gambar", listitemDokter.getGambar());
                 startActivity(intent);
             }
         });
@@ -63,13 +88,18 @@ public class DataDokter extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.i("regina", response);
                         try {
                             JSONObject objectResponse = new JSONObject(response);
                             JSONArray array = objectResponse.getJSONArray("data");
+                            adapterDokter.clear();
                             for (int i = 0; i < array.length(); i++) {
                                 ListitemDokter modelDokter = new ListitemDokter();
                                 modelDokter.setNoRekam(array.getJSONObject(i).optString("norekam"));
                                 modelDokter.setNamaLengkap(array.getJSONObject(i).optString("namapasien"));
+                                modelDokter.setTangLahir(array.getJSONObject(i).optString("tanglahir"));
+                                modelDokter.setGender(array.getJSONObject(i).optString("gender"));
+                                modelDokter.setGambar(array.getJSONObject(i).optString("gambar"));
                                 adapterDokter.add(modelDokter);
                             }
                             adapterDokter.addAll(dokterList);

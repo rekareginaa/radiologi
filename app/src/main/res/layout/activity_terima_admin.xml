@@ -30,7 +30,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="No. Rekam Medik"/>
 
@@ -47,7 +47,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Nama"/>
 
@@ -64,7 +64,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Tanggal Lahir"/>
 
@@ -81,7 +81,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Jenis Kelamin"/>
 
@@ -98,9 +98,14 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="16.00dp"
             app:cardCornerRadius="16.00dp">
+
+            <!--<ImageView
+                android:id="@+id/photo_view"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"/>-->
 
             <com.github.chrisbanes.photoview.PhotoView
                 android:id="@+id/photo_view"
