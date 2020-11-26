@@ -27,68 +27,80 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="3">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="No. Rekam Medik"/>
+                        android:text="No. Rekam Medik"
+                        android:layout_weight="1"/>
 
                     <TextView
                         android:id="@+id/tv_norekmed"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"/>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="3">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Nama"/>
+                        android:text="Nama"
+                        android:layout_weight="1"/>
 
                     <TextView
                         android:id="@+id/tv_nama"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"/>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="3">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Tanggal Lahir"/>
+                        android:text="Tanggal Lahir"
+                        android:layout_weight="1"/>
 
                     <TextView
                         android:id="@+id/tv_tglahir"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"/>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="3">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Jenis Kelamin"/>
+                        android:text="Jenis Kelamin"
+                        android:layout_weight="1"/>
 
                     <TextView
                         android:id="@+id/tv_gender"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"/>
 
                 </LinearLayout>
 
@@ -102,16 +114,23 @@
             android:layout_margin="16.00dp"
             app:cardCornerRadius="16.00dp">
 
-            <!--<ImageView
-                android:id="@+id/photo_view"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="300dp"/>-->
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <com.github.chrisbanes.photoview.PhotoView
-                android:id="@+id/photo_view"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:src="@drawable/ic_tampilan"/>
+                <com.github.chrisbanes.photoview.PhotoView
+                    android:id="@+id/photo_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:src="@drawable/ic_tampilan"/>
+
+                <!--<ImageView
+                    android:id="@+id/photo_view_tdt"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"/>-->
+
+            </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
@@ -124,11 +143,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:padding="16dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textStyle="bold"
                     android:text="Hasil Diagnosa"/>
 
                 <TextView

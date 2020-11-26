@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cloudinary.android.MediaManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +36,16 @@ public class DataDokter extends AppCompatActivity {
     private SwipeRefreshLayout SwipeRefresh;
     private List<ListitemDokter> dokterList;
     String nip;
+
+    //untuk cloudinary
+    /*Map config = new HashMap();
+
+    private void configCloudinary() {
+        config.put("cloud_name", "droykx53s");
+        config.put("api_key", "425598729726584");
+        config.put("api_secret", "R2Ge0Xhwg_PiWyZkxKwuRz6v58o");
+        MediaManager.init(getApplicationContext(), config);
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,14 +78,26 @@ public class DataDokter extends AppCompatActivity {
         adapterDokter.setOnClickListener(new AdapterDokter.OnItemClickListener() {
             @Override
             public void onItemClick(ListitemDokter listitemDokter) {
-                Intent intent = new Intent(DataDokter.this, RoomDokter.class);
-                intent.putExtra("norekam", listitemDokter.getNoRekam());
-                intent.putExtra("namalengkap", listitemDokter.getNamaLengkap());
-                intent.putExtra("tanggalahir", listitemDokter.getTangLahir());
-                Log.i("regina", listitemDokter.getTangLahir());
-                intent.putExtra("gender", listitemDokter.getGender());
-                intent.putExtra("gambar", listitemDokter.getGambar());
-                startActivity(intent);
+                if (listitemDokter.getStatus().equals("0")) {
+                    Intent intent = new Intent(DataDokter.this, RoomDokter.class);
+                    intent.putExtra("norekam", listitemDokter.getNoRekam());
+                    intent.putExtra("namalengkap", listitemDokter.getNamaLengkap());
+                    intent.putExtra("tanggalahir", listitemDokter.getTangLahir());
+                    Log.i("regina", listitemDokter.getTangLahir());
+                    intent.putExtra("gender", listitemDokter.getGender());
+                    intent.putExtra("gambar", listitemDokter.getGambar());
+                    startActivity(intent);
+                } else {
+                    Intent intentSudahBaca = new Intent(getApplicationContext(), TerimaAdmin.class);
+                    intentSudahBaca.putExtra("norekam", listitemDokter.getNoRekam());
+                    intentSudahBaca.putExtra("namalengkap", listitemDokter.getNamaLengkap());
+                    intentSudahBaca.putExtra("tanggalahir", listitemDokter.getTangLahir());
+                    intentSudahBaca.putExtra("gender", listitemDokter.getGender());
+                    intentSudahBaca.putExtra("gambar", listitemDokter.getGambar());
+                    intentSudahBaca.putExtra("untuk", "dokter");
+                    intentSudahBaca.putExtra("diagnosa", listitemDokter.getDiagnosa());
+                    startActivity(intentSudahBaca);
+                }
             }
         });
 
@@ -100,6 +123,8 @@ public class DataDokter extends AppCompatActivity {
                                 modelDokter.setTangLahir(array.getJSONObject(i).optString("tanglahir"));
                                 modelDokter.setGender(array.getJSONObject(i).optString("gender"));
                                 modelDokter.setGambar(array.getJSONObject(i).optString("gambar"));
+                                modelDokter.setStatus(array.getJSONObject(i).optString("status"));
+                                modelDokter.setDiagnosa(array.getJSONObject(i).optString("diagnosa"));
                                 adapterDokter.add(modelDokter);
                             }
                             adapterDokter.addAll(dokterList);

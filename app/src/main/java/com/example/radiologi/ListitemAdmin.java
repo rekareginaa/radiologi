@@ -7,7 +7,9 @@ public class ListitemAdmin {
     private String tangLahir;
     private String gender;
     private String gambar;
-
+    private String status;
+    private String diagnosa;
+    private String tdt;
 
     public String getTangLahir() {
         return tangLahir;
@@ -47,5 +49,29 @@ public class ListitemAdmin {
 
     public String getNamaLengkap() {
         return namaLengkap;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDiagnosa() {
+        return diagnosa;
+    }
+
+    public void setDiagnosa(String diagnosa) {
+        this.diagnosa = diagnosa;
+    }
+
+    public String getTdt() {
+        return tdt;
+    }
+
+    public void setTdt(String tdt) {
+        this.tdt = tdt;
     }
 }

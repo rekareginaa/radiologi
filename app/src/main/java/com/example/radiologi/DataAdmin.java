@@ -9,6 +9,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cloudinary.android.MediaManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -86,6 +87,9 @@ public class DataAdmin extends AppCompatActivity {
                 intent.putExtra("tanggalahir", listitemAdmin.getTangLahir());
                 intent.putExtra("gender", listitemAdmin.getGender());
                 intent.putExtra("gambar", listitemAdmin.getGambar());
+                intent.putExtra("untuk", "admin");
+                intent.putExtra("diagnosa", listitemAdmin.getDiagnosa());
+                intent.putExtra("tdt", listitemAdmin.getTdt());
                 startActivity(intent);
             }
         });
@@ -133,6 +137,9 @@ public class DataAdmin extends AppCompatActivity {
                                     modelAdmin.setTangLahir(array.getJSONObject(i).optString("tanglahir"));
                                     modelAdmin.setGender(array.getJSONObject(i).optString("gender"));
                                     modelAdmin.setGambar(array.getJSONObject(i).optString("gambar"));
+                                    modelAdmin.setStatus(array.getJSONObject(i).optString("status"));
+                                    modelAdmin.setDiagnosa(array.getJSONObject(i).optString("diagnosa"));
+                                    modelAdmin.setTdt(array.getJSONObject(i).optString("ttd"));
                                     adminList.add(modelAdmin);
                                 }
                                 adapterAdmin.addAll(adminList);

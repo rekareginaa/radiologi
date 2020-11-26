@@ -65,14 +65,6 @@ public class RoomAdmin extends AppCompatActivity {
 
     //
     String filePath;
-    Map config = new HashMap();
-
-    private void configCloudinary() {
-        config.put("cloud_name", "cantik808");
-        config.put("api_key", "472321666935343");
-        config.put("api_secret", "VlyMKheElDYtitgo9tmH8ULh03U");
-        MediaManager.init(RoomAdmin.this, config);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +89,6 @@ public class RoomAdmin extends AppCompatActivity {
             }
         });
 
-        configCloudinary();
-
         eText = findViewById(R.id.et_date);
         eText.setInputType(InputType.TYPE_NULL);
         btnGet=findViewById(R.id.buttonDate);
@@ -113,8 +103,8 @@ public class RoomAdmin extends AppCompatActivity {
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                eText.setText(dayOfMonth + "/" + monthOfYear + "/" + year);
-                                tanggallahir = dayOfMonth + "-" + monthOfYear + "-" + year;
+                                eText.setText(dayOfMonth + "/" + (monthOfYear+1) + "/" + year);
+                                tanggallahir = dayOfMonth + "-" + (monthOfYear+1) + "-" + year;
                             }
                         }, year, month, day);
                 picker.show();
@@ -229,6 +219,7 @@ public class RoomAdmin extends AppCompatActivity {
 
         //get the image's file location
         filePath = getRealPathFromUri(data.getData(), RoomAdmin.this);
+        Log.i("regina", filePath);
 
         if(requestCode==PICK_IMAGE && resultCode==RESULT_OK){
             try {
@@ -313,6 +304,7 @@ public class RoomAdmin extends AppCompatActivity {
                         }
                         Intent intent = new Intent(RoomAdmin.this, DataAdmin.class);
                         startActivity(intent);
+                        finish();
                     }
                 }, new Response.ErrorListener() {
             @Override

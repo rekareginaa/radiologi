@@ -1,6 +1,8 @@
 package com.example.radiologi;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +69,16 @@ public class AdapterDokter extends RecyclerView.Adapter<AdapterDokter.ViewHolder
                 mListener.onItemClick(listitemDokter);
             }
         });
+
+        if (listitemDokter.getStatus().equals("0")) {
+            holder.dokterHolder.setCardBackgroundColor(Color.parseColor("#006A4E"));
+            holder.noRekam.setTextColor(Color.WHITE);
+            holder.namaLengkap.setTextColor(Color.WHITE);
+        } else {
+            holder.dokterHolder.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+            holder.noRekam.setTextColor(Color.BLACK);
+            holder.namaLengkap.setTextColor(Color.BLACK);
+        }
     }
 
     @Override

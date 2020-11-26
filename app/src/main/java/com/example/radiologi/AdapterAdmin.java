@@ -1,6 +1,7 @@
 package com.example.radiologi;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,13 +61,22 @@ public class AdapterAdmin extends RecyclerView.Adapter<AdapterAdmin.ViewHolder> 
                 mListener.onItemClick(listitemAdmin);
             }
         });
-
         holder.adminHolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mListener.onItemClick(listitemAdmin);
             }
         });
+
+        if (listitemAdmin.getStatus().equals("0")) {
+            holder.adminHolder.setCardBackgroundColor(Color.parseColor("#006A4E"));
+            holder.noRekam.setTextColor(Color.WHITE);
+            holder.namaLengkap.setTextColor(Color.WHITE);
+        } else {
+            holder.adminHolder.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+            holder.noRekam.setTextColor(Color.BLACK);
+            holder.namaLengkap.setTextColor(Color.BLACK);
+        }
     }
 
     @Override

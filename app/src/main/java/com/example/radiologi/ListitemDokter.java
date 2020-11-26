@@ -7,16 +7,8 @@ public class ListitemDokter {
     private String tangLahir;
     private String gender;
     private String gambar;
-
-
-    public String getGambar() {
-        return gambar;
-    }
-
-    public void setGambar(String gambar) {
-        this.gambar = gambar;
-    }
-
+    private String status;
+    private String diagnosa;
 
     public String getTangLahir() {
         return tangLahir;
@@ -48,5 +40,29 @@ public class ListitemDokter {
 
     public String getNamaLengkap() {
         return  namaLengkap;
+    }
+
+    public String getGambar() {
+        return gambar;
+    }
+
+    public void setGambar(String gambar) {
+        this.gambar = gambar;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDiagnosa() {
+        return diagnosa;
+    }
+
+    public void setDiagnosa(String diagnosa) {
+        this.diagnosa = diagnosa;
     }
 }

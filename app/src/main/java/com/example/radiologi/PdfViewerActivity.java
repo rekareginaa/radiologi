@@ -68,7 +68,7 @@ public class PdfViewerActivity extends PDFViewerActivity {
                     break;
                 }
 
-                Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+                /*Intent intentShareFile = new Intent(Intent.ACTION_SEND);
 
                 Uri apkURI = FileProvider.getUriForFile(
                         getApplicationContext(),
@@ -80,7 +80,18 @@ public class PdfViewerActivity extends PDFViewerActivity {
                 intentShareFile.putExtra(Intent.EXTRA_STREAM,
                         Uri.parse("file://" + fileToShare.getAbsolutePath()));
 
-                startActivity(Intent.createChooser(intentShareFile, "Share File"));
+                startActivity(Intent.createChooser(intentShareFile, "Share File"));*/
+
+                Uri uri = FileProvider.getUriForFile(PdfViewerActivity.this,
+                        "com.example.radiologi.fileprovider",
+                        fileToShare);
+
+                Intent share = new Intent();
+                share.setAction(Intent.ACTION_SEND);
+                share.setType("application/pdf");
+                share.putExtra(Intent.EXTRA_STREAM, uri);
+//                share.setPackage("com.whatsapp");
+                startActivity(share);
                 break;
             }
         }
