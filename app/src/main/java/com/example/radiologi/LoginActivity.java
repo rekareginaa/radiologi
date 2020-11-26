@@ -84,11 +84,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (role.equals("admin")) {
                             Intent intent = new Intent(getApplicationContext(), DataAdmin.class);
                             startActivity(intent);
+                            finish();
                             Log.i("regina", "role admin");
                         }
                         else if (role.equals("dokter")) {
                             Intent intent = new Intent(getApplicationContext(), DataDokter.class);
                             startActivity(intent);
+                            finish();
                             Log.i("regina", "role dokter");
                         }
                         Toast.makeText(getApplicationContext(), "Login Berhasil", Toast.LENGTH_SHORT).show();

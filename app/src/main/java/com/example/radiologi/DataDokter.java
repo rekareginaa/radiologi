@@ -1,14 +1,18 @@
 package com.example.radiologi;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -32,6 +36,7 @@ public class DataDokter extends AppCompatActivity {
     String url_dokter = "https://dbradiologi.000webhostapp.com/api/users/dokterdata";
 
     AdapterDokter adapterDokter;
+    ImageView btnLogout;
 
     private SwipeRefreshLayout SwipeRefresh;
     private List<ListitemDokter> dokterList;
@@ -51,6 +56,15 @@ public class DataDokter extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_dokter);
+
+        btnLogout = findViewById(R.id.iv_logout);
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog();
+            }
+        });
+
 
         SwipeRefresh = findViewById(R.id.swipe);
         SwipeRefresh.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
@@ -148,5 +162,29 @@ public class DataDokter extends AppCompatActivity {
         };
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         queue.add(request);
+    }
+
+    private void showDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Keluar dari aplikasi?");
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        SharedPreferenceManager.saveBooleanPreferences(getApplicationContext(), "islogin", false );
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

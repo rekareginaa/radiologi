@@ -13,6 +13,7 @@ import com.cloudinary.android.MediaManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -23,6 +24,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -41,6 +44,7 @@ public class DataAdmin extends AppCompatActivity {
     AdapterAdmin adapterAdmin;
     TextView kosong;
     RecyclerView recyclerView;
+    ImageButton imageButton;
 
     private SwipeRefreshLayout SwipeRefreshAdmin;
 
@@ -73,6 +77,18 @@ public class DataAdmin extends AppCompatActivity {
         adapterAdmin = new AdapterAdmin(getApplicationContext());
 
         kosong = findViewById(R.id.teks_kosong);
+        imageButton = findViewById(R.id.option);
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RelativeLayout relativeLayout = findViewById(R.id.relative_layout);
+                relativeLayout.setVisibility(View.VISIBLE);
+                FragmentAdmin fragmentAdmin = new FragmentAdmin();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.relative_layout, fragmentAdmin, FragmentAdmin.class.getSimpleName()).addToBackStack(null).commit();
+            }
+        });
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerAdmin);
         recyclerView.setHasFixedSize(true);

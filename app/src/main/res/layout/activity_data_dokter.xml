@@ -7,18 +7,29 @@
     android:background="@drawable/background"
     tools:context=".DataDokter">
 
+    <RelativeLayout
+        android:id="@+id/bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center_vertical"
+        android:background="@color/blue_grey_600">
+
+        <ImageView
+            android:id="@+id/iv_logout"
+            android:src="@drawable/ic_logout"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/bar"
         android:orientation="vertical">
-
-<!--        <RelativeLayout-->
-<!--            android:id="@+id/titleBar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical">-->
-<!--        </RelativeLayout>-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerdokter"

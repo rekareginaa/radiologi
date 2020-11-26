@@ -22,4 +22,6 @@
     <string name="app_icon_license">App Icon made by Freepik from www.flaticon.com</string>
     <string name="pdf_icon_license">PDF Icon made by Google from www.flaticon.com</string>
     <string name="text_create_pdf">Create PDF</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
