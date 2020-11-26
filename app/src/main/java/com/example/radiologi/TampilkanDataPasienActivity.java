@@ -1,8 +1,11 @@
 package com.example.radiologi;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
@@ -10,13 +13,19 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.android.MediaManager;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.tejpratapsingh.pdfcreator.activity.PDFCreatorActivity;
 import com.tejpratapsingh.pdfcreator.utils.PDFUtil;
 import com.tejpratapsingh.pdfcreator.views.PDFBody;
@@ -29,11 +38,16 @@ import com.tejpratapsingh.pdfcreator.views.basic.PDFTextView;
 import com.tejpratapsingh.pdfcreator.views.basic.PDFVerticalView;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Locale;
 
 public class TampilkanDataPasienActivity extends PDFCreatorActivity {
 
-    String norekaM, namaLengkaP, tangLahiR, gendeR;
+    String norekaM, namaLengkaP, tangLahiR, gendeR, gambaR, diagnosA, tdT;
+    Bitmap gambarradiologi, tandatangannyadokterkah;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +57,50 @@ public class TampilkanDataPasienActivity extends PDFCreatorActivity {
         namaLengkaP = getIntent().getStringExtra("namalengkap");
         tangLahiR = getIntent().getStringExtra("tanggalahir");
         gendeR = getIntent().getStringExtra("gender");
+        gambaR = getIntent().getStringExtra("gambar");
+        diagnosA = getIntent().getStringExtra("diagnosa");
+        tdT = getIntent().getStringExtra("tandatangan");
+        Log.i("regina", tdT);
+
+        Picasso.get().load(gambaR).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                gambarradiologi = bitmap;
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
+
+        Picasso.get().load(tdT).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                tandatangannyadokterkah = bitmap;
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
 
-        createPDF("test", new PDFUtil.PDFUtilListener() {
+        createPDF("Hasil " + namaLengkaP, new PDFUtil.PDFUtilListener() {
             @Override
             public void pdfGenerationSuccess(File savedPDFFile) {
                 Toast.makeText(TampilkanDataPasienActivity.this, "PDF Created", Toast.LENGTH_SHORT).show();
@@ -325,13 +377,12 @@ public class TampilkanDataPasienActivity extends PDFCreatorActivity {
         verticalView1.addView(horizontalView4);
 
 //        PDFHorizontalView horizontalView5 = new PDFHorizontalView(getApplicationContext());
-
         PDFImageView fotoRadiologi = new PDFImageView(getApplicationContext());
         LinearLayout.LayoutParams imageLayoutParam2 = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 300, 0);
         fotoRadiologi.setImageScale(ImageView.ScaleType.CENTER_INSIDE);
-        fotoRadiologi.setImageResource(R.drawable.login);
+        fotoRadiologi.setImageBitmap(gambarradiologi);
         imageLayoutParam2.setMargins(10, 0, 10, 0);
         fotoRadiologi.setLayout(imageLayoutParam2);
         verticalView1.addView(fotoRadiologi);
@@ -350,7 +401,7 @@ public class TampilkanDataPasienActivity extends PDFCreatorActivity {
         horizontalView5.addView(text7);
 
         PDFTextView hasilPemeriksaan = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.SMALL);
-        hasilPemeriksaan.setText(":  ");
+        hasilPemeriksaan.setText(":  " + diagnosA);
         hasilPemeriksaan.getView().setPadding(0, 10, 0, 0);
         hasilPemeriksaan.setLayout(new LinearLayout.LayoutParams(
                 0,
@@ -362,16 +413,26 @@ public class TampilkanDataPasienActivity extends PDFCreatorActivity {
         PDFTextView tandaTangan = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.SMALL);
         tandaTangan.setText("Dokter Penanggung Jawab");
         tandaTangan.getView().setGravity(Gravity.RIGHT);
-        tandaTangan.getView().setPadding(10, 50, 0, 0);
+        tandaTangan.getView().setPadding(10, 0, 0, 0);
         tandaTangan.setLayout(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 0));
         verticalView1.addView(tandaTangan);
 
+        PDFImageView tandatangan = new PDFImageView(getApplicationContext());
+        LinearLayout.LayoutParams imageLayoutParam3 = new LinearLayout.LayoutParams(
+                100,
+                100, 0);
+        imageLayoutParam3.gravity = Gravity.RIGHT;
+        tandatangan.setImageScale(ImageView.ScaleType.CENTER_INSIDE);
+        tandatangan.setImageBitmap(tandatangannyadokterkah);
+        tandatangan.setLayout(imageLayoutParam3);
+        verticalView1.addView(tandatangan);
+
         PDFTextView namaDokter = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.SMALL);
-        namaDokter.setText("dr. Reka Regina, Sp.Rad.M.Kes");
+        namaDokter.setText("dr. ______________, Sp.Rad.M.Kes");
         namaDokter.getView().setGravity(Gravity.RIGHT);
-        namaDokter.getView().setPadding(10, 50, 0, 0);
+        namaDokter.getView().setPadding(10, 0, 0, 0);
         namaDokter.setLayout(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 0));
