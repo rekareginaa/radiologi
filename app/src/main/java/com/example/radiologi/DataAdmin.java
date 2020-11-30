@@ -98,6 +98,7 @@ public class DataAdmin extends AppCompatActivity {
             @Override
             public void onItemClick(ListitemAdmin listitemAdmin) {
                 Intent intent = new Intent(DataAdmin.this, TerimaAdmin.class);
+                intent.putExtra("noregis", listitemAdmin.getNoRegis());
                 intent.putExtra("norekam", listitemAdmin.getNoRekam());
                 intent.putExtra("namalengkap", listitemAdmin.getNamaLengkap());
                 intent.putExtra("tanggalahir", listitemAdmin.getTangLahir());
@@ -148,6 +149,7 @@ public class DataAdmin extends AppCompatActivity {
                                 adapterAdmin.clear();
                                 for (int i = 0; i < array.length(); i++) {
                                     ListitemAdmin modelAdmin = new ListitemAdmin();
+                                    modelAdmin.setNoRegis(array.getJSONObject(i).optString("noregis"));
                                     modelAdmin.setNoRekam(array.getJSONObject(i).optString("norekam"));
                                     modelAdmin.setNamaLengkap(array.getJSONObject(i).optString("namapasien"));
                                     modelAdmin.setTangLahir(array.getJSONObject(i).optString("tanglahir"));

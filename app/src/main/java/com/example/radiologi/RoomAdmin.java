@@ -47,7 +47,7 @@ import java.util.Map;
 
 public class RoomAdmin extends AppCompatActivity {
     DatePickerDialog picker;
-    EditText eText, etNoRekam, etNamaPasien;
+    EditText eText, etNoRegis, etNoRekam, etNamaPasien;
     Button btnGet;
     Button btnUnggah;
     ImageView ivFoto;
@@ -58,7 +58,7 @@ public class RoomAdmin extends AppCompatActivity {
     Bitmap bitmap;
     private RadioGroup radioGender;
 
-    String tanggallahir, noRekam, namaPasien, gender, nipsaya, namagambar, norekambaru;
+    String tanggallahir, noRegis, noRekam, namaPasien, gender, nipsaya, namagambar, norekambaru;
 
     private static final int PERMISSION_CODE =1;
     private static final int PICK_IMAGE=1;
@@ -72,6 +72,7 @@ public class RoomAdmin extends AppCompatActivity {
         setContentView(R.layout.activity_room_admin);
 
         nipsaya = SharedPreferenceManager.getStringPreferences(getApplicationContext(), "nip");
+        etNoRegis = findViewById(R.id.et_noRegis);
         etNoRekam = findViewById(R.id.et_noRekam);
         etNamaPasien = findViewById(R.id.et_nama);
         radioGender = findViewById(R.id.radioGender);
@@ -283,8 +284,11 @@ public class RoomAdmin extends AppCompatActivity {
 
     private void uploadImage() {
 
+        noRegis = etNoRegis.getText().toString().trim();
         noRekam = etNoRekam.getText().toString().trim();
         namaPasien = etNamaPasien.getText().toString().trim();
+
+        Log.i("regina", noRegis);
 
         Toast.makeText(getApplicationContext(), "Mengirim", Toast.LENGTH_SHORT).show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -316,6 +320,7 @@ public class RoomAdmin extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 //String gambar = imagetoString(bitmap);
+                params.put("noregis", noRegis);
                 params.put("norekam", noRekam);
                 params.put("namapasien", namaPasien);
                 params.put("gender", gender);

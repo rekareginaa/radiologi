@@ -2,6 +2,7 @@ package com.example.radiologi;
 
 public class ListitemAdmin {
 
+    private String noRegis;
     private String noRekam;
     private String namaLengkap;
     private String tangLahir;
@@ -10,6 +11,10 @@ public class ListitemAdmin {
     private String status;
     private String diagnosa;
     private String tdt;
+
+    public String getNoRegis() { return noRegis; }
+
+    public void setNoRegis(String noRegis) { this.noRegis = noRegis; }
 
     public String getTangLahir() {
         return tangLahir;

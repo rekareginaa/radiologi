@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +16,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -23,17 +26,20 @@ import java.net.URL;
 
 public class TerimaAdmin extends AppCompatActivity {
 
-    TextView noRekam, namaLengkap, tangLahir, gender, diagnosa;
+    TextView noRegis, noRekam, namaLengkap, tangLahir, gender, diagnosa;
     PhotoView foto;
     ImageView tanda;
-    String img, norekaM, namaLengkaP, tangLahiR, gendeR, diagnosA;
+    String img, noregiS, norekaM, namaLengkaP, tangLahiR, gendeR, diagnosA;
     String untuk, tdT;
+    Bitmap gambarradiologi, tandatangannyadokterkah;
+    byte[] gambarradiologiloini, tandatangannyadokterloini;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_terima_admin);
 
+        noRegis = findViewById(R.id.tv_noregis);
         noRekam = findViewById(R.id.tv_norekmed);
         namaLengkap = findViewById(R.id.tv_nama);
         tangLahir = findViewById(R.id.tv_tglahir);
@@ -42,6 +48,7 @@ public class TerimaAdmin extends AppCompatActivity {
         diagnosa = findViewById(R.id.tv_diagnosa);
 //        tanda = findViewById(R.id.photo_view_tdt);
 
+        noregiS = getIntent().getStringExtra("noregis");
         norekaM = getIntent().getStringExtra("norekam");
         namaLengkaP = getIntent().getStringExtra("namalengkap");
         tangLahiR = getIntent().getStringExtra("tanggalahir");
@@ -51,6 +58,7 @@ public class TerimaAdmin extends AppCompatActivity {
         diagnosA = getIntent().getStringExtra("diagnosa");
         tdT = getIntent().getStringExtra("tdt");
 
+        noRegis.setText(noregiS);
         noRekam.setText(norekaM);
         namaLengkap.setText(namaLengkaP);
         tangLahir.setText(tangLahiR);
@@ -83,10 +91,52 @@ public class TerimaAdmin extends AppCompatActivity {
                 break;
         }
 
+        /*Picasso.get().load(img).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                gambarradiologi = bitmap;
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
+
+        Picasso.get().load(tdT).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                tandatangannyadokterkah = bitmap;
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
+
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        //gambarradiologi.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        gambarradiologiloini = stream.toByteArray();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        tandatangannyadokterloini = byteArrayOutputStream.toByteArray();*/
+
         createPdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(TerimaAdmin.this, TampilkanDataPasienActivity.class);
+                intent.putExtra("noregis", noregiS);
                 intent.putExtra("norekam", norekaM);
                 intent.putExtra("namalengkap", namaLengkaP);
                 intent.putExtra("tanggalahir", tangLahiR);
