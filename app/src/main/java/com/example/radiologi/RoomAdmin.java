@@ -10,6 +10,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -36,11 +37,15 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,6 +68,9 @@ public class RoomAdmin extends AppCompatActivity {
     private static final int PERMISSION_CODE =1;
     private static final int PICK_IMAGE=1;
 
+    ArrayList listRegis;
+    String noRegisNew;
+
     //
     String filePath;
 
@@ -70,6 +78,17 @@ public class RoomAdmin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_admin);
+
+        listRegis = new ArrayList<>();
+
+        /*SharedPreferences sharedPreferences = getSharedPreferences("shared", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("list", null);
+        Type type = new TypeToken<ArrayList<ModelRegis>>() {}.getType();
+        listRegis = gson.fromJson(json, type);
+        Log.i("regina", json);*/
+
+
 
         nipsaya = SharedPreferenceManager.getStringPreferences(getApplicationContext(), "nip");
         etNoRegis = findViewById(R.id.et_noRegis);
@@ -89,6 +108,9 @@ public class RoomAdmin extends AppCompatActivity {
                 }
             }
         });
+
+        listRegis = getIntent().getStringArrayListExtra("regis");
+        Log.i("regina", listRegis.toString());
 
         eText = findViewById(R.id.et_date);
         eText.setInputType(InputType.TYPE_NULL);
@@ -126,7 +148,15 @@ public class RoomAdmin extends AppCompatActivity {
         btnUnggah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadToCloudinary(filePath);
+
+                noRegisNew = etNoRegis.getText().toString();
+                if (listRegis.contains(noRegisNew)) {
+                    Toast.makeText(getApplicationContext(), "Nomor Registrasi telah digunakan", Toast.LENGTH_SHORT).show();
+                } else {
+                    //Toast.makeText(getApplicationContext(), "AMAN MABROOO", Toast.LENGTH_SHORT).show();
+                    uploadToCloudinary(filePath);
+                }
+
             }
         });
     }
@@ -284,11 +314,11 @@ public class RoomAdmin extends AppCompatActivity {
 
     private void uploadImage() {
 
-        noRegis = etNoRegis.getText().toString().trim();
+        //noRegis = etNoRegis.getText().toString().trim();
         noRekam = etNoRekam.getText().toString().trim();
         namaPasien = etNamaPasien.getText().toString().trim();
 
-        Log.i("regina", noRegis);
+        //Log.i("regina", noRegis);
 
         Toast.makeText(getApplicationContext(), "Mengirim", Toast.LENGTH_SHORT).show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
@@ -296,19 +326,24 @@ public class RoomAdmin extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                        Log.i("regina", response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            String Response = jsonObject.getString("response");
-                            //norekambaru = jsonObject.getString("data");
-                            Toast.makeText(getApplicationContext(), Response, Toast.LENGTH_LONG).show();
+//                            String Response = jsonObject.getString("text");
+                            if (jsonObject.getString("text").equals("Data Added")) {
+                                //norekambaru = jsonObject.getString("data");
+//                                Toast.makeText(getApplicationContext(), Response, Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(RoomAdmin.this, DataAdmin.class);
+                                startActivity(intent);
+                                finish();
+                            } else if (jsonObject.getString("text").equals("regis")) {
+                                Toast.makeText(getApplicationContext(), "nomor registrasi sudah ada", Toast.LENGTH_SHORT).show();
+                            }
 
                             //saveNama();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        Intent intent = new Intent(RoomAdmin.this, DataAdmin.class);
-                        startActivity(intent);
-                        finish();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -320,7 +355,7 @@ public class RoomAdmin extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 //String gambar = imagetoString(bitmap);
-                params.put("noregis", noRegis);
+                params.put("noregis", noRegisNew);
                 params.put("norekam", noRekam);
                 params.put("namapasien", namaPasien);
                 params.put("gender", gender);

@@ -95,6 +95,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                         Toast.makeText(getApplicationContext(), "Login Berhasil", Toast.LENGTH_SHORT).show();
                     }
+                    else if (object.getString("status").equals("username")) {
+                        Toast.makeText(getApplicationContext(), "Username Salah", Toast.LENGTH_LONG).show();
+                    }
+                    else if (object.getString("status").equals("password")) {
+                        Toast.makeText(getApplicationContext(), "Password Salah", Toast.LENGTH_SHORT).show();
+                    }
                     else if (object.getString("status").equals("gagal")) {
                         Toast.makeText(getApplicationContext(),"Login Gagal", Toast.LENGTH_SHORT).show();
                     }

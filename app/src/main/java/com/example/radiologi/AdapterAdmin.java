@@ -69,11 +69,11 @@ public class AdapterAdmin extends RecyclerView.Adapter<AdapterAdmin.ViewHolder> 
         });
 
         if (listitemAdmin.getStatus().equals("0")) {
-            holder.adminHolder.setCardBackgroundColor(Color.parseColor("#006A4E"));
+            holder.adminHolder.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
             holder.noRekam.setTextColor(Color.WHITE);
             holder.namaLengkap.setTextColor(Color.WHITE);
         } else {
-            holder.adminHolder.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+            holder.adminHolder.setCardBackgroundColor(Color.parseColor("#006A4E"));
             holder.noRekam.setTextColor(Color.BLACK);
             holder.namaLengkap.setTextColor(Color.BLACK);
         }

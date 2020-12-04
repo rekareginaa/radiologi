@@ -1,6 +1,8 @@
 package com.example.radiologi;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.android.volley.Request;
@@ -11,6 +13,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cloudinary.android.MediaManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -51,10 +54,16 @@ public class DataAdmin extends AppCompatActivity {
     private List<ListitemAdmin> adminList;
     String nip;
 
+    ArrayList listRegis;
+
+    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_admin);
+
+        listRegis = new ArrayList<>();
 
         SwipeRefreshAdmin = findViewById(R.id.swipe_admin);
         SwipeRefreshAdmin.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
@@ -121,12 +130,19 @@ public class DataAdmin extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DataAdmin.this, RoomAdmin.class);
+                intent.putExtra("regis", listRegis);
                 startActivity(intent);
             }
         });
     }
 
     public void dataAdminReq() {
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Mohon Tunggu ...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
         adminList.clear();
         StringRequest request = new StringRequest(Request.Method.POST, url_admin,
                 new Response.Listener<String>() {
@@ -159,14 +175,28 @@ public class DataAdmin extends AppCompatActivity {
                                     modelAdmin.setDiagnosa(array.getJSONObject(i).optString("diagnosa"));
                                     modelAdmin.setTdt(array.getJSONObject(i).optString("ttd"));
                                     adminList.add(modelAdmin);
+
+//                                    ModelRegis modelRegis = new ModelRegis();
+//                                    modelRegis.setNoRegis(array.getJSONObject(i).optString("noregis"));
+                                    String regis = array.getJSONObject(i).optString("noregis");
+                                    listRegis.add(regis);
                                 }
                                 adapterAdmin.addAll(adminList);
                                 adapterAdmin.notifyDataSetChanged();
+
+                                /*SharedPreferences sharedPreferences = getSharedPreferences("shared", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                Gson gson = new Gson();
+                                String json = gson.toJson(listRegis);
+                                editor.putString("list", json);
+                                editor.apply();
+                                Log.i("regina", listRegis.toString());*/
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Log.i("regina", e.getMessage());
                         }
+                        progressDialog.dismiss();
                     }
                 }, new Response.ErrorListener() {
             @Override

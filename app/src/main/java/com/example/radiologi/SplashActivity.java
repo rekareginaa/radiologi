@@ -24,6 +24,7 @@ public class SplashActivity extends AppCompatActivity {
         config.put("api_key", "425598729726584");
         config.put("api_secret", "R2Ge0Xhwg_PiWyZkxKwuRz6v58o");
         MediaManager.init(getApplicationContext(), config);
+        SharedPreferenceManager.saveBooleanPreferences(getApplicationContext(), "init", true);
     }
 
     @Override
@@ -31,7 +32,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        configCloudinary();
+        if (!SharedPreferenceManager.getBooleanPreferences(getApplicationContext(), "init")) {
+            configCloudinary();
+        }
 
         new Handler().postDelayed(new Runnable() {
             @Override

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,6 +43,8 @@ public class DataDokter extends AppCompatActivity {
     private List<ListitemDokter> dokterList;
     String nip;
 
+    ProgressDialog progressDialog;
+
     //untuk cloudinary
     /*Map config = new HashMap();
 
@@ -64,7 +67,6 @@ public class DataDokter extends AppCompatActivity {
                 showDialog();
             }
         });
-
 
         SwipeRefresh = findViewById(R.id.swipe);
         SwipeRefresh.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
@@ -121,6 +123,12 @@ public class DataDokter extends AppCompatActivity {
     }
 
     public void dataDokterReq() {
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Mohon Tunggu...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
         StringRequest request = new StringRequest(Request.Method.POST, url_dokter,
                 new Response.Listener<String>() {
                     @Override
@@ -146,6 +154,7 @@ public class DataDokter extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        progressDialog.dismiss();
                     }
                 }, new Response.ErrorListener() {
             @Override
