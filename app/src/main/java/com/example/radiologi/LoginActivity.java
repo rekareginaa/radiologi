@@ -32,8 +32,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     Button btnMasuk;
     EditText etNip, etPass;
-    String nip, password;
-    String role;
+    String nip, password, role, token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +76,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         for (int i=0; i < array.length(); i++) {
                             JSONObject object1 = array.getJSONObject(i);
                             role = object1.getString("role");
+                            token = object1.getString("token");
                         }
                         SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "nip", nip );
                         SharedPreferenceManager.saveBooleanPreferences(getApplicationContext(), "islogin", true );
                         SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "role", role);
+                        SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "token", token);
                         if (role.equals("admin")) {
                             Intent intent = new Intent(getApplicationContext(), DataAdmin.class);
                             startActivity(intent);

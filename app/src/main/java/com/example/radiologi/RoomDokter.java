@@ -36,6 +36,7 @@ import com.github.chrisbanes.photoview.PhotoView;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,7 +52,7 @@ public class RoomDokter extends AppCompatActivity {
 
     EditText etDiagnosa;
     TextView noRekam, namaLengkap, tangLahir, gender;
-    String norekaM, namaLengkaP, tangLahiR, gendeR, gambaR, diagnosa, ttd;
+    String norekaM, namaLengkaP, tangLahiR, gendeR, gambaR, diagnosa, ttd, token;
     PhotoView foto;
 
     //untuk tanda tangan
@@ -64,12 +65,15 @@ public class RoomDokter extends AppCompatActivity {
     String filePath;
 
     private static final String urlupdate = "https://dbradiologi.000webhostapp.com/api/users/updatedokter";
+    private static final String url_token =  "https://dbradiologi.000webhostapp.com/api/users";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         verifyStoragePermissions(this);
         setContentView(R.layout.activity_room_dokter);
+
+        tokenAdmin();
 
         //CloudinaryConfig.configCloudinary(getApplicationContext());
 
@@ -307,10 +311,40 @@ public class RoomDokter extends AppCompatActivity {
                 params.put("diagnosa", diagnosa);
                 params.put("ttd", ttd);
                 params.put("status", "1");
+                params.put("token_tujuan", token);
+                params.put("title", "Data Pasien Baru");
+                params.put("message", "Dokter mengirimkan data yang telah dilengkapi");
                 return params;
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(RoomDokter.this);
         requestQueue.add(stringRequest);
+    }
+
+    private void tokenAdmin() {
+        StringRequest request = new StringRequest(Request.Method.GET, url_token, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    JSONArray array = object.getJSONArray("data");
+                    for (int i = 0; i < array.length(); i++) {
+                        if (array.getJSONObject(i).getString("role").equals("admin")) {
+                            token = array.getJSONObject(i).getString("token");
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("regina", error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        queue.add(request);
     }
 }

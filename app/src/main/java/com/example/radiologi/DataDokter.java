@@ -1,5 +1,6 @@
 package com.example.radiologi;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,6 +24,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cloudinary.android.MediaManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,13 +40,14 @@ import java.util.Map;
 public class DataDokter extends AppCompatActivity {
 
     String url_dokter = "https://dbradiologi.000webhostapp.com/api/users/dokterdata";
+    String url_cek = "https://dbradiologi.000webhostapp.com/api/users/cektoken";
 
     AdapterDokter adapterDokter;
     ImageView btnLogout;
 
     private SwipeRefreshLayout SwipeRefresh;
     private List<ListitemDokter> dokterList;
-    String nip;
+    String nip, msg, tokenLama, token;
 
     ProgressDialog progressDialog;
 
@@ -59,6 +65,30 @@ public class DataDokter extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_dokter);
+
+        tokenLama = SharedPreferenceManager.getStringPreferences(getApplicationContext(), "token");
+
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    Log.w("regina", "Fetching FCM registration token failed", task.getException());
+                    return;
+                }
+                token = task.getResult();
+                msg = getString(R.string.msg_token_fmt, token);
+                Log.d("regina", token);
+
+                if (!tokenLama.equals(token)) {
+                    Log.d("regina", "token dijalankan");
+                    cekToken();
+                }
+                else {
+                    Log.d("regina", "testes" + tokenLama);
+                    Toast.makeText(getApplicationContext(), tokenLama, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         btnLogout = findViewById(R.id.iv_logout);
         btnLogout.setOnClickListener(new View.OnClickListener() {
@@ -195,5 +225,35 @@ public class DataDokter extends AppCompatActivity {
                 });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+    private void cekToken() {
+        StringRequest request = new StringRequest(Request.Method.POST, url_cek, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (object.getString("text").equals("sukses")) {
+                        SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "token", msg);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("regina", error.getMessage());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> param = new HashMap<>();
+                param.put("nip", nip);
+                param.put("token", token);
+                return param;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(request);
     }
 }

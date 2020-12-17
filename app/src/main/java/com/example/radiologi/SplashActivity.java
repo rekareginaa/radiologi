@@ -32,9 +32,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        if (!SharedPreferenceManager.getBooleanPreferences(getApplicationContext(), "init")) {
-            configCloudinary();
-        }
+//        if (!SharedPreferenceManager.getBooleanPreferences(getApplicationContext(), "init")) {
+//        }
+        configCloudinary();
 
         new Handler().postDelayed(new Runnable() {
             @Override

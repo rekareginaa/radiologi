@@ -24,4 +24,8 @@
     <string name="text_create_pdf">Create PDF</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+
+    <string name="channelId" translatable="false">fcm_default_channel</string>
+    <string name="channelName">rediologi</string>
 </resources>

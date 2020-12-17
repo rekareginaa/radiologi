@@ -12,9 +12,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cloudinary.android.MediaManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.gson.Gson;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +35,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,16 +49,18 @@ import java.util.Map;
 public class DataAdmin extends AppCompatActivity {
 
     String url_admin = "https://dbradiologi.000webhostapp.com/api/users/admindata";
+    String url_cek = "https://dbradiologi.000webhostapp.com/api/users/cektoken";
 
     AdapterAdmin adapterAdmin;
     TextView kosong;
     RecyclerView recyclerView;
     ImageButton imageButton;
+    String msg, tokenLama;
 
     private SwipeRefreshLayout SwipeRefreshAdmin;
 
     private List<ListitemAdmin> adminList;
-    String nip;
+    String nip, token;
 
     ArrayList listRegis;
 
@@ -62,6 +70,33 @@ public class DataAdmin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_admin);
+
+        tokenLama = SharedPreferenceManager.getStringPreferences(getApplicationContext(), "token");
+
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    Log.w("regina", "Fetching FCM registration token failed", task.getException());
+                    return;
+                }
+                token = task.getResult();
+                msg = getString(R.string.msg_token_fmt, token);
+                Log.d("regina", token);
+
+                if (!tokenLama.equals(token)) {
+                    Log.d("regina", "token dijalankan");
+                    cekToken();
+                }
+                else {
+                    Log.d("regina", "testestes" + tokenLama);
+                    Toast.makeText(getApplicationContext(), tokenLama, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+
+
 
         listRegis = new ArrayList<>();
 
@@ -213,5 +248,37 @@ public class DataAdmin extends AppCompatActivity {
         };
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         queue.add(request);
+    }
+    private void cekToken() {
+        StringRequest request = new StringRequest(Request.Method.POST, url_cek, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object= new JSONObject(response);
+                    if (object.getString("text").equals("sukses")) {
+                        SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "token", msg);
+
+                    }
+                }
+                catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("regina", error.getMessage());
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> param = new HashMap<>();
+                param.put("nip", nip);
+                param.put("token", token);
+                return param;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(request);
     }
 }

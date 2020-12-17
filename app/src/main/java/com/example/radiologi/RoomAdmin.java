@@ -40,6 +40,7 @@ import com.cloudinary.android.callback.UploadCallback;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,10 +57,12 @@ public class RoomAdmin extends AppCompatActivity {
     Button btnGet;
     Button btnUnggah;
     ImageView ivFoto;
+    String token;
     final int CODE_GALERI_REQUEST = 999;
 
     private static final String url = "https://dbradiologi.000webhostapp.com/api/users/addimage";
     private static final String urlSimpanNama = "https://dbradiologi.000webhostapp.com/api/users/simpannama";
+    private static final String url_token =  "https://dbradiologi.000webhostapp.com/api/users";
     Bitmap bitmap;
     private RadioGroup radioGender;
 
@@ -79,6 +82,7 @@ public class RoomAdmin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_admin);
 
+        tokenDokter();
         listRegis = new ArrayList<>();
 
         /*SharedPreferences sharedPreferences = getSharedPreferences("shared", MODE_PRIVATE);
@@ -365,6 +369,9 @@ public class RoomAdmin extends AppCompatActivity {
                 params.put("penerima", "");
                 params.put("diagnosa", "");
                 params.put("ttd", "");
+                params.put("token_tujuan", token);
+                params.put("title", "Data Pasien Baru");
+                params.put("message", "Admin mengirimkan data untuk dilengkapi");
                 return params;
             }
         };
@@ -404,6 +411,33 @@ public class RoomAdmin extends AppCompatActivity {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(RoomAdmin.this);
         requestQueue.add(stringRequest);
+    }
+
+    private void tokenDokter() {
+        StringRequest request = new StringRequest(Request.Method.GET, url_token, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject object = new JSONObject(response);
+                    JSONArray array = object.getJSONArray("data");
+                    for (int i=0; i<array.length(); i++) {
+                        if (array.getJSONObject(i).getString("role").equals("dokter")) {
+                            token = array.getJSONObject(i).getString("token");
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("regina", error.getMessage());
+                    }
+                });
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        queue.add(request);
     }
 
     /*private String imagetoString(Bitmap bitmap) {
