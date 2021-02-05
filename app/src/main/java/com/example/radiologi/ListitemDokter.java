@@ -2,6 +2,8 @@ package com.example.radiologi;
 
 public class ListitemDokter {
 
+    private String noRegis;
+
     private String noRekam;
     private String namaLengkap;
     private String tangLahir;
@@ -9,6 +11,15 @@ public class ListitemDokter {
     private String gambar;
     private String status;
     private String diagnosa;
+    private String tdt;
+
+    public String getNoRegis() {
+        return noRegis;
+    }
+
+    public void setNoRegis(String noRegis) {
+        this.noRegis = noRegis;
+    }
 
     public String getTangLahir() {
         return tangLahir;
@@ -64,5 +75,13 @@ public class ListitemDokter {
 
     public void setDiagnosa(String diagnosa) {
         this.diagnosa = diagnosa;
+    }
+
+    public String getTdt() {
+        return tdt;
+    }
+
+    public void setTdt(String tdt) {
+        this.tdt = tdt;
     }
 }

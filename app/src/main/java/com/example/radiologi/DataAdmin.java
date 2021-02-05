@@ -1,6 +1,7 @@
-package com.example.radiologi;
+ package com.example.radiologi;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.gson.Gson;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -84,14 +86,14 @@ public class DataAdmin extends AppCompatActivity {
                 msg = getString(R.string.msg_token_fmt, token);
                 Log.d("regina", token);
 
-                if (!tokenLama.equals(token)) {
-                    Log.d("regina", "token dijalankan");
-                    cekToken();
-                }
-                else {
+                cekToken();
+                /*if (tokenLama.equals(token)) {
                     Log.d("regina", "testestes" + tokenLama);
                     Toast.makeText(getApplicationContext(), tokenLama, Toast.LENGTH_LONG).show();
                 }
+                else {
+                    Log.d("regina", "token dijalankan");
+                }*/
             }
         });
 
@@ -126,11 +128,12 @@ public class DataAdmin extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RelativeLayout relativeLayout = findViewById(R.id.relative_layout);
+                /*RelativeLayout relativeLayout = findViewById(R.id.relative_layout);
                 relativeLayout.setVisibility(View.VISIBLE);
                 FragmentAdmin fragmentAdmin = new FragmentAdmin();
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.relative_layout, fragmentAdmin, FragmentAdmin.class.getSimpleName()).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(R.id.relative_layout, fragmentAdmin, FragmentAdmin.class.getSimpleName()).addToBackStack(null).commit();*/
+                showDialog();
             }
         });
 
@@ -151,6 +154,7 @@ public class DataAdmin extends AppCompatActivity {
                 intent.putExtra("untuk", "admin");
                 intent.putExtra("diagnosa", listitemAdmin.getDiagnosa());
                 intent.putExtra("tdt", listitemAdmin.getTdt());
+                intent.putExtra("status", listitemAdmin.getStatus());
                 startActivity(intent);
             }
         });
@@ -267,7 +271,7 @@ public class DataAdmin extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("regina", error.getMessage());
+                //Log.d("regina", error.getMessage());
             }
         }) {
             @Override
@@ -280,5 +284,29 @@ public class DataAdmin extends AppCompatActivity {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(request);
+    }
+
+    private void showDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Keluar dari aplikasi?");
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        SharedPreferenceManager.saveBooleanPreferences(getApplicationContext(), "islogin", false );
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int i) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

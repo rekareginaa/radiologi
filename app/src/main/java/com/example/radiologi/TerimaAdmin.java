@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,16 +29,25 @@ public class TerimaAdmin extends AppCompatActivity {
 
     TextView noRegis, noRekam, namaLengkap, tangLahir, gender, diagnosa;
     PhotoView foto;
-    ImageView tanda;
+    ImageView tanda, ivBack;
     String img, noregiS, norekaM, namaLengkaP, tangLahiR, gendeR, diagnosA;
-    String untuk, tdT;
+    String untuk, tdT, status;
     Bitmap gambarradiologi, tandatangannyadokterkah;
     byte[] gambarradiologiloini, tandatangannyadokterloini;
+    ImageButton createPdf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_terima_admin);
+
+        ivBack = findViewById(R.id.iv_back);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         noRegis = findViewById(R.id.tv_noregis);
         noRekam = findViewById(R.id.tv_norekmed);
@@ -47,6 +57,7 @@ public class TerimaAdmin extends AppCompatActivity {
         foto = findViewById(R.id.photo_view);
         diagnosa = findViewById(R.id.tv_diagnosa);
 //        tanda = findViewById(R.id.photo_view_tdt);
+        createPdf = findViewById(R.id.btn_create);
 
         noregiS = getIntent().getStringExtra("noregis");
         norekaM = getIntent().getStringExtra("norekam");
@@ -57,6 +68,14 @@ public class TerimaAdmin extends AppCompatActivity {
         untuk = getIntent().getStringExtra("untuk");
         diagnosA = getIntent().getStringExtra("diagnosa");
         tdT = getIntent().getStringExtra("tdt");
+        status = getIntent().getStringExtra("status");
+
+        /*if (status.contains("0")) {
+            createPdf.setVisibility(View.GONE);
+        }
+        else {
+            createPdf.setVisibility(View.VISIBLE);
+        }*/
 
         noRegis.setText(noregiS);
         noRekam.setText(norekaM);
@@ -70,10 +89,10 @@ public class TerimaAdmin extends AppCompatActivity {
             diagnosa.setText(diagnosA);
         }
 
-        Log.i("regina", img);
+        Log.i("regina", status);
         Log.i("regina", tdT);
 
-        Button createPdf = findViewById(R.id.btn_create);
+
 
         Picasso.get().setLoggingEnabled(true);
         Picasso.get()
@@ -84,7 +103,11 @@ public class TerimaAdmin extends AppCompatActivity {
 
         switch (untuk) {
             case "admin":
-                createPdf.setVisibility(View.VISIBLE);
+                if (status.equals("0")) {
+                    createPdf.setVisibility(View.GONE);
+                } else {
+                    createPdf.setVisibility(View.VISIBLE);
+                }
                 break;
             case "dokter":
                 createPdf.setVisibility(View.GONE);

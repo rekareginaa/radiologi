@@ -79,14 +79,14 @@ public class DataDokter extends AppCompatActivity {
                 msg = getString(R.string.msg_token_fmt, token);
                 Log.d("regina", token);
 
-                if (!tokenLama.equals(token)) {
-                    Log.d("regina", "token dijalankan");
-                    cekToken();
+                cekToken();
+                /*if (tokenLama.equals(token)) {
+                    Log.d("regina", "testes" + tokenLama);
                 }
                 else {
-                    Log.d("regina", "testes" + tokenLama);
-                    Toast.makeText(getApplicationContext(), tokenLama, Toast.LENGTH_LONG).show();
-                }
+                    Log.d("regina", "token dijalankan");
+                    //Toast.makeText(getApplicationContext(), tokenLama, Toast.LENGTH_LONG).show();
+                }*/
             }
         });
 
@@ -135,6 +135,7 @@ public class DataDokter extends AppCompatActivity {
                     startActivity(intent);
                 } else {
                     Intent intentSudahBaca = new Intent(getApplicationContext(), TerimaAdmin.class);
+                    intentSudahBaca.putExtra("noregis", listitemDokter.getNoRegis());
                     intentSudahBaca.putExtra("norekam", listitemDokter.getNoRekam());
                     intentSudahBaca.putExtra("namalengkap", listitemDokter.getNamaLengkap());
                     intentSudahBaca.putExtra("tanggalahir", listitemDokter.getTangLahir());
@@ -142,6 +143,8 @@ public class DataDokter extends AppCompatActivity {
                     intentSudahBaca.putExtra("gambar", listitemDokter.getGambar());
                     intentSudahBaca.putExtra("untuk", "dokter");
                     intentSudahBaca.putExtra("diagnosa", listitemDokter.getDiagnosa());
+                    intentSudahBaca.putExtra("tdt", listitemDokter.getTdt());
+                    intentSudahBaca.putExtra("status", listitemDokter.getStatus());
                     startActivity(intentSudahBaca);
                 }
             }
@@ -170,6 +173,7 @@ public class DataDokter extends AppCompatActivity {
                             adapterDokter.clear();
                             for (int i = 0; i < array.length(); i++) {
                                 ListitemDokter modelDokter = new ListitemDokter();
+                                modelDokter.setNoRegis(array.getJSONObject(i).optString("noregis"));
                                 modelDokter.setNoRekam(array.getJSONObject(i).optString("norekam"));
                                 modelDokter.setNamaLengkap(array.getJSONObject(i).optString("namapasien"));
                                 modelDokter.setTangLahir(array.getJSONObject(i).optString("tanglahir"));
@@ -177,6 +181,7 @@ public class DataDokter extends AppCompatActivity {
                                 modelDokter.setGambar(array.getJSONObject(i).optString("gambar"));
                                 modelDokter.setStatus(array.getJSONObject(i).optString("status"));
                                 modelDokter.setDiagnosa(array.getJSONObject(i).optString("diagnosa"));
+                                modelDokter.setTdt(array.getJSONObject(i).optString("ttd"));
                                 adapterDokter.add(modelDokter);
                             }
                             adapterDokter.addAll(dokterList);
@@ -226,6 +231,7 @@ public class DataDokter extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
     private void cekToken() {
         StringRequest request = new StringRequest(Request.Method.POST, url_cek, new Response.Listener<String>() {
             @Override
@@ -234,6 +240,7 @@ public class DataDokter extends AppCompatActivity {
                     JSONObject object = new JSONObject(response);
                     if (object.getString("text").equals("sukses")) {
                         SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "token", msg);
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

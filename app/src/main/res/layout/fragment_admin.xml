@@ -25,6 +25,7 @@
             <Button
                 android:id="@+id/btn_register"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="50dp"
                 android:layout_margin="15dp"
                 android:text="REGISTER"/>

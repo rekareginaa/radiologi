@@ -23,8 +23,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -53,10 +55,11 @@ import java.util.Map;
 
 public class RoomAdmin extends AppCompatActivity {
     DatePickerDialog picker;
-    EditText eText, etNoRegis, etNoRekam, etNamaPasien;
-    Button btnGet;
+    EditText etNoRegis, etNoRekam, etNamaPasien;
+    TextView eText;
+    ImageButton btnGet;
     Button btnUnggah;
-    ImageView ivFoto;
+    ImageView ivFoto, ivBack;
     String token;
     final int CODE_GALERI_REQUEST = 999;
 
@@ -92,7 +95,13 @@ public class RoomAdmin extends AppCompatActivity {
         listRegis = gson.fromJson(json, type);
         Log.i("regina", json);*/
 
-
+        ivBack = findViewById(R.id.iv_back);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         nipsaya = SharedPreferenceManager.getStringPreferences(getApplicationContext(), "nip");
         etNoRegis = findViewById(R.id.et_noRegis);
@@ -116,9 +125,9 @@ public class RoomAdmin extends AppCompatActivity {
         listRegis = getIntent().getStringArrayListExtra("regis");
         Log.i("regina", listRegis.toString());
 
-        eText = findViewById(R.id.et_date);
-        eText.setInputType(InputType.TYPE_NULL);
-        btnGet=findViewById(R.id.buttonDate);
+        eText = findViewById(R.id.tv_tanggal_lahir);
+//        eText.setInputType(InputType.TYPE_NULL);
+        btnGet = findViewById(R.id.buttonDate);
         btnGet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

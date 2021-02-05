@@ -20,6 +20,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +52,7 @@ import java.util.Map;
 
 public class RoomDokter extends AppCompatActivity {
 
+    ImageView btBack;
     EditText etDiagnosa;
     TextView noRekam, namaLengkap, tangLahir, gender;
     String norekaM, namaLengkaP, tangLahiR, gendeR, gambaR, diagnosa, ttd, token;
@@ -59,7 +62,7 @@ public class RoomDokter extends AppCompatActivity {
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private SignaturePad mSignaturePad;
-    private Button mClearButton;
+    private ImageButton mClearButton;
     private Button mSaveButton;
 
     String filePath;
@@ -76,6 +79,14 @@ public class RoomDokter extends AppCompatActivity {
         tokenAdmin();
 
         //CloudinaryConfig.configCloudinary(getApplicationContext());
+
+        btBack = findViewById(R.id.iv_back);
+        btBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         etDiagnosa=findViewById(R.id.et_diagnosa);
         noRekam = findViewById(R.id.tv_norekmed);
@@ -121,8 +132,8 @@ public class RoomDokter extends AppCompatActivity {
             }
         });
 
-        mClearButton=(Button) findViewById(R.id.clear_button);
-        mSaveButton=(Button) findViewById(R.id.save_button);
+        mClearButton = (ImageButton) findViewById(R.id.clear_button);
+        mSaveButton = (Button) findViewById(R.id.save_button);
 
         mClearButton.setOnClickListener(new View.OnClickListener() {
             @Override
