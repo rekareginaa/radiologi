@@ -150,7 +150,7 @@ public class AdapterAdmin extends RecyclerView.Adapter<AdapterAdmin.ViewHolder> 
             jenisKelamin = itemView.findViewById(R.id.jenisKelamin);
             separator = itemView.findViewById(R.id.separator);
             tanggalLahir = itemView.findViewById(R.id.tanggalLahir);
-            adminHolder = itemView.findViewById(R.id.dokter);
+            adminHolder = itemView.findViewById(R.id.admin);
         }
     }
 
