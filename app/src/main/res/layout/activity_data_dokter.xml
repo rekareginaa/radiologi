@@ -12,31 +12,65 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:gravity="center_vertical"
-        android:background="@color/blue_grey_600">
+        android:background="@color/base_color">
+
+        <TextView
+            android:id="@+id/tv_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Data "
+            android:textSize="24sp"
+            android:textColor="@color/colorWhite"/>
+
+        <TextView
+            android:layout_toEndOf="@id/tv_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Radiolgi"
+            android:textColor="@color/colorWhite"
+            android:textSize="24sp"
+            android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/iv_logout"
             android:src="@drawable/ic_logout"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginRight="15dp"
-            android:layout_alignParentRight="true"/>
+            android:layout_marginEnd="15dp"
+            android:layout_alignParentEnd="true"/>
 
     </RelativeLayout>
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_dokter"
         android:layout_below="@id/bar"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@drawable/tab_background"
+        app:tabTextColor="#88FFFFFF"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/colorWhite"
+        app:tabIndicatorFullWidth="false">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerdokter"
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_dokter_data_baru"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="wrap_content"
+            android:text="Data Baru"/>
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_dokter_terdiagnosa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Terdiagnosa"/>
+
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/dokter_pager"
+        android:layout_below="@id/tab_dokter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

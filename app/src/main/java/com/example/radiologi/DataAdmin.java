@@ -16,6 +16,7 @@ import com.cloudinary.android.MediaManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.gson.Gson;
@@ -27,6 +28,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Handler;
 import android.util.Log;
@@ -50,7 +53,6 @@ import java.util.Map;
 
 public class DataAdmin extends AppCompatActivity {
 
-    String url_admin = "https://dbradiologi.000webhostapp.com/api/users/admindata";
     String url_cek = "https://dbradiologi.000webhostapp.com/api/users/cektoken";
 
     AdapterAdmin adapterAdmin;
@@ -65,8 +67,6 @@ public class DataAdmin extends AppCompatActivity {
     String nip, token;
 
     ArrayList listRegis;
-
-    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,10 +97,48 @@ public class DataAdmin extends AppCompatActivity {
             }
         });
 
+        final TabLayout tabLayout = findViewById(R.id.tab);
+        final ViewPager viewPager = findViewById(R.id.admin_pager);
+
+        DataAdminPagerAdapter pagerAdapter = new DataAdminPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+
+        viewPager.setAdapter(pagerAdapter);
+
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        imageButton = findViewById(R.id.option);
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RelativeLayout relativeLayout = view.findViewById(R.id.relative_layout);
+                relativeLayout.setVisibility(View.VISIBLE);
+                FragmentAdmin fragmentAdmin = new FragmentAdmin();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.relative_layout, fragmentAdmin, FragmentAdmin.class.getSimpleName()).addToBackStack(null).commit();
+                showDialog();
+            }
+        });
 
 
-
-        listRegis = new ArrayList<>();
+        /*listRegis = new ArrayList<>();
 
         SwipeRefreshAdmin = findViewById(R.id.swipe_admin);
         SwipeRefreshAdmin.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
@@ -128,11 +166,11 @@ public class DataAdmin extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*RelativeLayout relativeLayout = findViewById(R.id.relative_layout);
+                *//*RelativeLayout relativeLayout = findViewById(R.id.relative_layout);
                 relativeLayout.setVisibility(View.VISIBLE);
                 FragmentAdmin fragmentAdmin = new FragmentAdmin();
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.relative_layout, fragmentAdmin, FragmentAdmin.class.getSimpleName()).addToBackStack(null).commit();*/
+                fragmentManager.beginTransaction().replace(R.id.relative_layout, fragmentAdmin, FragmentAdmin.class.getSimpleName()).addToBackStack(null).commit();*//*
                 showDialog();
             }
         });
@@ -160,99 +198,11 @@ public class DataAdmin extends AppCompatActivity {
         });
 
         adminList = new ArrayList<>();
-        dataAdminReq();
+        dataAdminReq();*/
 
-//        adminRequest();
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DataAdmin.this, RoomAdmin.class);
-                intent.putExtra("regis", listRegis);
-                startActivity(intent);
-            }
-        });
     }
 
-    public void dataAdminReq() {
 
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Mohon Tunggu ...");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-
-        adminList.clear();
-        StringRequest request = new StringRequest(Request.Method.POST, url_admin,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i("regina", response);
-                        try {
-                            JSONObject objectResponse = new JSONObject(response);
-                            String objek = objectResponse.getString("status");
-                            Log.i("regina", objek);
-                            if (objectResponse.getString("status").equals("kosong")) {
-                                Log.i("regina", "kosong");
-                                kosong.setVisibility(View.VISIBLE);
-                                recyclerView.setVisibility(View.GONE);
-                            } else if (objectResponse.getString("status").equals("sukses")){
-                                Log.i("regina", "tidak kosong");
-                                kosong.setVisibility(View.GONE);
-                                recyclerView.setVisibility(View.VISIBLE);
-                                JSONArray array = objectResponse.getJSONArray("data");
-                                adapterAdmin.clear();
-                                for (int i = 0; i < array.length(); i++) {
-                                    ListitemAdmin modelAdmin = new ListitemAdmin();
-                                    modelAdmin.setNoRegis(array.getJSONObject(i).optString("noregis"));
-                                    modelAdmin.setNoRekam(array.getJSONObject(i).optString("norekam"));
-                                    modelAdmin.setNamaLengkap(array.getJSONObject(i).optString("namapasien"));
-                                    modelAdmin.setTangLahir(array.getJSONObject(i).optString("tanglahir"));
-                                    modelAdmin.setGender(array.getJSONObject(i).optString("gender"));
-                                    modelAdmin.setGambar(array.getJSONObject(i).optString("gambar"));
-                                    modelAdmin.setStatus(array.getJSONObject(i).optString("status"));
-                                    modelAdmin.setDiagnosa(array.getJSONObject(i).optString("diagnosa"));
-                                    modelAdmin.setTdt(array.getJSONObject(i).optString("ttd"));
-                                    adminList.add(modelAdmin);
-
-//                                    ModelRegis modelRegis = new ModelRegis();
-//                                    modelRegis.setNoRegis(array.getJSONObject(i).optString("noregis"));
-                                    String regis = array.getJSONObject(i).optString("noregis");
-                                    listRegis.add(regis);
-                                }
-                                adapterAdmin.addAll(adminList);
-                                adapterAdmin.notifyDataSetChanged();
-
-                                /*SharedPreferences sharedPreferences = getSharedPreferences("shared", MODE_PRIVATE);
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                Gson gson = new Gson();
-                                String json = gson.toJson(listRegis);
-                                editor.putString("list", json);
-                                editor.apply();
-                                Log.i("regina", listRegis.toString());*/
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            Log.i("regina", e.getMessage());
-                        }
-                        progressDialog.dismiss();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.i("Regina", String.valueOf(error));
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> param = new HashMap<>();
-                param.put("nip", nip);
-                return param;
-            }
-        };
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        queue.add(request);
-    }
     private void cekToken() {
         StringRequest request = new StringRequest(Request.Method.POST, url_cek, new Response.Listener<String>() {
             @Override

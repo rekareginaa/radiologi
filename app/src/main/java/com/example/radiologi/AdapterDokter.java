@@ -57,6 +57,8 @@ public class AdapterDokter extends RecyclerView.Adapter<AdapterDokter.ViewHolder
 
         holder.noRekam.setText(listitemDokter.getNoRekam());
         holder.namaLengkap.setText(listitemDokter.getNamaLengkap());
+        holder.jenisKelamin.setText(listitemDokter.getGender());
+        holder.tanggalLahir.setText(listitemDokter.getTangLahir());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,16 +71,6 @@ public class AdapterDokter extends RecyclerView.Adapter<AdapterDokter.ViewHolder
                 mListener.onItemClick(listitemDokter);
             }
         });
-
-        if (listitemDokter.getStatus().equals("0")) {
-            holder.dokterHolder.setCardBackgroundColor(Color.parseColor("#006A4E"));
-            holder.noRekam.setTextColor(Color.WHITE);
-            holder.namaLengkap.setTextColor(Color.WHITE);
-        } else {
-            holder.dokterHolder.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
-            holder.noRekam.setTextColor(Color.BLACK);
-            holder.namaLengkap.setTextColor(Color.BLACK);
-        }
     }
 
     @Override
@@ -88,6 +80,8 @@ public class AdapterDokter extends RecyclerView.Adapter<AdapterDokter.ViewHolder
 
         public TextView noRekam;
         public TextView namaLengkap;
+        public TextView jenisKelamin;
+        public TextView tanggalLahir;
         public CardView dokterHolder;
 
         public ViewHolder(View itemView) {
@@ -95,6 +89,8 @@ public class AdapterDokter extends RecyclerView.Adapter<AdapterDokter.ViewHolder
 
             noRekam = (TextView) itemView.findViewById(R.id.noRekam);
             namaLengkap = (TextView) itemView.findViewById(R.id.namaLengkap);
+            jenisKelamin = itemView.findViewById(R.id.jenisKelamin);
+            tanggalLahir = itemView.findViewById(R.id.tanggalLahir);
             dokterHolder = itemView.findViewById(R.id.dokter);
         }
     }

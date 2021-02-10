@@ -3,19 +3,14 @@ package com.example.radiologi;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
 
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,33 +18,24 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.cloudinary.android.MediaManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class DataDokter extends AppCompatActivity {
 
-    String url_dokter = "https://dbradiologi.000webhostapp.com/api/users/dokterdata";
-    String url_cek = "https://dbradiologi.000webhostapp.com/api/users/cektoken";
-
-    AdapterDokter adapterDokter;
     ImageView btnLogout;
 
-    private SwipeRefreshLayout SwipeRefresh;
-    private List<ListitemDokter> dokterList;
+    String url_cek = "https://dbradiologi.000webhostapp.com/api/users/cektoken";
     String nip, msg, tokenLama, token;
 
-    ProgressDialog progressDialog;
 
     //untuk cloudinary
     /*Map config = new HashMap();
@@ -67,6 +53,9 @@ public class DataDokter extends AppCompatActivity {
         setContentView(R.layout.activity_data_dokter);
 
         tokenLama = SharedPreferenceManager.getStringPreferences(getApplicationContext(), "token");
+        btnLogout = findViewById(R.id.iv_logout);
+        final TabLayout tabLayout = findViewById(R.id.tab_dokter);
+        final ViewPager viewPager = findViewById(R.id.dokter_pager);
 
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
@@ -80,17 +69,9 @@ public class DataDokter extends AppCompatActivity {
                 Log.d("regina", token);
 
                 cekToken();
-                /*if (tokenLama.equals(token)) {
-                    Log.d("regina", "testes" + tokenLama);
-                }
-                else {
-                    Log.d("regina", "token dijalankan");
-                    //Toast.makeText(getApplicationContext(), tokenLama, Toast.LENGTH_LONG).show();
-                }*/
             }
         });
 
-        btnLogout = findViewById(R.id.iv_logout);
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,7 +79,27 @@ public class DataDokter extends AppCompatActivity {
             }
         });
 
-        SwipeRefresh = findViewById(R.id.swipe);
+        DataDokterPagerAdapter pagerAdapter = new DataDokterPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        /*SwipeRefresh = findViewById(R.id.swipe);
         SwipeRefresh.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
         SwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -152,10 +153,10 @@ public class DataDokter extends AppCompatActivity {
 
         dokterList = new ArrayList<>();
 
-        dataDokterReq();
+        dataDokterReq();*/
     }
 
-    public void dataDokterReq() {
+    /*public void dataDokterReq() {
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Mohon Tunggu...");
@@ -206,7 +207,7 @@ public class DataDokter extends AppCompatActivity {
         };
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         queue.add(request);
-    }
+    }*/
 
     private void showDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);

@@ -2,6 +2,7 @@ package com.example.radiologi;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,19 +14,33 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TerimaAdmin extends AppCompatActivity {
+
+    String urlupdatestatus = "https://dbradiologi.000webhostapp.com/api/users/updatestatus";
 
     TextView noRegis, noRekam, namaLengkap, tangLahir, gender, diagnosa;
     PhotoView foto;
@@ -35,6 +50,8 @@ public class TerimaAdmin extends AppCompatActivity {
     Bitmap gambarradiologi, tandatangannyadokterkah;
     byte[] gambarradiologiloini, tandatangannyadokterloini;
     ImageButton createPdf;
+
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,17 +175,57 @@ public class TerimaAdmin extends AppCompatActivity {
         createPdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(TerimaAdmin.this, TampilkanDataPasienActivity.class);
-                intent.putExtra("noregis", noregiS);
-                intent.putExtra("norekam", norekaM);
-                intent.putExtra("namalengkap", namaLengkaP);
-                intent.putExtra("tanggalahir", tangLahiR);
-                intent.putExtra("gender", gendeR);
-                intent.putExtra("gambar", img);
-                intent.putExtra("diagnosa", diagnosA);
-                intent.putExtra("tandatangan", tdT);
-                startActivity(intent);
+                progressDialog = new ProgressDialog(TerimaAdmin.this);
+                progressDialog.setTitle("Mohon Tunggu ...");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+                updateStatus();
             }
         });
+    }
+
+    private void updateStatus() {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, urlupdatestatus,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String Response = jsonObject.getString("response");
+                            Toast.makeText(getApplicationContext(), Response, Toast.LENGTH_LONG).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        progressDialog.dismiss();
+                        Intent intent = new Intent(TerimaAdmin.this, TampilkanDataPasienActivity.class);
+                        intent.putExtra("noregis", noregiS);
+                        intent.putExtra("norekam", norekaM);
+                        intent.putExtra("namalengkap", namaLengkaP);
+                        intent.putExtra("tanggalahir", tangLahiR);
+                        intent.putExtra("gender", gendeR);
+                        intent.putExtra("gambar", img);
+                        intent.putExtra("diagnosa", diagnosA);
+                        intent.putExtra("tandatangan", tdT);
+                        startActivity(intent);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "error"+ error.toString(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("norekam", norekaM);
+                params.put("status", "2");
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(TerimaAdmin.this);
+        requestQueue.add(stringRequest);
     }
 }

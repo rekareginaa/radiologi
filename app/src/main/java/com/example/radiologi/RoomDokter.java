@@ -94,6 +94,8 @@ public class RoomDokter extends AppCompatActivity {
         tangLahir = findViewById(R.id.tv_tgllahir);
         gender = findViewById(R.id.tv_gender);
         foto = findViewById(R.id.photo_viiew);
+        mClearButton = (ImageButton) findViewById(R.id.clear_button);
+        mSaveButton = (Button) findViewById(R.id.save_button);
 
         norekaM = getIntent().getStringExtra("norekam");
         namaLengkaP = getIntent().getStringExtra("namalengkap");
@@ -122,18 +124,17 @@ public class RoomDokter extends AppCompatActivity {
             @Override
             public void onSigned() {
                 mSaveButton.setEnabled(true);
+                mSaveButton.setBackground(getResources().getDrawable(R.drawable.rounded_button));
                 mClearButton.setEnabled(true);
             }
 
             @Override
             public void onClear() {
                 mSaveButton.setEnabled(false);
+                mSaveButton.setBackground(getResources().getDrawable(R.drawable.rounded_button_false));
                 mClearButton.setEnabled(false);
             }
         });
-
-        mClearButton = (ImageButton) findViewById(R.id.clear_button);
-        mSaveButton = (Button) findViewById(R.id.save_button);
 
         mClearButton.setOnClickListener(new View.OnClickListener() {
             @Override
