@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "384037038002",
+    "project_id": "radiologii",
+    "storage_bucket": "radiologii.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:384037038002:android:353e640656c5f59810a6ab",
+        "android_client_info": {
+          "package_name": "com.example.radiologi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "384037038002-up1oi7ov1qnnip0rrko3eh1oqqhhrrk8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCchCmOaJh_EbDlfHA7-1cw6oehBzGJWao"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "384037038002-up1oi7ov1qnnip0rrko3eh1oqqhhrrk8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
