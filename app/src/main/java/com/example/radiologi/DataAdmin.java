@@ -128,11 +128,11 @@ public class DataAdmin extends AppCompatActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RelativeLayout relativeLayout = view.findViewById(R.id.relative_layout);
+                /*RelativeLayout relativeLayout = view.findViewById(R.id.relative_layout);
                 relativeLayout.setVisibility(View.VISIBLE);
                 FragmentAdmin fragmentAdmin = new FragmentAdmin();
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.relative_layout, fragmentAdmin, FragmentAdmin.class.getSimpleName()).addToBackStack(null).commit();
+                fragmentManager.beginTransaction().replace(R.id.relative_layout, fragmentAdmin, FragmentAdmin.class.getSimpleName()).addToBackStack(null).commit();*/
                 showDialog();
             }
         });
