@@ -7,14 +7,19 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.FutureTarget;
+import com.example.radiologi.utils.BitmapConverter;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 import com.tejpratapsingh.pdfcreator.activity.PDFCreatorActivity;
@@ -28,6 +33,7 @@ import com.tejpratapsingh.pdfcreator.views.basic.PDFTextView;
 import com.tejpratapsingh.pdfcreator.views.basic.PDFVerticalView;
 
 import java.io.File;
+import java.util.concurrent.ExecutionException;
 
 public class TampilkanDataPasienActivity extends PDFCreatorActivity {
 
@@ -47,8 +53,14 @@ public class TampilkanDataPasienActivity extends PDFCreatorActivity {
         diagnosA = getIntent().getStringExtra("diagnosa");
         tdT = getIntent().getStringExtra("tandatangan");
 
-        loadImage1();
-        loadImage2();
+        gambarradiologi = BitmapConverter.stringToBitmap(gambaR);
+        tandatangannyadokterkah = BitmapConverter.stringToBitmap(tdT);
+
+        Log.d("IMG", gambaR);
+        Log.d("IMGS", tdT);
+
+        //loadImage1();
+        //loadImage2();
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
@@ -111,7 +123,7 @@ public class TampilkanDataPasienActivity extends PDFCreatorActivity {
 /*
 
         PDFTextView pdfTextViewPage = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.SMALL);
-        pdfTextViewPage.setText(String.format(Locale.getDefault(), "Page: %d", pageIndex + 1));
+        pdfTextViewPage.setText(Stri    ng.format(Locale.getDefault(), "Page: %d", pageIndex + 1));
         pdfTextViewPage.setLayout(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT, 0));

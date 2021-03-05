@@ -34,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
 
 //        if (!SharedPreferenceManager.getBooleanPreferences(getApplicationContext(), "init")) {
 //        }
-        configCloudinary();
+        //configCloudinary();
 
         new Handler().postDelayed(new Runnable() {
             @Override

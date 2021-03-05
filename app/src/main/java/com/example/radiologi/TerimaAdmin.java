@@ -1,16 +1,14 @@
 package com.example.radiologi;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,6 +21,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.FutureTarget;
+import com.example.radiologi.utils.BitmapConverter;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -30,13 +30,11 @@ import com.squareup.picasso.Target;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class TerimaAdmin extends AppCompatActivity {
 
@@ -86,6 +84,10 @@ public class TerimaAdmin extends AppCompatActivity {
         diagnosA = getIntent().getStringExtra("diagnosa");
         tdT = getIntent().getStringExtra("tdt");
         status = getIntent().getStringExtra("status");
+
+        loadImage1();
+        loadImage2();
+
 
         /*if (status.contains("0")) {
             createPdf.setVisibility(View.GONE);
@@ -200,15 +202,16 @@ public class TerimaAdmin extends AppCompatActivity {
                         }
 
                         progressDialog.dismiss();
+
                         Intent intent = new Intent(TerimaAdmin.this, TampilkanDataPasienActivity.class);
                         intent.putExtra("noregis", noregiS);
                         intent.putExtra("norekam", norekaM);
                         intent.putExtra("namalengkap", namaLengkaP);
                         intent.putExtra("tanggalahir", tangLahiR);
                         intent.putExtra("gender", gendeR);
-                        intent.putExtra("gambar", img);
+                        intent.putExtra("gambar", BitmapConverter.bitmapToString(gambarradiologi));
                         intent.putExtra("diagnosa", diagnosA);
-                        intent.putExtra("tandatangan", tdT);
+                        intent.putExtra("tandatangan", BitmapConverter.bitmapToString(tandatangannyadokterkah));
                         startActivity(intent);
                     }
                 }, new Response.ErrorListener() {
@@ -227,5 +230,43 @@ public class TerimaAdmin extends AppCompatActivity {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(TerimaAdmin.this);
         requestQueue.add(stringRequest);
+    }
+
+    void loadImage1() {
+        Picasso.get().load(img).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                gambarradiologi = bitmap;
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
+    }
+
+    void loadImage2() {
+        Picasso.get().load(tdT).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                tandatangannyadokterkah = bitmap;
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
     }
 }
