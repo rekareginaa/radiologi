@@ -53,6 +53,7 @@ public class DataDokter extends AppCompatActivity {
         setContentView(R.layout.activity_data_dokter);
 
         tokenLama = SharedPreferenceManager.getStringPreferences(getApplicationContext(), "token");
+        nip = SharedPreferenceManager.getStringPreferences(getApplicationContext(), "nip");
         btnLogout = findViewById(R.id.iv_logout);
         final TabLayout tabLayout = findViewById(R.id.tab_dokter);
         final ViewPager viewPager = findViewById(R.id.dokter_pager);
@@ -237,6 +238,7 @@ public class DataDokter extends AppCompatActivity {
         StringRequest request = new StringRequest(Request.Method.POST, url_cek, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.d("regina token", response);
                 try {
                     JSONObject object = new JSONObject(response);
                     if (object.getString("text").equals("sukses")) {
