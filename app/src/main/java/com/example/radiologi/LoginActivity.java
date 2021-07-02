@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         StringRequest request = new StringRequest(Request.Method.POST, urlLogin, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.i("regina", response);
+                Log.i("iloveyou", response);
                 try {
                     JSONObject object = new JSONObject(response);
                     if (object.getString("status").equals("sukses")) {
