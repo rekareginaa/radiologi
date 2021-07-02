@@ -6,14 +6,13 @@ import com.cloudinary.android.MediaManager;
 import com.example.radiologi.data.SharedPreferenceManager;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class RadiologiApp extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Map config = new HashMap();
+        HashMap<String, String> config = new HashMap<>();
         
         config.put("cloud_name", "droykx53s");
         config.put("api_key", "425598729726584");
