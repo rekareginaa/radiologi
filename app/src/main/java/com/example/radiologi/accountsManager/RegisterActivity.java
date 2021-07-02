@@ -1,23 +1,17 @@
 package com.example.radiologi.accountsManager;
 
-import  androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.radiologi.R;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +22,6 @@ public class RegisterActivity extends AppCompatActivity  {
 
     Button btnDaftar;
     private EditText namaLengkap, noNIP, emailReg, passwordReg;
-    private RadioGroup radioRole;
     String nama, NIP, email, katasandi, role;
 
     @Override
@@ -41,28 +34,17 @@ public class RegisterActivity extends AppCompatActivity  {
         emailReg = findViewById(R.id.et_email);
         passwordReg = findViewById(R.id.et_kata_sandi);
 
-        radioRole = findViewById(R.id.radioRole);
-        radioRole.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                switch (i) {
-                    case R.id.dokter:
-                        role = "dokter";
-                        break;
-                    case R.id.admin:
-                        role = "admin";
-                        break;
-                }
+        RadioGroup radioRole = findViewById(R.id.radioRole);
+        radioRole.setOnCheckedChangeListener((radioGroup, i) -> {
+            if (i == R.id.dokter) {
+                role = "dokter";
+            } else if (i == R.id.admin) {
+                role = "admin";
             }
         });
 
         btnDaftar = findViewById(R.id.btn_daftar);
-        btnDaftar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                daftarUser();
-            }
-        });
+        btnDaftar.setOnClickListener(view -> daftarUser());
     }
 
     private void daftarUser() {
@@ -72,18 +54,8 @@ public class RegisterActivity extends AppCompatActivity  {
         katasandi = passwordReg.getText().toString().trim();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }) {
+                response -> { },
+                error -> { }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();

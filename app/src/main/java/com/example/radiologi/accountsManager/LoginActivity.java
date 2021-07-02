@@ -1,19 +1,16 @@
 package com.example.radiologi.accountsManager;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.radiologi.R;
@@ -55,10 +52,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_masuk:
-                login();
-                break;
+        if (view.getId() == R.id.btn_masuk) {
+            login();
         }
         
     }
@@ -67,57 +62,45 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         nip = etNip.getText().toString().trim();
         password = etPass.getText().toString().trim();
 
-        StringRequest request = new StringRequest(Request.Method.POST, urlLogin, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.i("iloveyou", response);
-                try {
-                    JSONObject object = new JSONObject(response);
-                    if (object.getString("status").equals("sukses")) {
-                        JSONArray array = object.getJSONArray("data");
-                        for (int i=0; i < array.length(); i++) {
-                            JSONObject object1 = array.getJSONObject(i);
-                            role = object1.getString("role");
-                            token = object1.getString("token");
-                        }
-                        SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "nip", nip );
-                        SharedPreferenceManager.saveBooleanPreferences(getApplicationContext(), "islogin", true );
-                        SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "role", role);
-                        SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "token", token);
-                        if (role.equals("admin")) {
-                            Intent intent = new Intent(getApplicationContext(), DataAdminActivity.class);
-                            startActivity(intent);
-                            finish();
-                            Log.i("regina", "role admin");
-                        }
-                        else if (role.equals("dokter")) {
-                            Intent intent = new Intent(getApplicationContext(), DataDokterActivity.class);
-                            startActivity(intent);
-                            finish();
-                            Log.i("regina", "role dokter");
-                        }
-                        Toast.makeText(getApplicationContext(), "Login Berhasil", Toast.LENGTH_SHORT).show();
+        StringRequest request = new StringRequest(Request.Method.POST, urlLogin, response -> {
+            try {
+                JSONObject object = new JSONObject(response);
+                if (object.getString("status").equals("sukses")) {
+                    JSONArray array = object.getJSONArray("data");
+                    for (int i=0; i < array.length(); i++) {
+                        JSONObject object1 = array.getJSONObject(i);
+                        role = object1.getString("role");
+                        token = object1.getString("token");
                     }
-                    else if (object.getString("status").equals("username")) {
-                        Toast.makeText(getApplicationContext(), "Username Salah", Toast.LENGTH_LONG).show();
+                    SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "nip", nip );
+                    SharedPreferenceManager.saveBooleanPreferences(getApplicationContext(), "islogin", true );
+                    SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "role", role);
+                    SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "token", token);
+                    if (role.equals("admin")) {
+                        Intent intent = new Intent(getApplicationContext(), DataAdminActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
-                    else if (object.getString("status").equals("password")) {
-                        Toast.makeText(getApplicationContext(), "Password Salah", Toast.LENGTH_SHORT).show();
+                    else if (role.equals("dokter")) {
+                        Intent intent = new Intent(getApplicationContext(), DataDokterActivity.class);
+                        startActivity(intent);
+                        finish();
                     }
-                    else if (object.getString("status").equals("gagal")) {
-                        Toast.makeText(getApplicationContext(),"Login Gagal", Toast.LENGTH_SHORT).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Login Berhasil", Toast.LENGTH_SHORT).show();
                 }
+                else if (object.getString("status").equals("username")) {
+                    Toast.makeText(getApplicationContext(), "Username Salah", Toast.LENGTH_LONG).show();
+                }
+                else if (object.getString("status").equals("password")) {
+                    Toast.makeText(getApplicationContext(), "Password Salah", Toast.LENGTH_SHORT).show();
+                }
+                else if (object.getString("status").equals("gagal")) {
+                    Toast.makeText(getApplicationContext(),"Login Gagal", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }) {
+        }, error -> {}) {
             @Override
             protected Map<String, String>getParams() {
                 Map<String, String> params = new HashMap<>();
