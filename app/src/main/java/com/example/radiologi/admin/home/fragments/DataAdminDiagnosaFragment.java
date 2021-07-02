@@ -38,7 +38,7 @@ public class DataAdminDiagnosaFragment extends Fragment {
     String url_admin = "https://dbradiologi.000webhostapp.com/api/users/admindata";
 
     String nip;
-    ArrayList listRegis;
+    ArrayList<String> listRegis;
     private List<ListitemAdmin> adminList;
     private SwipeRefreshLayout SwipeRefreshAdmin;
 

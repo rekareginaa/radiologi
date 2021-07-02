@@ -5,9 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.example.radiologi.dokter.home.fragments.DataDokterBaruFragment;
-import com.example.radiologi.dokter.home.fragments.DataDokterDiagnosaFragment;
-
 public class DataDokterPagerAdapter extends FragmentStatePagerAdapter {
 
     private int number_tabs_dokter;
