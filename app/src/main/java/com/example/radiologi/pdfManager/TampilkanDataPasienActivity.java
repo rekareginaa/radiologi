@@ -1,4 +1,4 @@
-package com.example.radiologi;
+package com.example.radiologi.pdfManager;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,8 +7,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.SpannableString;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,8 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.FutureTarget;
+import com.example.radiologi.R;
 import com.example.radiologi.utils.BitmapConverter;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -33,7 +30,6 @@ import com.tejpratapsingh.pdfcreator.views.basic.PDFTextView;
 import com.tejpratapsingh.pdfcreator.views.basic.PDFVerticalView;
 
 import java.io.File;
-import java.util.concurrent.ExecutionException;
 
 public class TampilkanDataPasienActivity extends PDFCreatorActivity {
 

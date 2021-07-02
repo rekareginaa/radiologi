@@ -1,21 +1,18 @@
-package com.example.radiologi;
+package com.example.radiologi.dokter.formResponseData;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,6 +31,8 @@ import com.android.volley.toolbox.Volley;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
+import com.example.radiologi.R;
+import com.example.radiologi.dokter.home.DataDokterActivity;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.squareup.picasso.Picasso;
@@ -50,7 +49,7 @@ import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RoomDokter extends AppCompatActivity {
+public class FormResponseDataDokterActivity extends AppCompatActivity {
 
     ImageView btBack;
     EditText etDiagnosa;
@@ -149,14 +148,14 @@ public class RoomDokter extends AppCompatActivity {
                 Bitmap signatureBitmap = mSignaturePad.getSignatureBitmap();
 
                 if (addJpgSignatureToGallery(signatureBitmap)) {
-                    Toast.makeText(RoomDokter.this, "Signature saved into teh Gallery", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FormResponseDataDokterActivity.this, "Signature saved into teh Gallery", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(RoomDokter.this, "Unable to store the signature", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FormResponseDataDokterActivity.this, "Unable to store the signature", Toast.LENGTH_SHORT).show();
                 }
                 if (addSvgSignatureToGallery(mSignaturePad.getSignatureSvg())) {
-                    Toast.makeText(RoomDokter.this, "SVG Signature save into the Gallery", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FormResponseDataDokterActivity.this, "SVG Signature save into the Gallery", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(RoomDokter.this, "Unable to store the SVG signature", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FormResponseDataDokterActivity.this, "Unable to store the SVG signature", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -171,7 +170,7 @@ public class RoomDokter extends AppCompatActivity {
             case REQUEST_EXTERNAL_STORAGE: {
                 if (grantResults.length <= 0
                         || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(RoomDokter.this, "Cannot write images to external storage", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FormResponseDataDokterActivity.this, "Cannot write images to external storage", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -218,7 +217,7 @@ public class RoomDokter extends AppCompatActivity {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         Uri contentUri = Uri.fromFile(photo);
         mediaScanIntent.setData(contentUri);
-        RoomDokter.this.sendBroadcast(mediaScanIntent);
+        FormResponseDataDokterActivity.this.sendBroadcast(mediaScanIntent);
     }
 
     public boolean addSvgSignatureToGallery(String signatureSvg) {
@@ -240,7 +239,7 @@ public class RoomDokter extends AppCompatActivity {
         return result;
     }
 
-    public static void verifyStoragePermissions(RoomDokter activity) {
+    public static void verifyStoragePermissions(FormResponseDataDokterActivity activity) {
         int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         if (permission != PackageManager.PERMISSION_GRANTED) {
@@ -306,7 +305,7 @@ public class RoomDokter extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        Intent intent = new Intent(RoomDokter.this, DataDokter.class);
+                        Intent intent = new Intent(FormResponseDataDokterActivity.this, DataDokterActivity.class);
                         startActivity(intent);
                         finish();
                     }
@@ -329,7 +328,7 @@ public class RoomDokter extends AppCompatActivity {
                 return params;
             }
         };
-        RequestQueue requestQueue = Volley.newRequestQueue(RoomDokter.this);
+        RequestQueue requestQueue = Volley.newRequestQueue(FormResponseDataDokterActivity.this);
         requestQueue.add(stringRequest);
     }
 

@@ -1,4 +1,4 @@
-package com.example.radiologi;
+package com.example.radiologi.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;

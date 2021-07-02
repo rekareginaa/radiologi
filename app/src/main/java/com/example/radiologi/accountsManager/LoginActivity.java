@@ -1,15 +1,13 @@
-package com.example.radiologi;
+package com.example.radiologi.accountsManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -18,6 +16,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.radiologi.R;
+import com.example.radiologi.admin.home.DataAdminActivity;
+import com.example.radiologi.data.SharedPreferenceManager;
+import com.example.radiologi.dokter.home.DataDokterActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,13 +85,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "role", role);
                         SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "token", token);
                         if (role.equals("admin")) {
-                            Intent intent = new Intent(getApplicationContext(), DataAdmin.class);
+                            Intent intent = new Intent(getApplicationContext(), DataAdminActivity.class);
                             startActivity(intent);
                             finish();
                             Log.i("regina", "role admin");
                         }
                         else if (role.equals("dokter")) {
-                            Intent intent = new Intent(getApplicationContext(), DataDokter.class);
+                            Intent intent = new Intent(getApplicationContext(), DataDokterActivity.class);
                             startActivity(intent);
                             finish();
                             Log.i("regina", "role dokter");

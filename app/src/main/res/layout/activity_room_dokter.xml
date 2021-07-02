@@ -198,7 +198,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/base_color"
-    tools:context=".RoomDokter">
+    tools:context=".dokter.formResponseData.FormResponseDataDokterActivity">
 
     <FrameLayout
         android:id="@+id/appbar"

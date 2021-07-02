@@ -1,9 +1,12 @@
-package com.example.radiologi;
+package com.example.radiologi.dokter.home.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+
+import com.example.radiologi.dokter.home.fragments.DataDokterBaruFragment;
+import com.example.radiologi.dokter.home.fragments.DataDokterDiagnosaFragment;
 
 public class DataDokterPagerAdapter extends FragmentStatePagerAdapter {
 

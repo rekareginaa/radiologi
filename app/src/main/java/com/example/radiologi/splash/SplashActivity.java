@@ -1,13 +1,17 @@
-package com.example.radiologi;
+package com.example.radiologi.splash;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
 import com.cloudinary.android.MediaManager;
+import com.example.radiologi.R;
+import com.example.radiologi.accountsManager.LoginActivity;
+import com.example.radiologi.admin.home.DataAdminActivity;
+import com.example.radiologi.data.SharedPreferenceManager;
+import com.example.radiologi.dokter.home.DataDokterActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,11 +45,11 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 if (SharedPreferenceManager.getBooleanPreferences(getApplicationContext(), "islogin")) {
                     if (SharedPreferenceManager.getStringPreferences(getApplicationContext(), "role").equals("admin")) {
-                        Intent intent = new Intent(SplashActivity.this, DataAdmin.class);
+                        Intent intent = new Intent(SplashActivity.this, DataAdminActivity.class);
                         startActivity(intent);
                         finish();
                     } else if (SharedPreferenceManager.getStringPreferences(getApplicationContext(), "role").equals("dokter")) {
-                        Intent intent = new Intent(SplashActivity.this, DataDokter.class);
+                        Intent intent = new Intent(SplashActivity.this, DataDokterActivity.class);
                         startActivity(intent);
                         finish();
                     }

@@ -1,4 +1,4 @@
-package com.example.radiologi;
+package com.example.radiologi.accountsManager;
 
 import  androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.radiologi.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
