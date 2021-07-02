@@ -36,7 +36,7 @@ import com.android.volley.toolbox.Volley;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
-import com.example.radiologi.home.DataAdmin;
+import com.example.radiologi.home.DataAdminActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -341,7 +341,7 @@ public class RoomAdmin extends AppCompatActivity {
                             if (jsonObject.getString("text").equals("Data Added")) {
                                 //norekambaru = jsonObject.getString("data");
 //                                Toast.makeText(getApplicationContext(), Response, Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(RoomAdmin.this, DataAdmin.class);
+                                Intent intent = new Intent(RoomAdmin.this, DataAdminActivity.class);
                                 startActivity(intent);
                                 finish();
                             } else if (jsonObject.getString("text").equals("regis")) {

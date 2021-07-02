@@ -33,7 +33,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DataDokter extends AppCompatActivity {
+public class DataDokterActivity extends AppCompatActivity {
 
     ImageView btnLogout;
 

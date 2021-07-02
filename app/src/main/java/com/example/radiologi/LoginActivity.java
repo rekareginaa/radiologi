@@ -16,8 +16,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.radiologi.home.DataAdmin;
-import com.example.radiologi.home.DataDokter;
+import com.example.radiologi.home.DataAdminActivity;
+import com.example.radiologi.home.DataDokterActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,13 +83,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "role", role);
                         SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "token", token);
                         if (role.equals("admin")) {
-                            Intent intent = new Intent(getApplicationContext(), DataAdmin.class);
+                            Intent intent = new Intent(getApplicationContext(), DataAdminActivity.class);
                             startActivity(intent);
                             finish();
                             Log.i("regina", "role admin");
                         }
                         else if (role.equals("dokter")) {
-                            Intent intent = new Intent(getApplicationContext(), DataDokter.class);
+                            Intent intent = new Intent(getApplicationContext(), DataDokterActivity.class);
                             startActivity(intent);
                             finish();
                             Log.i("regina", "role dokter");

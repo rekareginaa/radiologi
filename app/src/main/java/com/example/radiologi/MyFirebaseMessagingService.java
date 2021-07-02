@@ -11,8 +11,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
-import com.example.radiologi.home.DataAdmin;
-import com.example.radiologi.home.DataDokter;
+import com.example.radiologi.home.DataAdminActivity;
+import com.example.radiologi.home.DataDokterActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -44,12 +44,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String channelName = getString(R.string.channelName);
 
         if (SharedPreferenceManager.getStringPreferences(getApplicationContext(), "role").equals("admin")) {
-            Intent intent = new Intent(this, DataAdmin.class);
+            Intent intent = new Intent(this, DataAdminActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0, intent,
                     PendingIntent.FLAG_ONE_SHOT);
         } else if (SharedPreferenceManager.getStringPreferences(getApplicationContext(), "role").equals("dokter")) {
-            Intent intent = new Intent(this, DataDokter.class);
+            Intent intent = new Intent(this, DataDokterActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             pendingIntent = PendingIntent.getActivity(this, 0, intent,
                     PendingIntent.FLAG_ONE_SHOT);

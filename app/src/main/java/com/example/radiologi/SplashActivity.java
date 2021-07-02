@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.cloudinary.android.MediaManager;
-import com.example.radiologi.home.DataAdmin;
-import com.example.radiologi.home.DataDokter;
+import com.example.radiologi.home.DataAdminActivity;
+import com.example.radiologi.home.DataDokterActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,11 +42,11 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 if (SharedPreferenceManager.getBooleanPreferences(getApplicationContext(), "islogin")) {
                     if (SharedPreferenceManager.getStringPreferences(getApplicationContext(), "role").equals("admin")) {
-                        Intent intent = new Intent(SplashActivity.this, DataAdmin.class);
+                        Intent intent = new Intent(SplashActivity.this, DataAdminActivity.class);
                         startActivity(intent);
                         finish();
                     } else if (SharedPreferenceManager.getStringPreferences(getApplicationContext(), "role").equals("dokter")) {
-                        Intent intent = new Intent(SplashActivity.this, DataDokter.class);
+                        Intent intent = new Intent(SplashActivity.this, DataDokterActivity.class);
                         startActivity(intent);
                         finish();
                     }

@@ -1,14 +1,11 @@
  package com.example.radiologi.home;
 
- import android.content.DialogInterface;
  import android.content.Intent;
  import android.os.Bundle;
  import android.util.Log;
- import android.view.View;
  import android.widget.ImageButton;
  import android.widget.TextView;
 
- import androidx.annotation.NonNull;
  import androidx.appcompat.app.AlertDialog;
  import androidx.appcompat.app.AppCompatActivity;
  import androidx.recyclerview.widget.RecyclerView;
@@ -17,8 +14,6 @@
 
  import com.android.volley.Request;
  import com.android.volley.RequestQueue;
- import com.android.volley.Response;
- import com.android.volley.VolleyError;
  import com.android.volley.toolbox.StringRequest;
  import com.android.volley.toolbox.Volley;
  import com.example.radiologi.AdapterAdmin;
@@ -27,8 +22,6 @@
  import com.example.radiologi.LoginActivity;
  import com.example.radiologi.R;
  import com.example.radiologi.SharedPreferenceManager;
- import com.google.android.gms.tasks.OnCompleteListener;
- import com.google.android.gms.tasks.Task;
  import com.google.android.material.tabs.TabLayout;
  import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -40,7 +33,7 @@
  import java.util.List;
  import java.util.Map;
 
- public class DataAdmin extends AppCompatActivity {
+ public class DataAdminActivity extends AppCompatActivity {
 
     String url_cek = "https://dbradiologi.000webhostapp.com/api/users/cektoken";
 
@@ -64,26 +57,23 @@
 
         tokenLama = SharedPreferenceManager.getStringPreferences(getApplicationContext(), "token");
 
-        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
-            @Override
-            public void onComplete(@NonNull Task<String> task) {
-                if (!task.isSuccessful()) {
-                    Log.w("regina", "Fetching FCM registration token failed", task.getException());
-                    return;
-                }
-                token = task.getResult();
-                msg = getString(R.string.msg_token_fmt, token);
-                Log.d("regina", token);
-
-                cekToken();
-                /*if (tokenLama.equals(token)) {
-                    Log.d("regina", "testestes" + tokenLama);
-                    Toast.makeText(getApplicationContext(), tokenLama, Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Log.d("regina", "token dijalankan");
-                }*/
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.w("regina", "Fetching FCM registration token failed", task.getException());
+                return;
             }
+            token = task.getResult();
+            msg = getString(R.string.msg_token_fmt, token);
+            Log.d("regina", token);
+
+            cekToken();
+            /*if (tokenLama.equals(token)) {
+                Log.d("regina", "testestes" + tokenLama);
+                Toast.makeText(getApplicationContext(), tokenLama, Toast.LENGTH_LONG).show();
+            }
+            else {
+                Log.d("regina", "token dijalankan");
+            }*/
         });
 
         final TabLayout tabLayout = findViewById(R.id.tab);
@@ -114,16 +104,13 @@
 
         imageButton = findViewById(R.id.option);
 
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*RelativeLayout relativeLayout = view.findViewById(R.id.relative_layout);
-                relativeLayout.setVisibility(View.VISIBLE);
-                FragmentAdmin fragmentAdmin = new FragmentAdmin();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.relative_layout, fragmentAdmin, FragmentAdmin.class.getSimpleName()).addToBackStack(null).commit();*/
-                showDialog();
-            }
+        imageButton.setOnClickListener(view -> {
+            /*RelativeLayout relativeLayout = view.findViewById(R.id.relative_layout);
+            relativeLayout.setVisibility(View.VISIBLE);
+            FragmentAdmin fragmentAdmin = new FragmentAdmin();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.relative_layout, fragmentAdmin, FragmentAdmin.class.getSimpleName()).addToBackStack(null).commit();*/
+            showDialog();
         });
 
 
@@ -193,25 +180,19 @@
 
 
     private void cekToken() {
-        StringRequest request = new StringRequest(Request.Method.POST, url_cek, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject object= new JSONObject(response);
-                    if (object.getString("text").equals("sukses")) {
-                        SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "token", msg);
+        StringRequest request = new StringRequest(Request.Method.POST, url_cek, response -> {
+            try {
+                JSONObject object= new JSONObject(response);
+                if (object.getString("text").equals("sukses")) {
+                    SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "token", msg);
 
-                    }
-                }
-                catch (JSONException e) {
-                    e.printStackTrace();
                 }
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //Log.d("regina", error.getMessage());
+            catch (JSONException e) {
+                e.printStackTrace();
             }
+        }, error -> {
+            //Log.d("regina", error.getMessage());
         }) {
             @Override
             protected Map<String, String> getParams() {
@@ -230,21 +211,13 @@
         alertDialogBuilder.setTitle("Keluar dari aplikasi?");
         alertDialogBuilder
                 .setCancelable(false)
-                .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        SharedPreferenceManager.saveBooleanPreferences(getApplicationContext(), "islogin", false );
-                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
+                .setPositiveButton("Ya", (dialogInterface, i) -> {
+                    SharedPreferenceManager.saveBooleanPreferences(getApplicationContext(), "islogin", false );
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
+                    finish();
                 })
-                .setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int i) {
-                        dialog.cancel();
-                    }
-                });
+                .setNegativeButton("Tidak", (dialog, i) -> dialog.cancel());
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }

@@ -31,7 +31,7 @@ import com.android.volley.toolbox.Volley;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
-import com.example.radiologi.home.DataDokter;
+import com.example.radiologi.home.DataDokterActivity;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.squareup.picasso.Picasso;
@@ -304,7 +304,7 @@ public class RoomDokter extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        Intent intent = new Intent(RoomDokter.this, DataDokter.class);
+                        Intent intent = new Intent(RoomDokter.this, DataDokterActivity.class);
                         startActivity(intent);
                         finish();
                     }
