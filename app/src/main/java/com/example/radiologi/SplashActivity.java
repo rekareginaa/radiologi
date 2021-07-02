@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.cloudinary.android.MediaManager;
-import com.example.radiologi.home.DataAdminActivity;
-import com.example.radiologi.home.DataDokterActivity;
+import com.example.radiologi.admin.home.DataAdminActivity;
+import com.example.radiologi.dokter.home.DataDokterActivity;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,9 +1,9 @@
-package com.example.radiologi.home;
+package com.example.radiologi.admin.home;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +13,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.radiologi.DataDokterPagerAdapter;
+import com.example.radiologi.admin.home.fragments.DataAdminPagerAdapter;
 import com.example.radiologi.LoginActivity;
 import com.example.radiologi.R;
 import com.example.radiologi.SharedPreferenceManager;
@@ -26,23 +26,20 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DataDokterActivity extends AppCompatActivity {
-
-    ImageView btnLogout;
+public class DataAdminActivity extends AppCompatActivity {
 
     String url_cek = "https://dbradiologi.000webhostapp.com/api/users/cektoken";
-    String nip, msg, tokenLama, token;
+
+    ImageButton imageButton;
+    String msg, tokenLama;
+    String nip, token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_data_dokter);
+        setContentView(R.layout.activity_data_admin);
 
         tokenLama = SharedPreferenceManager.getStringPreferences(getApplicationContext(), "token");
-        nip = SharedPreferenceManager.getStringPreferences(getApplicationContext(), "nip");
-        btnLogout = findViewById(R.id.iv_logout);
-        final TabLayout tabLayout = findViewById(R.id.tab_dokter);
-        final ViewPager viewPager = findViewById(R.id.dokter_pager);
 
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
@@ -56,11 +53,15 @@ public class DataDokterActivity extends AppCompatActivity {
             cekToken();
         });
 
-        btnLogout.setOnClickListener(view -> showDialog());
+        final TabLayout tabLayout = findViewById(R.id.tab);
+        final ViewPager viewPager = findViewById(R.id.admin_pager);
 
-        DataDokterPagerAdapter pagerAdapter = new DataDokterPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+        DataAdminPagerAdapter pagerAdapter = new DataAdminPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
+
         viewPager.setAdapter(pagerAdapter);
+
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -77,27 +78,15 @@ public class DataDokterActivity extends AppCompatActivity {
 
             }
         });
+
+        imageButton = findViewById(R.id.option);
+
+        imageButton.setOnClickListener(view -> showDialog());
     }
 
-    private void showDialog() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Keluar dari aplikasi?");
-        alertDialogBuilder
-                .setCancelable(false)
-                .setPositiveButton("Ya", (dialogInterface, i) -> {
-                    SharedPreferenceManager.saveBooleanPreferences(getApplicationContext(), "islogin", false);
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-                })
-                .setNegativeButton("Tidak", (dialog, i) -> dialog.cancel());
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
 
     private void cekToken() {
         StringRequest request = new StringRequest(Request.Method.POST, url_cek, response -> {
-            Log.d("regina token", response);
             try {
                 JSONObject object = new JSONObject(response);
                 if (object.getString("text").equals("sukses")) {
@@ -118,5 +107,21 @@ public class DataDokterActivity extends AppCompatActivity {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(request);
+    }
+
+    private void showDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle("Keluar dari aplikasi?");
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Ya", (dialogInterface, i) -> {
+                    SharedPreferenceManager.saveBooleanPreferences(getApplicationContext(), "islogin", false);
+                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                })
+                .setNegativeButton("Tidak", (dialog, i) -> dialog.cancel());
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 }

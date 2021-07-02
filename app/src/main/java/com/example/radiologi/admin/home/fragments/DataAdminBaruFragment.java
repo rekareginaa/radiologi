@@ -1,4 +1,4 @@
-package com.example.radiologi;
+package com.example.radiologi.admin.home.fragments;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -23,6 +23,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.radiologi.ListitemAdmin;
+import com.example.radiologi.R;
+import com.example.radiologi.RoomAdmin;
+import com.example.radiologi.SharedPreferenceManager;
+import com.example.radiologi.TerimaAdmin;
+import com.example.radiologi.admin.home.fragments.AdapterAdmin;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DataAdminDiagnosaFragment extends Fragment {
+public class DataAdminBaruFragment extends Fragment {
 
     String url_admin = "https://dbradiologi.000webhostapp.com/api/users/admindata";
 
@@ -57,11 +64,11 @@ public class DataAdminDiagnosaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View viewAdminTerdiagnosa = inflater.inflate(R.layout.fragment_data_admin_diagnosa, container, false);
+        View viewDataAdminBaru =  inflater.inflate(R.layout.fragment_data_admin_baru, container, false);
 
         listRegis = new ArrayList<>();
 
-        SwipeRefreshAdmin = viewAdminTerdiagnosa.findViewById(R.id.swipe_admin_terdiagnosa);
+        SwipeRefreshAdmin = viewDataAdminBaru.findViewById(R.id.swipe_admin_data_baru);
         SwipeRefreshAdmin.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
         SwipeRefreshAdmin.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -79,11 +86,11 @@ public class DataAdminDiagnosaFragment extends Fragment {
 
         nip = SharedPreferenceManager.getStringPreferences(getContext(), "nip");
         Log.i("regina", nip);
-        adapterAdmin = new AdapterAdmin(getContext(), 1);
+        adapterAdmin = new AdapterAdmin(getContext(), 0);
 
-        kosong = viewAdminTerdiagnosa.findViewById(R.id.teks_kosong);
+        kosong = viewDataAdminBaru.findViewById(R.id.teks_kosong);
 
-        recyclerView = (RecyclerView) viewAdminTerdiagnosa.findViewById(R.id.recycler_admin_terdiagnosa);
+        recyclerView = (RecyclerView) viewDataAdminBaru.findViewById(R.id.recycler_admin_data_baru);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapterAdmin);
@@ -105,10 +112,20 @@ public class DataAdminDiagnosaFragment extends Fragment {
             }
         });
 
+        FloatingActionButton fab = viewDataAdminBaru.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), RoomAdmin.class);
+                intent.putExtra("regis", listRegis);
+                startActivity(intent);
+            }
+        });
+
         adminList = new ArrayList<>();
         dataAdminReq();
 
-        return viewAdminTerdiagnosa;
+        return viewDataAdminBaru;
     }
 
     public void dataAdminReq() {
@@ -149,7 +166,7 @@ public class DataAdminDiagnosaFragment extends Fragment {
                                     modelAdmin.setStatus(array.getJSONObject(i).optString("status"));
                                     modelAdmin.setDiagnosa(array.getJSONObject(i).optString("diagnosa"));
                                     modelAdmin.setTdt(array.getJSONObject(i).optString("ttd"));
-                                    if (modelAdmin.getStatus().equals("1") || modelAdmin.getStatus().equals("2")) {
+                                    if (modelAdmin.getStatus().equals("0")) {
                                         adminList.add(modelAdmin);
                                     }
 

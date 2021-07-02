@@ -1,4 +1,4 @@
-package com.example.radiologi;
+package com.example.radiologi.admin.home.fragments;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -13,6 +13,9 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.radiologi.ListitemAdmin;
+import com.example.radiologi.R;
 
 public class AdapterAdmin extends RecyclerView.Adapter<AdapterAdmin.ViewHolder> {
 
@@ -64,18 +67,8 @@ public class AdapterAdmin extends RecyclerView.Adapter<AdapterAdmin.ViewHolder> 
                     holder.namaLengkap.setText(listitemAdmin.getNamaLengkap());
                     holder.jenisKelamin.setText(listitemAdmin.getGender());
                     holder.tanggalLahir.setText(listitemAdmin.getTangLahir());
-                    holder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            mListener.onItemClick(listitemAdmin);
-                        }
-                    });
-                    holder.adminHolder.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            mListener.onItemClick(listitemAdmin);
-                        }
-                    });
+                    holder.itemView.setOnClickListener(view -> mListener.onItemClick(listitemAdmin));
+                    holder.adminHolder.setOnClickListener(view -> mListener.onItemClick(listitemAdmin));
                 }
             case 1:
                 if (listitemAdmin.getStatus().equals("1")) {
@@ -89,18 +82,8 @@ public class AdapterAdmin extends RecyclerView.Adapter<AdapterAdmin.ViewHolder> 
                     holder.namaLengkap.setText(listitemAdmin.getNamaLengkap());
                     holder.jenisKelamin.setText(listitemAdmin.getGender());
                     holder.tanggalLahir.setText(listitemAdmin.getTangLahir());
-                    holder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            mListener.onItemClick(listitemAdmin);
-                        }
-                    });
-                    holder.adminHolder.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            mListener.onItemClick(listitemAdmin);
-                        }
-                    });
+                    holder.itemView.setOnClickListener(view -> mListener.onItemClick(listitemAdmin));
+                    holder.adminHolder.setOnClickListener(view -> mListener.onItemClick(listitemAdmin));
                 } else if (listitemAdmin.getStatus().equals("2")) {
                     holder.adminHolder.setCardBackgroundColor(Color.WHITE);
                     holder.noRekam.setTextColor(Color.DKGRAY);
@@ -112,18 +95,8 @@ public class AdapterAdmin extends RecyclerView.Adapter<AdapterAdmin.ViewHolder> 
                     holder.namaLengkap.setText(listitemAdmin.getNamaLengkap());
                     holder.jenisKelamin.setText(listitemAdmin.getGender());
                     holder.tanggalLahir.setText(listitemAdmin.getTangLahir());
-                    holder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            mListener.onItemClick(listitemAdmin);
-                        }
-                    });
-                    holder.adminHolder.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            mListener.onItemClick(listitemAdmin);
-                        }
-                    });
+                    holder.itemView.setOnClickListener(view -> mListener.onItemClick(listitemAdmin));
+                    holder.adminHolder.setOnClickListener(view -> mListener.onItemClick(listitemAdmin));
                 }
         }
     }
@@ -133,7 +106,7 @@ public class AdapterAdmin extends RecyclerView.Adapter<AdapterAdmin.ViewHolder> 
         return listitemAdmins.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView noRekam;
         public TextView namaLengkap;
@@ -145,8 +118,8 @@ public class AdapterAdmin extends RecyclerView.Adapter<AdapterAdmin.ViewHolder> 
         public ViewHolder(View itemView) {
             super(itemView);
 
-            noRekam = (TextView) itemView.findViewById(R.id.noRekam);
-            namaLengkap = (TextView) itemView.findViewById(R.id.namaLengkap);
+            noRekam = itemView.findViewById(R.id.noRekam);
+            namaLengkap = itemView.findViewById(R.id.namaLengkap);
             jenisKelamin = itemView.findViewById(R.id.jenisKelamin);
             separator = itemView.findViewById(R.id.separator);
             tanggalLahir = itemView.findViewById(R.id.tanggalLahir);

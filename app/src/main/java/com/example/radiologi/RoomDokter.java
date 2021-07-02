@@ -31,7 +31,7 @@ import com.android.volley.toolbox.Volley;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
-import com.example.radiologi.home.DataDokterActivity;
+import com.example.radiologi.dokter.home.DataDokterActivity;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.squareup.picasso.Picasso;
