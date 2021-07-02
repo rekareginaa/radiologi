@@ -2,12 +2,13 @@ package com.example.radiologi;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
 import com.cloudinary.android.MediaManager;
+import com.example.radiologi.home.DataAdmin;
+import com.example.radiologi.home.DataDokter;
 
 import java.util.HashMap;
 import java.util.Map;

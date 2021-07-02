@@ -17,10 +17,10 @@
         <activity android:name=".TerimaAdmin"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
-            android:name=".DataAdmin"
+            android:name=".home.DataAdmin"
             android:label="@string/title_activity_data_admin"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".DataDokter"
+        <activity android:name=".home.DataDokter"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity android:name=".RoomDokter"

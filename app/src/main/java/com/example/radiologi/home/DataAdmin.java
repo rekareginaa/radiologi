@@ -1,57 +1,46 @@
- package com.example.radiologi;
+ package com.example.radiologi.home;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
+ import android.content.DialogInterface;
+ import android.content.Intent;
+ import android.os.Bundle;
+ import android.util.Log;
+ import android.view.View;
+ import android.widget.ImageButton;
+ import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.cloudinary.android.MediaManager;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingService;
-import com.google.gson.Gson;
+ import androidx.annotation.NonNull;
+ import androidx.appcompat.app.AlertDialog;
+ import androidx.appcompat.app.AppCompatActivity;
+ import androidx.recyclerview.widget.RecyclerView;
+ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+ import androidx.viewpager.widget.ViewPager;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+ import com.android.volley.Request;
+ import com.android.volley.RequestQueue;
+ import com.android.volley.Response;
+ import com.android.volley.VolleyError;
+ import com.android.volley.toolbox.StringRequest;
+ import com.android.volley.toolbox.Volley;
+ import com.example.radiologi.AdapterAdmin;
+ import com.example.radiologi.DataAdminPagerAdapter;
+ import com.example.radiologi.ListitemAdmin;
+ import com.example.radiologi.LoginActivity;
+ import com.example.radiologi.R;
+ import com.example.radiologi.SharedPreferenceManager;
+ import com.google.android.gms.tasks.OnCompleteListener;
+ import com.google.android.gms.tasks.Task;
+ import com.google.android.material.tabs.TabLayout;
+ import com.google.firebase.messaging.FirebaseMessaging;
 
-import android.os.Handler;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+ import org.json.JSONException;
+ import org.json.JSONObject;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+ import java.util.ArrayList;
+ import java.util.HashMap;
+ import java.util.List;
+ import java.util.Map;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-public class DataAdmin extends AppCompatActivity {
+ public class DataAdmin extends AppCompatActivity {
 
     String url_cek = "https://dbradiologi.000webhostapp.com/api/users/cektoken";
 
