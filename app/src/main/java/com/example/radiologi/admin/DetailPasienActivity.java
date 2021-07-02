@@ -1,12 +1,10 @@
-package com.example.radiologi;
+package com.example.radiologi.admin;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -20,8 +18,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.FutureTarget;
+import com.example.radiologi.R;
+import com.example.radiologi.pdfManager.TampilkanDataPasienActivity;
 import com.example.radiologi.utils.BitmapConverter;
 import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
@@ -32,11 +30,10 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class TerimaAdmin extends AppCompatActivity {
+public class DetailPasienActivity extends AppCompatActivity {
 
     String urlupdatestatus = "https://dbradiologi.000webhostapp.com/api/users/updatestatus";
 
@@ -177,7 +174,7 @@ public class TerimaAdmin extends AppCompatActivity {
         createPdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progressDialog = new ProgressDialog(TerimaAdmin.this);
+                progressDialog = new ProgressDialog(DetailPasienActivity.this);
                 progressDialog.setTitle("Mohon Tunggu ...");
                 progressDialog.setCancelable(false);
                 progressDialog.show();
@@ -203,7 +200,7 @@ public class TerimaAdmin extends AppCompatActivity {
 
                         progressDialog.dismiss();
 
-                        Intent intent = new Intent(TerimaAdmin.this, TampilkanDataPasienActivity.class);
+                        Intent intent = new Intent(DetailPasienActivity.this, TampilkanDataPasienActivity.class);
                         intent.putExtra("noregis", noregiS);
                         intent.putExtra("norekam", norekaM);
                         intent.putExtra("namalengkap", namaLengkaP);
@@ -228,7 +225,7 @@ public class TerimaAdmin extends AppCompatActivity {
                 return params;
             }
         };
-        RequestQueue requestQueue = Volley.newRequestQueue(TerimaAdmin.this);
+        RequestQueue requestQueue = Volley.newRequestQueue(DetailPasienActivity.this);
         requestQueue.add(stringRequest);
     }
 

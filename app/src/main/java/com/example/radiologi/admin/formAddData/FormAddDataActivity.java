@@ -1,4 +1,4 @@
-package com.example.radiologi;
+package com.example.radiologi.admin.formAddData;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,6 +36,8 @@ import com.android.volley.toolbox.Volley;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
+import com.example.radiologi.R;
+import com.example.radiologi.data.SharedPreferenceManager;
 import com.example.radiologi.admin.home.DataAdminActivity;
 
 import org.json.JSONArray;
@@ -48,7 +50,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RoomAdmin extends AppCompatActivity {
+public class FormAddDataActivity extends AppCompatActivity {
     DatePickerDialog picker;
     EditText etNoRegis, etNoRekam, etNamaPasien;
     TextView eText;
@@ -130,7 +132,7 @@ public class RoomAdmin extends AppCompatActivity {
                 int day = cldr.get(Calendar.DAY_OF_MONTH);
                 final int month = cldr.get(Calendar.MONTH);
                 int year = cldr.get(Calendar.YEAR);
-                picker = new DatePickerDialog(RoomAdmin.this,
+                picker = new DatePickerDialog(FormAddDataActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -218,14 +220,14 @@ public class RoomAdmin extends AppCompatActivity {
 
     private void requestPermission(){
         if(ContextCompat.checkSelfPermission
-                (RoomAdmin.this,
+                (FormAddDataActivity.this,
                         Manifest.permission.READ_EXTERNAL_STORAGE
                 ) == PackageManager.PERMISSION_GRANTED
         ){
             accessTheGallery();
         } else {
             ActivityCompat.requestPermissions(
-                    RoomAdmin.this,
+                    FormAddDataActivity.this,
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                     PERMISSION_CODE
             );
@@ -238,7 +240,7 @@ public class RoomAdmin extends AppCompatActivity {
             if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 accessTheGallery();
             }else {
-                Toast.makeText(RoomAdmin.this, "permission denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FormAddDataActivity.this, "permission denied", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -257,7 +259,7 @@ public class RoomAdmin extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         //get the image's file location
-        filePath = getRealPathFromUri(data.getData(), RoomAdmin.this);
+        filePath = getRealPathFromUri(data.getData(), FormAddDataActivity.this);
         Log.i("regina", filePath);
 
         if(requestCode==PICK_IMAGE && resultCode==RESULT_OK){
@@ -341,7 +343,7 @@ public class RoomAdmin extends AppCompatActivity {
                             if (jsonObject.getString("text").equals("Data Added")) {
                                 //norekambaru = jsonObject.getString("data");
 //                                Toast.makeText(getApplicationContext(), Response, Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(RoomAdmin.this, DataAdminActivity.class);
+                                Intent intent = new Intent(FormAddDataActivity.this, DataAdminActivity.class);
                                 startActivity(intent);
                                 finish();
                             } else if (jsonObject.getString("text").equals("regis")) {
@@ -379,7 +381,7 @@ public class RoomAdmin extends AppCompatActivity {
                 return params;
             }
         };
-        RequestQueue requestQueue = Volley.newRequestQueue(RoomAdmin.this);
+        RequestQueue requestQueue = Volley.newRequestQueue(FormAddDataActivity.this);
         requestQueue.add(stringRequest);
     }
 
@@ -413,7 +415,7 @@ public class RoomAdmin extends AppCompatActivity {
                 return params;
             }
         };
-        RequestQueue requestQueue = Volley.newRequestQueue(RoomAdmin.this);
+        RequestQueue requestQueue = Volley.newRequestQueue(FormAddDataActivity.this);
         requestQueue.add(stringRequest);
     }
 

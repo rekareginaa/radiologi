@@ -1,4 +1,4 @@
-package com.example.radiologi;
+package com.example.radiologi.data;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -11,7 +11,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
+import com.example.radiologi.R;
 import com.example.radiologi.admin.home.DataAdminActivity;
+import com.example.radiologi.data.SharedPreferenceManager;
 import com.example.radiologi.dokter.home.DataDokterActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;

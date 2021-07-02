@@ -1,4 +1,4 @@
-package com.example.radiologi;
+package com.example.radiologi.splash;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.cloudinary.android.MediaManager;
+import com.example.radiologi.R;
+import com.example.radiologi.accountsManager.LoginActivity;
 import com.example.radiologi.admin.home.DataAdminActivity;
+import com.example.radiologi.data.SharedPreferenceManager;
 import com.example.radiologi.dokter.home.DataDokterActivity;
 
 import java.util.HashMap;

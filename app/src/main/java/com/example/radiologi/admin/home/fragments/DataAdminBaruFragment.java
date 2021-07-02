@@ -23,12 +23,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.radiologi.ListitemAdmin;
+import com.example.radiologi.model.ListitemAdmin;
 import com.example.radiologi.R;
-import com.example.radiologi.RoomAdmin;
-import com.example.radiologi.SharedPreferenceManager;
-import com.example.radiologi.TerimaAdmin;
-import com.example.radiologi.admin.home.fragments.AdapterAdmin;
+import com.example.radiologi.admin.formAddData.FormAddDataActivity;
+import com.example.radiologi.data.SharedPreferenceManager;
+import com.example.radiologi.admin.DetailPasienActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -97,7 +96,7 @@ public class DataAdminBaruFragment extends Fragment {
         adapterAdmin.setOnClickListener(new AdapterAdmin.OnItemClickListener() {
             @Override
             public void onItemClick(ListitemAdmin listitemAdmin) {
-                Intent intent = new Intent(getContext(), TerimaAdmin.class);
+                Intent intent = new Intent(getContext(), DetailPasienActivity.class);
                 intent.putExtra("noregis", listitemAdmin.getNoRegis());
                 intent.putExtra("norekam", listitemAdmin.getNoRekam());
                 intent.putExtra("namalengkap", listitemAdmin.getNamaLengkap());
@@ -116,7 +115,7 @@ public class DataAdminBaruFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), RoomAdmin.class);
+                Intent intent = new Intent(getContext(), FormAddDataActivity.class);
                 intent.putExtra("regis", listRegis);
                 startActivity(intent);
             }

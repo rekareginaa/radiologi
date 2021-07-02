@@ -14,7 +14,7 @@
         android:roundIcon="@drawable/ic_logoapp"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TerimaAdmin"
+        <activity android:name=".admin.DetailPasienActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
             android:name=".admin.home.DataAdminActivity"
@@ -23,13 +23,13 @@
         <activity android:name=".dokter.home.DataDokterActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <activity android:name=".RoomDokter"
+        <activity android:name=".dokter.formResponseData.FormResponseDataDokterActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".RoomAdmin"
+        <activity android:name=".admin.formAddData.FormAddDataActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
-        <activity android:name=".LoginActivity"
+        <activity android:name=".accountsManager.LoginActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"/>
-        <activity android:name=".SplashActivity"
+        <activity android:name=".splash.SplashActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,15 +38,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegisterActivity"
+            android:name=".accountsManager.RegisterActivity"
             android:label="Daftar"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
-            android:name=".TampilkanDataPasienActivity"
+            android:name=".pdfManager.TampilkanDataPasienActivity"
             android:label="Data Pasien"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
-            android:name=".PdfViewerActivity"
+            android:name=".pdfManager.PdfViewerActivity"
             android:label="Data Pasien" />
         <provider
             android:authorities="com.example.radiologi.fileprovider"
@@ -66,7 +66,7 @@
         <meta-data
             android:name="com.android.firebase.messaging.default_notification_channel_id"
             android:value="fcm_default_channel"/>
-        <service android:name=".MyFirebaseMessagingService">
+        <service android:name=".data.MyFirebaseMessagingService">
             <intent-filter>
                 <action
                     android:name="com.google.firebase.MESSAGING_EVENT"/>

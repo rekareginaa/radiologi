@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.radiologi.ListitemDokter;
+import com.example.radiologi.model.ListitemDokter;
 import com.example.radiologi.R;
 
 public class AdapterDokter extends RecyclerView.Adapter<AdapterDokter.ViewHolder> {

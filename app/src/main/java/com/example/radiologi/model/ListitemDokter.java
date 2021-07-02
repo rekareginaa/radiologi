@@ -1,4 +1,4 @@
-package com.example.radiologi;
+package com.example.radiologi.model;
 
 public class ListitemDokter {
 

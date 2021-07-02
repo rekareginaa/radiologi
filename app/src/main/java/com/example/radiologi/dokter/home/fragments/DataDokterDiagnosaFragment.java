@@ -18,10 +18,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.radiologi.ListitemDokter;
+import com.example.radiologi.model.ListitemDokter;
 import com.example.radiologi.R;
-import com.example.radiologi.SharedPreferenceManager;
-import com.example.radiologi.TerimaAdmin;
+import com.example.radiologi.data.SharedPreferenceManager;
+import com.example.radiologi.admin.DetailPasienActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,7 +70,7 @@ public class DataDokterDiagnosaFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapterDokter);
         adapterDokter.setOnClickListener(listitemDokter -> {
-            Intent intentSudahBaca = new Intent(getContext(), TerimaAdmin.class);
+            Intent intentSudahBaca = new Intent(getContext(), DetailPasienActivity.class);
             intentSudahBaca.putExtra("noregis", listitemDokter.getNoRegis());
             intentSudahBaca.putExtra("norekam", listitemDokter.getNoRekam());
             intentSudahBaca.putExtra("namalengkap", listitemDokter.getNamaLengkap());

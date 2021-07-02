@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".TampilkanDataPasienActivity">
+    tools:context=".pdfManager.TampilkanDataPasienActivity">
 
     <WebView
         android:id="@+id/webViewEditor"

@@ -18,10 +18,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.radiologi.ListitemDokter;
+import com.example.radiologi.model.ListitemDokter;
 import com.example.radiologi.R;
-import com.example.radiologi.RoomDokter;
-import com.example.radiologi.SharedPreferenceManager;
+import com.example.radiologi.dokter.formResponseData.FormResponseDataDokterActivity;
+import com.example.radiologi.data.SharedPreferenceManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,7 +70,7 @@ public class DataDokterBaruFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapterDokter);
         adapterDokter.setOnClickListener(listitemDokter -> {
-            Intent intent = new Intent(getContext(), RoomDokter.class);
+            Intent intent = new Intent(getContext(), FormResponseDataDokterActivity.class);
             intent.putExtra("norekam", listitemDokter.getNoRekam());
             intent.putExtra("namalengkap", listitemDokter.getNamaLengkap());
             intent.putExtra("tanggalahir", listitemDokter.getTangLahir());
