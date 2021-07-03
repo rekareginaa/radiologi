@@ -1,9 +1,6 @@
 package com.example.radiologi.accountsManager;
 
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +9,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.radiologi.R;
+import com.example.radiologi.databinding.ActivityRegisterBinding;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,22 +18,17 @@ public class RegisterActivity extends AppCompatActivity  {
 
     private static final String url = "https://dbradiologi.000webhostapp.com/api/users/add";
 
-    Button btnDaftar;
-    private EditText namaLengkap, noNIP, emailReg, passwordReg;
     String nama, NIP, email, katasandi, role;
+
+    private ActivityRegisterBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        binding = ActivityRegisterBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        namaLengkap = findViewById(R.id.et_nama);
-        noNIP = findViewById(R.id.et_NIP);
-        emailReg = findViewById(R.id.et_email);
-        passwordReg = findViewById(R.id.et_kata_sandi);
-
-        RadioGroup radioRole = findViewById(R.id.radioRole);
-        radioRole.setOnCheckedChangeListener((radioGroup, i) -> {
+        binding.radioRole.setOnCheckedChangeListener((radioGroup, i) -> {
             if (i == R.id.dokter) {
                 role = "dokter";
             } else if (i == R.id.admin) {
@@ -43,15 +36,14 @@ public class RegisterActivity extends AppCompatActivity  {
             }
         });
 
-        btnDaftar = findViewById(R.id.btn_daftar);
-        btnDaftar.setOnClickListener(view -> daftarUser());
+        binding.btnDaftar.setOnClickListener(view -> daftarUser());
     }
 
     private void daftarUser() {
-        nama = namaLengkap.getText().toString().trim();
-        NIP = noNIP.getText().toString().trim();
-        email = emailReg.getText().toString().trim();
-        katasandi = passwordReg.getText().toString().trim();
+        nama = binding.etNama.getText().toString().trim();
+        NIP = binding.etNIP.getText().toString().trim();
+        email = binding.etEmail.getText().toString().trim();
+        katasandi = binding.etKataSandi.getText().toString().trim();
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 response -> { },

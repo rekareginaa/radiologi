@@ -3,8 +3,6 @@ package com.example.radiologi.accountsManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +14,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.radiologi.R;
 import com.example.radiologi.admin.home.DataAdminActivity;
 import com.example.radiologi.data.SharedPreferenceManager;
+import com.example.radiologi.databinding.ActivityLoginBinding;
 import com.example.radiologi.dokter.home.DataDokterActivity;
 
 import org.json.JSONArray;
@@ -29,25 +28,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private static final String urlLogin="https://dbradiologi.000webhostapp.com/api/users/login";
 
-    Button btnMasuk;
-    EditText etNip, etPass;
     String nip, password, role, token;
+
+    private ActivityLoginBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        intView();
-    }
-
-    private void intView() {
-        btnMasuk = findViewById(R.id.btn_masuk);
-        etNip = findViewById(R.id.et_NIP);
-        etPass = findViewById(R.id.et_kata_sandi);
-
-        btnMasuk.setOnClickListener(this);
-
+        binding.btnMasuk.setOnClickListener(this);
     }
 
     @Override
@@ -59,8 +50,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void login() {
-        nip = etNip.getText().toString().trim();
-        password = etPass.getText().toString().trim();
+        nip = binding.etNIP.getText().toString().trim();
+        password = binding.etKataSandi.getText().toString().trim();
 
         StringRequest request = new StringRequest(Request.Method.POST, urlLogin, response -> {
             try {
