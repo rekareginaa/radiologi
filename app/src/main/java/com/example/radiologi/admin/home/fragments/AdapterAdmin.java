@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.radiologi.model.ListitemAdmin;
+import com.example.radiologi.data.dataSource.remote.response.ListitemAdmin;
 import com.example.radiologi.R;
 
 public class AdapterAdmin extends RecyclerView.Adapter<AdapterAdmin.ViewHolder> {

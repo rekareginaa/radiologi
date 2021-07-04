@@ -18,7 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.radiologi.model.ListitemDokter;
+import com.example.radiologi.data.dataSource.remote.response.ListitemDokter;
 import com.example.radiologi.R;
 import com.example.radiologi.dokter.formResponseData.FormResponseDataDokterActivity;
 import com.example.radiologi.data.dataSource.local.SharedPreferenceManager;

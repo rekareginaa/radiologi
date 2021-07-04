@@ -20,7 +20,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.radiologi.model.ListitemAdmin;
+import com.example.radiologi.data.dataSource.remote.response.ListitemAdmin;
 import com.example.radiologi.R;
 import com.example.radiologi.admin.formAddData.FormAddDataActivity;
 import com.example.radiologi.data.dataSource.local.SharedPreferenceManager;
