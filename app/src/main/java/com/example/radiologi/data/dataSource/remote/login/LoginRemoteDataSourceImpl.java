@@ -19,8 +19,9 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
+import static com.example.radiologi.utils.Constants.LOGIN;
+
 public class LoginRemoteDataSourceImpl implements RemoteDataSource.Login {
-    private static final String urlLogin="https://dbradiologi.000webhostapp.com/api/users/login";
     private final Context context;
 
     @SuppressLint("StaticFieldLeak")
@@ -40,7 +41,7 @@ public class LoginRemoteDataSourceImpl implements RemoteDataSource.Login {
     @Override
     public LiveData<DataItemLogin> loginUsers(Map<String, String> params) {
         MutableLiveData<DataItemLogin> result = new MutableLiveData<>();
-        new BaseVolley(context, Request.Method.POST, urlLogin) {
+        new BaseVolley(context, Request.Method.POST, LOGIN) {
             @Override
             protected void onSuccess(String response) {
                 try{

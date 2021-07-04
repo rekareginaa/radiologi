@@ -22,6 +22,9 @@ android {
     }
 
     buildTypes {
+        debug{
+            buildConfigField "String", "BASE_URL", rootProject.ext.base_api_url
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

@@ -24,3 +24,7 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext{
+    base_api_url = "\"https://dbradiologi.000webhostapp.com/api/\""
+}
