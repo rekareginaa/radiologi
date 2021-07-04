@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.radiologi.R;
 import com.example.radiologi.accountsManager.LoginActivity;
 import com.example.radiologi.admin.home.DataAdminActivity;
-import com.example.radiologi.data.SharedPreferenceManager;
+import com.example.radiologi.data.dataSource.local.SharedPreferenceManager;
 import com.example.radiologi.dokter.home.DataDokterActivity;
 
 public class SplashActivity extends AppCompatActivity {

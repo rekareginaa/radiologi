@@ -66,7 +66,7 @@
         <meta-data
             android:name="com.android.firebase.messaging.default_notification_channel_id"
             android:value="fcm_default_channel"/>
-        <service android:name=".data.MyFirebaseMessagingService">
+        <service android:name=".data.dataSource.MyFirebaseMessagingService">
             <intent-filter>
                 <action
                     android:name="com.google.firebase.MESSAGING_EVENT"/>

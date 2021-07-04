@@ -21,7 +21,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.radiologi.model.ListitemDokter;
 import com.example.radiologi.R;
 import com.example.radiologi.dokter.formResponseData.FormResponseDataDokterActivity;
-import com.example.radiologi.data.SharedPreferenceManager;
+import com.example.radiologi.data.dataSource.local.SharedPreferenceManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;

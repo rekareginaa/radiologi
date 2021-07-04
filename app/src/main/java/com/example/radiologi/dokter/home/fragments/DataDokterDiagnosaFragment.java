@@ -20,7 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.radiologi.model.ListitemDokter;
 import com.example.radiologi.R;
-import com.example.radiologi.data.SharedPreferenceManager;
+import com.example.radiologi.data.dataSource.local.SharedPreferenceManager;
 import com.example.radiologi.admin.DetailPasienActivity;
 
 import org.json.JSONArray;
