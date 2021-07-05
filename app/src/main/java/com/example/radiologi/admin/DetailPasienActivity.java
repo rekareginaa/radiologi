@@ -35,6 +35,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class DetailPasienActivity extends AppCompatActivity {
 
+    public static final String EXTRA_DATA = "extra_data";
+
     String urlupdatestatus = "https://dbradiologi.000webhostapp.com/api/users/updatestatus";
 
     TextView noRegis, noRekam, namaLengkap, tangLahir, gender, diagnosa;
@@ -266,4 +268,5 @@ public class DetailPasienActivity extends AppCompatActivity {
             }
         });
     }
+
 }

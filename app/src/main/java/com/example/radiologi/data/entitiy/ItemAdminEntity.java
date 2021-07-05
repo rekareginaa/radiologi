@@ -4,7 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity(tableName = "itemadminentity")
 public class ItemAdminEntity implements Parcelable {
     protected ItemAdminEntity(Parcel in) {
         this.noregis = in.readString();
@@ -144,8 +148,43 @@ public class ItemAdminEntity implements Parcelable {
         this.status = status;
     }
 
-    private String noregis, pengirim, tanggalLahir, namaPasien, diagnos,
-        gender, ttd, penerima, id, gambar, norekam, status;
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name = "id_data_admin")
+    private String id;
+
+    @ColumnInfo(name = "no_regis")
+    private String noregis;
+
+    @ColumnInfo(name = "pengirim")
+    private String pengirim;
+
+    @ColumnInfo(name = "tanggal_lahir")
+    private String tanggalLahir;
+
+    @ColumnInfo(name = "nama_pasien")
+    private String namaPasien;
+
+    @ColumnInfo(name = "diagnosa")
+    private String diagnos;
+
+    @ColumnInfo(name = "gender")
+    private String gender;
+
+    @ColumnInfo(name = "ttd")
+    private String ttd;
+
+    @ColumnInfo(name = "penerima")
+    private String penerima;
+
+    @ColumnInfo(name = "gambar")
+    private String gambar;
+
+    @ColumnInfo(name = "no_rekam")
+    private String norekam;
+
+    @ColumnInfo(name = "status")
+    private String status;
 
     @Override
     public int describeContents() {
