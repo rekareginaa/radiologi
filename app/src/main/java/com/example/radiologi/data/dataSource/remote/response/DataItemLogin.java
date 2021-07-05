@@ -5,17 +5,6 @@ import androidx.annotation.NonNull;
 import com.google.gson.annotations.SerializedName;
 
 public class DataItemLogin {
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	private String status;
-
 	@SerializedName("role")
 	private String role;
 
@@ -33,6 +22,9 @@ public class DataItemLogin {
 
 	@SerializedName("token")
 	private String token;
+
+	public DataItemLogin() {
+	}
 
 	public String getRole(){
 		return role;

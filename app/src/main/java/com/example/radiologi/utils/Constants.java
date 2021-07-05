@@ -11,4 +11,7 @@ public class Constants {
     public static final String GET_TOKEN = BuildConfig.BASE_URL+"users";
     public static final String DOCTOR_UPDATE = BuildConfig.BASE_URL+"users/updatedokter";
 
+    public static final String NIP = "nip";
+    public static final String PASSWORD = "password";
+
 }

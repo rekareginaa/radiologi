@@ -3,7 +3,7 @@ package com.example.radiologi.data.repository;
 import androidx.lifecycle.LiveData;
 
 import com.example.radiologi.data.dataSource.remote.RemoteDataSource;
-import com.example.radiologi.data.dataSource.remote.response.DataItemLogin;
+import com.example.radiologi.data.dataSource.remote.response.LoginResponse;
 
 import java.util.Map;
 
@@ -26,7 +26,7 @@ public class AccountRepositoryImpl implements Repository.AccountRepository {
     }
 
     @Override
-    public LiveData<DataItemLogin> loginUser(Map<String, String> params) {
+    public LiveData<LoginResponse> loginUser(Map<String, String> params) {
         return remoteDataSource.loginUsers(params);
     }
 }

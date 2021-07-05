@@ -14,6 +14,7 @@ import com.example.radiologi.accountsManager.viewModel.AccountViewModel;
 import com.example.radiologi.accountsManager.viewModel.AccountViewModelFactory;
 import com.example.radiologi.admin.home.DataAdminActivity;
 import com.example.radiologi.data.dataSource.local.SharedPreferenceManager;
+import com.example.radiologi.data.dataSource.remote.response.DataItemLogin;
 import com.example.radiologi.databinding.ActivityLoginBinding;
 import com.example.radiologi.dokter.home.DataDokterActivity;
 
@@ -39,9 +40,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void observeResult() {
-        viewModel.getUserData.observe(this, user -> {
+        viewModel.getUserData.observe(this, response -> {
+            final DataItemLogin user = response.getData().get(0);
             Log.d("DATA_", user.toString());
-            switch (user.getStatus()) {
+            switch (response.getStatus()) {
                 case "sukses":
                     SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "nip", user.getNip());
                     SharedPreferenceManager.saveBooleanPreferences(getApplicationContext(), "islogin", true);
