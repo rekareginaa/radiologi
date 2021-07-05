@@ -1,10 +1,8 @@
 package com.example.radiologi.accountsManager;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -12,11 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.radiologi.R;
 import com.example.radiologi.accountsManager.viewModel.AccountViewModel;
 import com.example.radiologi.accountsManager.viewModel.AccountViewModelFactory;
-import com.example.radiologi.admin.home.DataAdminActivity;
-import com.example.radiologi.data.dataSource.local.SharedPreferenceManager;
-import com.example.radiologi.data.dataSource.remote.response.DataItemLogin;
 import com.example.radiologi.databinding.ActivityLoginBinding;
-import com.example.radiologi.dokter.home.DataDokterActivity;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -40,8 +34,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void observeResult() {
-        viewModel.getUserData.observe(this, response -> {
-            final DataItemLogin user = response.getData().get(0);
+        viewModel.getUserData.observe(this, result -> {
+            switch (result.getContentIfNotHandled().status){
+                case LOADING:
+                    Log.d("REQ", "LOADING");
+                case ERROR:
+                    Log.d("REQ", "ERROR");
+                case SUCCESS:
+                    Log.d("REQ", "SUCCESS");
+
+            }
+
+            /*final DataItemLogin user = response.getData().get(0);
             Log.d("DATA_", user.toString());
             switch (response.getStatus()) {
                 case "sukses":
@@ -70,7 +74,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 case "gagal":
                     Toast.makeText(getApplicationContext(), "Login Gagal", Toast.LENGTH_SHORT).show();
                     break;
-            }
+            }*/
 
         });
     }

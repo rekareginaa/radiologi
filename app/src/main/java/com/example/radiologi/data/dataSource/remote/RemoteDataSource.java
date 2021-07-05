@@ -3,11 +3,17 @@ package com.example.radiologi.data.dataSource.remote;
 import androidx.lifecycle.LiveData;
 
 import com.example.radiologi.data.dataSource.remote.response.LoginResponse;
+import com.example.radiologi.utils.Event;
+import com.example.radiologi.utils.vo.Resource;
 
 import java.util.Map;
 
 public interface RemoteDataSource {
     interface Login{
-        LiveData<LoginResponse> loginUsers(Map<String, String> params);
+        LiveData<Event<Resource<LoginResponse>>> loginUsers(Map<String, String> params);
+    }
+
+    interface Admin{
+
     }
 }

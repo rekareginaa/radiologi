@@ -32,6 +32,7 @@ public abstract class BaseVolley<T> {
     }
 
     protected void doRequest(){
+        onLoading();
         StringRequest request = new StringRequest(method, urlRequest,
         response -> {
             Log.d("RESPONSE", response);
@@ -52,6 +53,7 @@ public abstract class BaseVolley<T> {
         VolleyService.getInstance(context).getQueue().add(request);
     }
 
+    protected abstract void onLoading();
     protected abstract void onSuccess(T response);
     protected abstract void onError(String message);
     protected abstract Map<String, String> setParameter();

@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.radiologi.data.dataSource.remote.response.LoginResponse;
 import com.example.radiologi.data.repository.Repository;
+import com.example.radiologi.utils.Event;
+import com.example.radiologi.utils.vo.Resource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +34,7 @@ public class AccountViewModel extends ViewModel {
         this.parameter.setValue(mapParam);
     }
 
-    public LiveData<LoginResponse> getUserData = Transformations.switchMap(parameter, mParams ->
+    public LiveData<Event<Resource<LoginResponse>>> getUserData = Transformations.switchMap(parameter, mParams ->
             repository.loginUser(mParams)
     );
 }

@@ -2,7 +2,6 @@ package com.example.radiologi.data.dataSource.remote.login;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -11,6 +10,9 @@ import com.android.volley.Request;
 import com.example.radiologi.data.dataSource.remote.RemoteDataSource;
 import com.example.radiologi.data.dataSource.remote.response.LoginResponse;
 import com.example.radiologi.networking.BaseVolley;
+import com.example.radiologi.utils.Event;
+import com.example.radiologi.utils.vo.Resource;
+import com.example.radiologi.utils.vo.Status;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
@@ -36,8 +38,8 @@ public class LoginRemoteDataSourceImpl implements RemoteDataSource.Login {
     }
 
     @Override
-    public LiveData<LoginResponse> loginUsers(Map<String, String> params) {
-        MutableLiveData<LoginResponse> result = new MutableLiveData<>();
+    public LiveData<Event<Resource<LoginResponse>>> loginUsers(Map<String, String> params) {
+        MutableLiveData<Event<Resource<LoginResponse>>> result = new MutableLiveData<>();
         final Type type = new TypeToken<LoginResponse>(){}.getType();
         new BaseVolley<LoginResponse>(
                 context,
@@ -46,15 +48,25 @@ public class LoginRemoteDataSourceImpl implements RemoteDataSource.Login {
                 type
         ){
             @Override
+            protected void onLoading() {
+                result.postValue(new Event<>(
+                        new Resource<>(Status.LOADING, null, null)
+                    )
+                );
+            }
+
+            @Override
             protected void onSuccess(LoginResponse response) {
-                result.postValue(response);
+                result.postValue(new Event<>(
+                        new Resource<>(Status.SUCCESS, response, null)
+                ));
             }
 
             @Override
             protected void onError(String message) {
-                if (message != null){
-                    Log.d("ERROR", message);
-                }
+                result.postValue(new Event<>(
+                        new Resource<>(Status.ERROR, null, message)
+                ));
             }
 
             @Override
