@@ -1,5 +1,6 @@
 package com.example.radiologi.accountsManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,7 +11,11 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.radiologi.R;
 import com.example.radiologi.accountsManager.viewModel.AccountViewModel;
 import com.example.radiologi.accountsManager.viewModel.AccountViewModelFactory;
+import com.example.radiologi.admin.home.DataAdminActivity;
+import com.example.radiologi.data.dataSource.remote.response.DataItemLogin;
+import com.example.radiologi.data.dataSource.remote.response.LoginResponse;
 import com.example.radiologi.databinding.ActivityLoginBinding;
+import com.example.radiologi.dokter.home.DataDokterActivity;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -38,44 +43,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             switch (result.getContentIfNotHandled().status){
                 case LOADING:
                     Log.d("REQ", "LOADING");
+                    break;
                 case ERROR:
                     Log.d("REQ", "ERROR");
+                    break;
                 case SUCCESS:
-                    Log.d("REQ", "SUCCESS");
-
-            }
-
-            /*final DataItemLogin user = response.getData().get(0);
-            Log.d("DATA_", user.toString());
-            switch (response.getStatus()) {
-                case "sukses":
-                    SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "nip", user.getNip());
-                    SharedPreferenceManager.saveBooleanPreferences(getApplicationContext(), "islogin", true);
-                    SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "role", user.getRole());
-                    SharedPreferenceManager.savesStringPreferences(getApplicationContext(), "token", user.getToken());
-
-                    if (user.getRole().equals("admin")) {
-                        Intent intent = new Intent(getApplicationContext(), DataAdminActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } else if (user.getRole().equals("dokter")) {
-                        Intent intent = new Intent(getApplicationContext(), DataDokterActivity.class);
-                        startActivity(intent);
-                        finish();
+                    final LoginResponse response = result.peekContent().data;
+                    if (response != null){
+                        final DataItemLogin user = response.getData().get(0);
+                        if (user.getRole().equals("admin")) {
+                            Intent intent = new Intent(getApplicationContext(), DataAdminActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else if (user.getRole().equals("dokter")) {
+                            Intent intent = new Intent(getApplicationContext(), DataDokterActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
-                    Toast.makeText(getApplicationContext(), "Login Berhasil", Toast.LENGTH_SHORT).show();
                     break;
-                case "username":
-                    Toast.makeText(getApplicationContext(), "Username Salah", Toast.LENGTH_LONG).show();
-                    break;
-                case "password":
-                    Toast.makeText(getApplicationContext(), "Password Salah", Toast.LENGTH_SHORT).show();
-                    break;
-                case "gagal":
-                    Toast.makeText(getApplicationContext(), "Login Gagal", Toast.LENGTH_SHORT).show();
-                    break;
-            }*/
-
+            }
         });
     }
 

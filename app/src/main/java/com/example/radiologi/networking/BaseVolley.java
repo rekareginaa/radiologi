@@ -35,10 +35,17 @@ public abstract class BaseVolley<T> {
         onLoading();
         StringRequest request = new StringRequest(method, urlRequest,
         response -> {
-            Log.d("RESPONSE", response);
-            Gson gson = new Gson();
-            responseObj = gson.fromJson(response, type);
-            onSuccess(responseObj);
+            try {
+                Log.d("RESPONSE", response);
+                Gson gson = new Gson();
+                responseObj = gson.fromJson(response, type);
+                onSuccess(responseObj);
+            }catch (Exception e){
+                if (e.getMessage() != null){
+                    onError(e.getMessage());
+                }
+                e.printStackTrace();
+            }
         }, error -> {
             final Throwable cause = error.getCause();
             if (cause != null){
