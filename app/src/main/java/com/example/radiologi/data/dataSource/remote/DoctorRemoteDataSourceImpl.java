@@ -1,8 +1,5 @@
 package com.example.radiologi.data.dataSource.remote;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -29,18 +26,15 @@ import static com.example.radiologi.utils.Constants.SUCCESS;
 
 public class DoctorRemoteDataSourceImpl implements RemoteDataSource.Doctor{
 
-    private final Context context;
-    @SuppressLint("StaticFieldLeak")
     private volatile static DoctorRemoteDataSourceImpl instance;
 
-    public DoctorRemoteDataSourceImpl(Context context) {
-        this.context = context;
+    public DoctorRemoteDataSourceImpl() {
     }
 
-    public static DoctorRemoteDataSourceImpl getInstance(Context context){
+    public static DoctorRemoteDataSourceImpl getInstance(){
         if (instance == null){
             synchronized (DoctorRemoteDataSourceImpl.class){
-                instance = new DoctorRemoteDataSourceImpl(context);
+                instance = new DoctorRemoteDataSourceImpl();
             }
         }
         return instance;
@@ -51,7 +45,6 @@ public class DoctorRemoteDataSourceImpl implements RemoteDataSource.Doctor{
         MutableLiveData<ApiResponse<AdminItemResponse>> result = new MutableLiveData<>();
         final Type type = new TypeToken<AdminItemResponse>(){}.getType();
         new BaseVolley<AdminItemResponse>(
-                context,
                 Request.Method.POST,
                 DOCTOR_DATA,
                 type
@@ -90,7 +83,6 @@ public class DoctorRemoteDataSourceImpl implements RemoteDataSource.Doctor{
         Type type = new TypeToken<SimpleResponse>(){}.getType();
 
         new BaseVolley<SimpleResponse>(
-                context,
                 Request.Method.POST,
                 DOCTOR_UPDATE,
                 type
@@ -123,7 +115,6 @@ public class DoctorRemoteDataSourceImpl implements RemoteDataSource.Doctor{
         final String[] resultToken = {""};
         Type type = new TypeToken<UsersResponse>(){}.getType();
         new BaseVolley<UsersResponse>(
-                context,
                 Request.Method.GET,
                 GET_TOKEN,
                 type

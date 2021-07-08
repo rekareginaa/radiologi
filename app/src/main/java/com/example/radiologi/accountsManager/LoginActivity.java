@@ -12,6 +12,7 @@ import com.example.radiologi.R;
 import com.example.radiologi.accountsManager.viewModel.AccountViewModel;
 import com.example.radiologi.accountsManager.viewModel.AccountViewModelFactory;
 import com.example.radiologi.admin.home.DataAdminActivity;
+import com.example.radiologi.data.dataSource.local.SharedPreferenceManager;
 import com.example.radiologi.data.dataSource.remote.response.DataItemLogin;
 import com.example.radiologi.data.dataSource.remote.response.LoginResponse;
 import com.example.radiologi.databinding.ActivityLoginBinding;
@@ -32,7 +33,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         binding.btnMasuk.setOnClickListener(this);
 
-        AccountViewModelFactory factory = AccountViewModelFactory.getInstance(this);
+        AccountViewModelFactory factory = AccountViewModelFactory.getInstance();
         viewModel = new ViewModelProvider(this, factory).get(AccountViewModel.class);
 
         observeResult();
@@ -51,6 +52,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     final LoginResponse response = result.peekContent().data;
                     if (response != null){
                         final DataItemLogin user = response.getData().get(0);
+                        SharedPreferenceManager.savesStringPreferences(this, "nip", user.getNip());
+                        SharedPreferenceManager.saveBooleanPreferences(this, "islogin", true);
+                        SharedPreferenceManager.savesStringPreferences(this, "role", user.getRole());
+                        SharedPreferenceManager.savesStringPreferences(this, "token", user.getToken());
+
                         if (user.getRole().equals("admin")) {
                             Intent intent = new Intent(getApplicationContext(), DataAdminActivity.class);
                             startActivity(intent);

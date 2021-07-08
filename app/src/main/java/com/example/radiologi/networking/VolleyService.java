@@ -26,6 +26,10 @@ public class VolleyService {
         return instance;
     }
 
+    public static VolleyService get(){
+        return instance;
+    }
+
     public RequestQueue getQueue(){
         return queue;
     }

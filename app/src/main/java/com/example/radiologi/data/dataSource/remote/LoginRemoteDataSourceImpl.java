@@ -1,15 +1,11 @@
 package com.example.radiologi.data.dataSource.remote;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.android.volley.Request;
-import com.example.radiologi.data.dataSource.local.SharedPreferenceManager;
-import com.example.radiologi.data.dataSource.remote.response.DataItemLogin;
 import com.example.radiologi.data.dataSource.remote.response.LoginResponse;
 import com.example.radiologi.networking.BaseVolley;
 import com.example.radiologi.utils.Event;
@@ -22,20 +18,17 @@ import java.util.Map;
 import static com.example.radiologi.utils.Constants.LOGIN;
 
 public class LoginRemoteDataSourceImpl implements RemoteDataSource.Login {
-    private final Context context;
 
-    @SuppressLint("StaticFieldLeak")
     private static LoginRemoteDataSourceImpl instance;
 
-    public static LoginRemoteDataSourceImpl getInstance(Context context){
+    public static LoginRemoteDataSourceImpl getInstance(){
         if (instance == null){
-            instance = new LoginRemoteDataSourceImpl(context);
+            instance = new LoginRemoteDataSourceImpl();
         }
         return instance;
     }
 
-    public LoginRemoteDataSourceImpl(Context context) {
-        this.context = context;
+    public LoginRemoteDataSourceImpl() {
     }
 
     @Override
@@ -43,7 +36,6 @@ public class LoginRemoteDataSourceImpl implements RemoteDataSource.Login {
         MutableLiveData<Event<Resource<LoginResponse>>> result = new MutableLiveData<>();
         final Type type = new TypeToken<LoginResponse>(){}.getType();
         new BaseVolley<LoginResponse>(
-                context,
                 Request.Method.POST,
                 LOGIN,
                 type
@@ -61,11 +53,6 @@ public class LoginRemoteDataSourceImpl implements RemoteDataSource.Login {
                     case "sukses":
                         Log.d("RESPONSE", status);
                         result.postValue(new Event<>(Resource.success(response)));
-                        final DataItemLogin user = response.getData().get(0);
-                        SharedPreferenceManager.savesStringPreferences(context, "nip", user.getNip());
-                        SharedPreferenceManager.saveBooleanPreferences(context, "islogin", true);
-                        SharedPreferenceManager.savesStringPreferences(context, "role", user.getRole());
-                        SharedPreferenceManager.savesStringPreferences(context, "token", user.getToken());
                         break;
                     case "username":
                         result.postValue(new Event<>(Resource.error("Username Salah", null)));
