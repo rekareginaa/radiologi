@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.radiologi.R;
+import com.example.radiologi.admin.DetailPasienActivity;
 import com.example.radiologi.admin.formAddData.FormAddDataActivity;
 import com.example.radiologi.admin.viewModel.AdminViewModel;
 import com.example.radiologi.admin.viewModel.AdminViewModelFactory;
@@ -68,6 +69,12 @@ public class DataAdminBaruFragment extends Fragment {
         binding.swipeAdminDataBaru.setOnRefreshListener(() -> {
             binding.swipeAdminDataBaru.setRefreshing(false);
             viewModel.setParameters(nip, "0");
+        });
+
+        adapterAdmin.setOnClickListener(itemAdmin -> {
+            Intent intent = new Intent(requireContext(), DetailPasienActivity.class);
+            intent.putExtra(DetailPasienActivity.EXTRA_DATA, itemAdmin);
+            startActivity(intent);
         });
 
         binding.recyclerAdminDataBaru.setAdapter(adapterAdmin);

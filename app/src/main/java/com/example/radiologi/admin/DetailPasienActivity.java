@@ -7,22 +7,19 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.radiologi.R;
+import com.example.radiologi.data.entitiy.ItemAdminEntity;
+import com.example.radiologi.data.entitiy.ItemDoctorEntity;
 import com.example.radiologi.databinding.ActivityTerimaAdminBinding;
 import com.example.radiologi.pdfManager.TampilkanDataPasienActivity;
 import com.example.radiologi.utils.BitmapConverter;
-import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -31,8 +28,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 public class DetailPasienActivity extends AppCompatActivity {
 
@@ -43,7 +38,6 @@ public class DetailPasienActivity extends AppCompatActivity {
     String img, noregiS, norekaM, namaLengkaP, tangLahiR, gendeR, diagnosA;
     String untuk, tdT, status;
     Bitmap gambarradiologi, tandatangannyadokterkah;
-    byte[] gambarradiologiloini, tandatangannyadokterloini;
 
     ProgressDialog progressDialog;
     private ActivityTerimaAdminBinding binding;
@@ -57,16 +51,37 @@ public class DetailPasienActivity extends AppCompatActivity {
 
         binding.ivBack.setOnClickListener(view -> onBackPressed());
 
-        noregiS = getIntent().getStringExtra("noregis");
-        norekaM = getIntent().getStringExtra("norekam");
-        namaLengkaP = getIntent().getStringExtra("namalengkap");
-        tangLahiR = getIntent().getStringExtra("tanggalahir");
-        gendeR = getIntent().getStringExtra("gender");
-        img = getIntent().getStringExtra("gambar");
-        untuk = getIntent().getStringExtra("untuk");
-        diagnosA = getIntent().getStringExtra("diagnosa");
-        tdT = getIntent().getStringExtra("tdt");
-        status = getIntent().getStringExtra("status");
+        if (getIntent().getParcelableExtra(EXTRA_DATA) instanceof ItemAdminEntity) {
+            ItemAdminEntity items = getIntent().getParcelableExtra(EXTRA_DATA);
+            Log.d("DATA_A", items.toString());
+            populateData(
+                    items.getNoregis(),
+                    items.getNorekam(),
+                    items.getNamaPasien(),
+                    items.getTanggalLahir(),
+                    items.getGender(),
+                    items.getGambar(),
+                    items.getPenerima(),
+                    items.getDiagnos(),
+                    items.getTtd(),
+                    items.getStatus()
+            );
+        } else {
+            ItemDoctorEntity items = getIntent().getParcelableExtra(EXTRA_DATA);
+            populateData(
+                    items.getNoregis(),
+                    items.getNorekam(),
+                    items.getNamaPasien(),
+                    items.getTanggalLahir(),
+                    items.getGender(),
+                    items.getGambar(),
+                    items.getPenerima(),
+                    items.getDiagnos(),
+                    items.getTtd(),
+                    items.getStatus()
+            );
+        }
+
 
         loadImage1();
         loadImage2();
@@ -108,23 +123,43 @@ public class DetailPasienActivity extends AppCompatActivity {
         binding.btnCreate.setOnClickListener(view -> updateStatus());
     }
 
+    private void populateData(
+            String noregiS,
+            String norekaM,
+            String namaLengkaP,
+            String tanggalLahir,
+            String gender,
+            String img,
+            String untuk,
+            String diagnosa,
+            String ttd,
+            String status
+
+    ) {
+        this.noregiS = noregiS;
+        this.norekaM = norekaM;
+        this.namaLengkaP = namaLengkaP;
+        this.tangLahiR = tanggalLahir;
+        this.gendeR = gender;
+        this.img = img;
+        this.untuk = untuk;
+        this.diagnosA = diagnosa;
+        this.tdT = ttd;
+        this.status = status;
+    }
+
     private void updateStatus() {
-
+        showDialog();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, urlupdatestatus,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            String Response = jsonObject.getString("response");
-                            Toast.makeText(getApplicationContext(), Response, Toast.LENGTH_LONG).show();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                response -> {
+                    hideDialog();
+                    Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String Response = jsonObject.getString("notice");
+                        JSONObject msg = new JSONObject(Response);
 
-                        progressDialog.dismiss();
-
+                        Toast.makeText(getApplicationContext(), msg.getString("text"), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(DetailPasienActivity.this, TampilkanDataPasienActivity.class);
                         intent.putExtra("noregis", noregiS);
                         intent.putExtra("norekam", norekaM);
@@ -135,12 +170,12 @@ public class DetailPasienActivity extends AppCompatActivity {
                         intent.putExtra("diagnosa", diagnosA);
                         intent.putExtra("tandatangan", BitmapConverter.bitmapToString(tandatangannyadokterkah));
                         startActivity(intent);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "error"+ error.toString(), Toast.LENGTH_LONG).show();
-            }
+                }, error -> {
+            hideDialog();
+            Toast.makeText(getApplicationContext(), "error" + error.toString(), Toast.LENGTH_LONG).show();
         }) {
             @Override
             protected Map<String, String> getParams() {
@@ -154,19 +189,19 @@ public class DetailPasienActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
-    private void showDialog(){
+    private void showDialog() {
         progressDialog.setTitle("Mohon Tunggu ...");
         progressDialog.setCancelable(false);
         progressDialog.show();
     }
 
-    private void hideDialog(){
-        if (progressDialog.isShowing()){
+    private void hideDialog() {
+        if (progressDialog.isShowing()) {
             progressDialog.cancel();
         }
     }
 
-    void loadImage1() {
+    private void loadImage1() {
         Picasso.get().load(img).into(new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -185,23 +220,27 @@ public class DetailPasienActivity extends AppCompatActivity {
         });
     }
 
-    void loadImage2() {
-        Picasso.get().load(tdT).into(new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                tandatangannyadokterkah = bitmap;
-            }
+    private void loadImage2() {
+        if (!status.equals("0")) {
+            Picasso.get().load(tdT).into(new Target() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                    tandatangannyadokterkah = bitmap;
+                }
 
-            @Override
-            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+                @Override
+                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
 
-            }
+                }
 
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                @Override
+                public void onPrepareLoad(Drawable placeHolderDrawable) {
 
-            }
-        });
+                }
+            });
+        } else {
+            binding.btnCreate.setVisibility(View.GONE);
+        }
     }
 
 }
