@@ -59,7 +59,7 @@ public class AdapterDokter extends RecyclerView.Adapter<AdapterDokter.ViewHolder
         holder.namaLengkap.setText(listitemDokter.getNamaPasien());
         holder.jenisKelamin.setText(listitemDokter.getGender());
         holder.tanggalLahir.setText(listitemDokter.getTanggalLahir());
-        holder.itemView.setOnClickListener(view -> mListener.onItemClick(listitemDokter));
+
         holder.dokterHolder.setOnClickListener(view -> mListener.onItemClick(listitemDokter));
     }
 

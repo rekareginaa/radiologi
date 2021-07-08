@@ -1,5 +1,7 @@
 package com.example.radiologi.data.repository;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 
 import com.example.radiologi.data.NetworkBoundResource;
@@ -7,6 +9,7 @@ import com.example.radiologi.data.dataSource.local.LocalDataSource;
 import com.example.radiologi.data.dataSource.remote.RemoteDataSource;
 import com.example.radiologi.data.dataSource.remote.response.AdminItemResponse;
 import com.example.radiologi.data.dataSource.remote.response.DataItemAdmin;
+import com.example.radiologi.data.dataSource.remote.response.SimpleResponse;
 import com.example.radiologi.data.dataSource.remote.vo.ApiResponse;
 import com.example.radiologi.data.entitiy.ItemDoctorEntity;
 import com.example.radiologi.utils.AppExecutors;
@@ -14,6 +17,9 @@ import com.example.radiologi.utils.vo.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static com.example.radiologi.utils.Constants.TOKENS;
 
 public class DoctorRepositoryImpl implements Repository.DoctorRepository{
     private final RemoteDataSource.Doctor remoteDataSource;
@@ -85,5 +91,12 @@ public class DoctorRepositoryImpl implements Repository.DoctorRepository{
                 localDataSource.insertDataDoctor(listDoctor);
             }
         }.asLiveData();
+    }
+
+    @Override
+    public LiveData<Resource<SimpleResponse>> getResponseUpdate(Map<String, String> params) {
+        final String tokens = remoteDataSource.getToken();
+        params.put(TOKENS, tokens);
+        return remoteDataSource.getResponse(params);
     }
 }

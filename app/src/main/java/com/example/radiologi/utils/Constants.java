@@ -16,5 +16,6 @@ public class Constants {
     public static final String STATUS = "status";
     public static final String EMPTY = "kosong";
     public static final String SUCCESS = "sukses";
+    public static final String TOKENS = "token_tujuan";
 
 }

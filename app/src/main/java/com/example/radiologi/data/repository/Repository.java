@@ -3,6 +3,7 @@ package com.example.radiologi.data.repository;
 import androidx.lifecycle.LiveData;
 
 import com.example.radiologi.data.dataSource.remote.response.LoginResponse;
+import com.example.radiologi.data.dataSource.remote.response.SimpleResponse;
 import com.example.radiologi.data.entitiy.ItemAdminEntity;
 import com.example.radiologi.data.entitiy.ItemDoctorEntity;
 import com.example.radiologi.utils.Event;
@@ -22,5 +23,6 @@ public interface Repository {
 
     interface DoctorRepository{
         LiveData<Resource<List<ItemDoctorEntity>>> getDoctorData(String nip, String status);
+        LiveData<Resource<SimpleResponse>> getResponseUpdate(Map<String, String> params);
     }
 }

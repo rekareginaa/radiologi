@@ -49,18 +49,18 @@ public class ItemDoctorEntity implements Parcelable {
     private String status;
 
     public ItemDoctorEntity(Parcel in) {
-        id = in.readString();
-        noregis = in.readString();
-        pengirim = in.readString();
-        tanggalLahir = in.readString();
-        namaPasien = in.readString();
-        diagnos = in.readString();
-        gender = in.readString();
-        ttd = in.readString();
-        penerima = in.readString();
-        gambar = in.readString();
-        norekam = in.readString();
-        status = in.readString();
+        this.id = in.readString();
+        this.noregis = in.readString();
+        this.pengirim = in.readString();
+        this.tanggalLahir = in.readString();
+        this.namaPasien = in.readString();
+        this.diagnos = in.readString();
+        this.gender = in.readString();
+        this.ttd = in.readString();
+        this.penerima = in.readString();
+        this.gambar = in.readString();
+        this.norekam = in.readString();
+        this.status = in.readString();
     }
 
     public ItemDoctorEntity(@NonNull String id, String noregis, String pengirim, String tanggalLahir, String namaPasien, String diagnos, String gender, String ttd, String penerima, String gambar, String norekam, String status) {

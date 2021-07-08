@@ -16,12 +16,12 @@ public interface AdminDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAdminData(List<ItemAdminEntity> adminEntities);
 
-    @Query("SELECT * FROM itemadminentity WHERE status =:status")
+    @Query("SELECT * FROM item_admin_entity WHERE status =:status")
     LiveData<List<ItemAdminEntity>> getAdminData(String status);
 
-    @Query("SELECT * FROM itemadminentity WHERE status ='1' OR '2'")
+    @Query("SELECT * FROM item_admin_entity WHERE status ='1' OR '2'")
     LiveData<List<ItemAdminEntity>> getAdminData();
 
-    @Query("DELETE FROM itemadminentity")
+    @Query("DELETE FROM item_admin_entity")
     void deleteALlDataAdmin();
 }

@@ -1,10 +1,7 @@
 package com.example.radiologi.dokter.formResponseData;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,32 +11,24 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.example.radiologi.R;
-import com.example.radiologi.dokter.home.DataDokterActivity;
-import com.github.chrisbanes.photoview.PhotoView;
+import com.example.radiologi.data.entitiy.ItemDoctorEntity;
+import com.example.radiologi.databinding.ActivityRoomDokterBinding;
+import com.example.radiologi.dokter.viewModel.DoctorViewModel;
+import com.example.radiologi.dokter.viewModel.DoctorViewModelFactory;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 import com.squareup.picasso.Picasso;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -47,75 +36,66 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public class FormResponseDataDokterActivity extends AppCompatActivity {
 
-    ImageView btBack;
-    EditText etDiagnosa;
-    TextView noRekam, namaLengkap, tangLahir, gender;
-    String norekaM, namaLengkaP, tangLahiR, gendeR, gambaR, diagnosa, ttd, token;
-    PhotoView foto;
+    String norekaM;
+    String namaLengkaP;
+    String tangLahiR;
+    String gendeR;
+    String gambaR;
+    String ttd;
 
     //untuk tanda tangan
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private static String[] PERMISSIONS_STORAGE = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    private SignaturePad mSignaturePad;
-    private ImageButton mClearButton;
-    private Button mSaveButton;
+    private static final String[] PERMISSIONS_STORAGE = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     String filePath;
 
-    private static final String urlupdate = "https://dbradiologi.000webhostapp.com/api/users/updatedokter";
-    private static final String url_token =  "https://dbradiologi.000webhostapp.com/api/users";
-    public static final String EXTRA_DATA = "extra_data";
+    public static final String EXTRA_DATA = "extra_detail";
+
+    private ActivityRoomDokterBinding binding;
+    private DoctorViewModel viewModel;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         verifyStoragePermissions(this);
-        setContentView(R.layout.activity_room_dokter);
+        binding = ActivityRoomDokterBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        tokenAdmin();
+        binding.ivBack.setOnClickListener(view -> onBackPressed());
 
-        //CloudinaryConfig.configCloudinary(getApplicationContext());
+        progressDialog = new ProgressDialog(this);
 
-        btBack = findViewById(R.id.iv_back);
-        btBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+        DoctorViewModelFactory factory = DoctorViewModelFactory.getInstance(this);
+        viewModel = new ViewModelProvider(this, factory).get(DoctorViewModel.class);
 
-        etDiagnosa=findViewById(R.id.et_diagnosa);
-        noRekam = findViewById(R.id.tv_norekmed);
-        namaLengkap = findViewById(R.id.tv_nama);
-        tangLahir = findViewById(R.id.tv_tgllahir);
-        gender = findViewById(R.id.tv_gender);
-        foto = findViewById(R.id.photo_viiew);
-        mClearButton = (ImageButton) findViewById(R.id.clear_button);
-        mSaveButton = (Button) findViewById(R.id.save_button);
+        final ItemDoctorEntity itemsData = getIntent().getParcelableExtra(EXTRA_DATA);
 
-        norekaM = getIntent().getStringExtra("norekam");
-        namaLengkaP = getIntent().getStringExtra("namalengkap");
-        tangLahiR = getIntent().getStringExtra("tanggalahir");
-        gendeR = getIntent().getStringExtra("gender");
-        gambaR = getIntent().getStringExtra("gambar");
+        if (itemsData != null) {
+            Log.d("DATA_", itemsData.toString());
+            norekaM = itemsData.getNorekam();
+            namaLengkaP = itemsData.getNamaPasien();
+            tangLahiR = itemsData.getTanggalLahir();
+            gendeR = itemsData.getGender();
+            gambaR = itemsData.getGambar();
+        }
 
-        noRekam.setText(norekaM);
-        namaLengkap.setText(namaLengkaP);
-        tangLahir.setText(tangLahiR);
-        gender.setText(gendeR);
-
-        Log.i("regina", gambaR);
+        binding.tvNorekmed.setText(norekaM);
+        binding.tvNama.setText(namaLengkaP);
+        binding.tvTgllahir.setText(tangLahiR);
+        binding.tvGender.setText(gendeR);
 
         Picasso.get().setLoggingEnabled(true);
-        Picasso.get().load(gambaR).into(foto);
+        Picasso.get().load(gambaR).into(binding.photoViiew);
 
         //untuk tanda tangan
-        mSignaturePad= (SignaturePad) findViewById(R.id.signature_pad);
-        mSignaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
+        binding.signaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
             @Override
             public void onStartSigning() {
                 //Toast.makeText(Ttd.this, "OnStartSigning", Toast.LENGTH_SHORT).show();
@@ -123,61 +103,69 @@ public class FormResponseDataDokterActivity extends AppCompatActivity {
 
             @Override
             public void onSigned() {
-                mSaveButton.setEnabled(true);
-                mSaveButton.setBackground(getResources().getDrawable(R.drawable.rounded_button));
-                mClearButton.setEnabled(true);
+                binding.saveButton.setEnabled(true);
+                binding.saveButton.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.rounded_button, null));
+                binding.clearButton.setEnabled(true);
             }
 
             @Override
             public void onClear() {
-                mSaveButton.setEnabled(false);
-                mSaveButton.setBackground(getResources().getDrawable(R.drawable.rounded_button_false));
-                mClearButton.setEnabled(false);
+                binding.saveButton.setEnabled(false);
+                binding.saveButton.setBackground(ResourcesCompat.getDrawable(getResources(), R.drawable.rounded_button_false, null));
+                binding.clearButton.setEnabled(false);
             }
         });
 
-        mClearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mSignaturePad.clear();
+        binding.clearButton.setOnClickListener(view -> binding.signaturePad.clear());
+
+        binding.saveButton.setOnClickListener(view -> {
+            showDialog();
+            Bitmap signatureBitmap = binding.signaturePad.getSignatureBitmap();
+
+            if (addJpgSignatureToGallery(signatureBitmap)) {
+                Toast.makeText(FormResponseDataDokterActivity.this, "Signature saved into teh Gallery", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(FormResponseDataDokterActivity.this, "Unable to store the signature", Toast.LENGTH_SHORT).show();
+            }
+            if (addSvgSignatureToGallery(binding.signaturePad.getSignatureSvg())) {
+                Toast.makeText(FormResponseDataDokterActivity.this, "SVG Signature save into the Gallery", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(FormResponseDataDokterActivity.this, "Unable to store the SVG signature", Toast.LENGTH_SHORT).show();
             }
         });
 
-        mSaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bitmap signatureBitmap = mSignaturePad.getSignatureBitmap();
+        observeStatusUpdate();
 
-                if (addJpgSignatureToGallery(signatureBitmap)) {
-                    Toast.makeText(FormResponseDataDokterActivity.this, "Signature saved into teh Gallery", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(FormResponseDataDokterActivity.this, "Unable to store the signature", Toast.LENGTH_SHORT).show();
-                }
-                if (addSvgSignatureToGallery(mSignaturePad.getSignatureSvg())) {
-                    Toast.makeText(FormResponseDataDokterActivity.this, "SVG Signature save into the Gallery", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(FormResponseDataDokterActivity.this, "Unable to store the SVG signature", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+    }
 
+    private void requestUpdate() {
+        final String diagnosa = binding.etDiagnosa.getText().toString();
+
+        Map<String, String> params = new HashMap<>();
+        params.put("norekam", norekaM);
+        params.put("diagnosa", diagnosa);
+        params.put("ttd", ttd);
+        params.put("status", "1");
+        params.put("title", "Data Pasien Baru");
+        params.put("message", "Dokter mengirimkan data yang telah dilengkapi");
+
+        viewModel.setParameters(params);
     }
 
     //untuk tanda tangan
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case REQUEST_EXTERNAL_STORAGE: {
-                if (grantResults.length <= 0
-                        || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(FormResponseDataDokterActivity.this, "Cannot write images to external storage", Toast.LENGTH_SHORT).show();
-                }
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_EXTERNAL_STORAGE) {
+            if (grantResults.length <= 0
+                    || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(FormResponseDataDokterActivity.this, "Cannot write images to external storage", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    public File getAlbumStorageDir (String albumName) {
+    public File getAlbumStorageDir(String albumName) {
         File file = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES), albumName);
         if (!file.mkdirs()) {
@@ -199,7 +187,7 @@ public class FormResponseDataDokterActivity extends AppCompatActivity {
     public boolean addJpgSignatureToGallery(Bitmap signature) {
         boolean result = false;
         try {
-            File photo = new File(getAlbumStorageDir("Tdt"), String.format("Signature_%d.jpg", System.currentTimeMillis()));
+            File photo = new File(getAlbumStorageDir("Tdt"), String.format(Locale.ROOT, "Signature_%d.jpg", System.currentTimeMillis()));
             Log.i("regina", String.valueOf(photo));
             filePath = String.valueOf(photo);   //filepathnya
             saveBitmapToJPG(signature, photo);
@@ -225,7 +213,7 @@ public class FormResponseDataDokterActivity extends AppCompatActivity {
         boolean result = false;
         Log.i("regina", signatureSvg);
         try {
-            File svgFile = new File(getAlbumStorageDir("SignaturePad"), String.format("Signature_%d.svg", System.currentTimeMillis()));
+            File svgFile = new File(getAlbumStorageDir("SignaturePad"), String.format(Locale.ROOT, "Signature_%d.svg", System.currentTimeMillis()));
             OutputStream stream = new FileOutputStream(svgFile);
             OutputStreamWriter writer = new OutputStreamWriter(stream);
             writer.write(signatureSvg);
@@ -270,93 +258,56 @@ public class FormResponseDataDokterActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(String requestId, Map resultData) {
-                //mText.setText("image URL: "+resultData.get("url").toString());
-                Log.i("regina", "sukses");
-                Log.i("regina", resultData.get("url").toString());
-                ttd = resultData.get("url").toString();
-                updateData();
+                final Object url = resultData.get("url");
+                if (url != null) {
+                    Log.i("regina", "sukses");
+                    Log.i("regina", Objects.requireNonNull(resultData.get("url")).toString());
+                    ttd = Objects.requireNonNull(resultData.get("url")).toString();
+                    requestUpdate();
+                }
             }
 
             @Override
             public void onError(String requestId, ErrorInfo error) {
-                Log.i("regina",  error.getDescription());
+                Log.i("regina", error.getDescription());
                 //mText.setText("error "+ error.getDescription());
             }
 
             @Override
             public void onReschedule(String requestId, ErrorInfo error) {
-                Log.i("regina",  error.getDescription());
+                Log.i("regina", error.getDescription());
                 // mText.setText("Reshedule "+error.getDescription());
             }
         }).dispatch();
     }
 
-    private void updateData() {
-        diagnosa = etDiagnosa.getText().toString();
-
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, urlupdate,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            String Response = jsonObject.getString("response");
-                            Toast.makeText(getApplicationContext(), Response, Toast.LENGTH_LONG).show();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Intent intent = new Intent(FormResponseDataDokterActivity.this, DataDokterActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "error"+ error.toString(), Toast.LENGTH_LONG).show();
+    private void observeStatusUpdate() {
+        viewModel.getResponse.observe(this, result -> {
+            switch (result.status) {
+                case LOADING:
+                    Toast.makeText(this, "mohon tunggu", Toast.LENGTH_SHORT).show();
+                    break;
+                case ERROR:
+                    hideDialog();
+                    Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show();
+                    break;
+                case SUCCESS:
+                    hideDialog();
+                    Toast.makeText(this, "berhasil upload", Toast.LENGTH_SHORT).show();
+                    break;
             }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("norekam", norekaM);
-                params.put("diagnosa", diagnosa);
-                params.put("ttd", ttd);
-                params.put("status", "1");
-                params.put("token_tujuan", token);
-                params.put("title", "Data Pasien Baru");
-                params.put("message", "Dokter mengirimkan data yang telah dilengkapi");
-                return params;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(FormResponseDataDokterActivity.this);
-        requestQueue.add(stringRequest);
+        });
     }
 
-    private void tokenAdmin() {
-        StringRequest request = new StringRequest(Request.Method.GET, url_token, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject object = new JSONObject(response);
-                    JSONArray array = object.getJSONArray("data");
-                    for (int i = 0; i < array.length(); i++) {
-                        if (array.getJSONObject(i).getString("role").equals("admin")) {
-                            token = array.getJSONObject(i).getString("token");
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("regina", error.getMessage());
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        queue.add(request);
+    private void showDialog(){
+        progressDialog.setTitle("Mohon Tunggu...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+
+    private void hideDialog(){
+        if (progressDialog.isShowing()){
+            progressDialog.cancel();
+        }
     }
 }

@@ -12,7 +12,7 @@ import com.example.radiologi.data.entitiy.ItemDoctorEntity;
 
 @Database(
         entities = {ItemAdminEntity.class, ItemDoctorEntity.class},
-        version = 2,
+        version = 3,
         exportSchema = false
 )
 public abstract class RadiologiDatabase extends RoomDatabase {

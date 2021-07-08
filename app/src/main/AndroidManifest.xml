@@ -13,6 +13,7 @@
         android:allowBackup="false"
         android:roundIcon="@drawable/ic_logoapp"
         android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         android:networkSecurityConfig="@xml/network_security_config">

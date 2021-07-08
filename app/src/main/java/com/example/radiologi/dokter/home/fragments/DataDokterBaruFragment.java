@@ -3,6 +3,7 @@ package com.example.radiologi.dokter.home.fragments;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,7 @@ public class DataDokterBaruFragment extends Fragment {
         binding.recyclerDokterDataBaru.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerDokterDataBaru.setAdapter(adapterDokter);
         adapterDokter.setOnClickListener(listitemDokter -> {
+            Log.d("DATA_", listitemDokter.toString());
             Intent intent = new Intent(getContext(), FormResponseDataDokterActivity.class);
             intent.putExtra(FormResponseDataDokterActivity.EXTRA_DATA, listitemDokter);
             startActivity(intent);

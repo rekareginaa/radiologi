@@ -8,15 +8,22 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.android.volley.Request;
 import com.example.radiologi.data.dataSource.remote.response.AdminItemResponse;
+import com.example.radiologi.data.dataSource.remote.response.DataItemUsers;
+import com.example.radiologi.data.dataSource.remote.response.SimpleResponse;
+import com.example.radiologi.data.dataSource.remote.response.UsersResponse;
 import com.example.radiologi.data.dataSource.remote.vo.ApiResponse;
 import com.example.radiologi.networking.BaseVolley;
+import com.example.radiologi.utils.vo.Resource;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.example.radiologi.utils.Constants.DOCTOR_DATA;
+import static com.example.radiologi.utils.Constants.DOCTOR_UPDATE;
+import static com.example.radiologi.utils.Constants.GET_TOKEN;
 import static com.example.radiologi.utils.Constants.NIP;
 import static com.example.radiologi.utils.Constants.SUCCESS;
 
@@ -75,5 +82,70 @@ public class DoctorRemoteDataSourceImpl implements RemoteDataSource.Doctor{
             }
         };
         return result;
+    }
+
+    @Override
+    public LiveData<Resource<SimpleResponse>> getResponse(Map<String, String> params) {
+        MutableLiveData<Resource<SimpleResponse>> result = new MutableLiveData<>();
+        Type type = new TypeToken<SimpleResponse>(){}.getType();
+
+        new BaseVolley<SimpleResponse>(
+                context,
+                Request.Method.POST,
+                DOCTOR_UPDATE,
+                type
+        ){
+            @Override
+            protected void onLoading() {
+                result.postValue(Resource.loading(null));
+            }
+
+            @Override
+            protected void onSuccess(SimpleResponse response) {
+                result.postValue(Resource.success(response));
+            }
+
+            @Override
+            protected void onError(String message) {
+                result.postValue(Resource.error(message, null));
+            }
+
+            @Override
+            protected Map<String, String> setParameter() {
+                return params;
+            }
+        };
+        return result;
+    }
+
+    @Override
+    public String getToken() {
+        final String[] resultToken = {""};
+        Type type = new TypeToken<UsersResponse>(){}.getType();
+        new BaseVolley<UsersResponse>(
+                context,
+                Request.Method.GET,
+                GET_TOKEN,
+                type
+        ){
+            @Override
+            protected void onLoading() {}
+
+            @Override
+            protected void onSuccess(UsersResponse response) {
+                List<DataItemUsers> data = response.getData();
+                resultToken[0] = data.get(1).getToken();
+            }
+
+            @Override
+            protected void onError(String message) { }
+
+            @Override
+            protected Map<String, String> setParameter() {
+                return null;
+            }
+        };
+
+        return resultToken[0];
     }
 }

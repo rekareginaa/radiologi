@@ -8,7 +8,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "itemadminentity")
+@Entity(tableName = "item_admin_entity")
 public class ItemAdminEntity implements Parcelable {
     protected ItemAdminEntity(Parcel in) {
         this.noregis = in.readString();
