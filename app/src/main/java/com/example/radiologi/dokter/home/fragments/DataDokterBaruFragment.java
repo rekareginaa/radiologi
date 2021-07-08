@@ -3,7 +3,6 @@ package com.example.radiologi.dokter.home.fragments;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,10 +62,10 @@ public class DataDokterBaruFragment extends Fragment {
         }
 
         binding.swipeDokterDataBaru.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
-        binding.swipeDokterDataBaru.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+        binding.swipeDokterDataBaru.setOnRefreshListener(() -> {
             binding.swipeDokterDataBaru.setRefreshing(false);
             viewModel.setParameters(nip, "0");
-        },4000));
+        });
 
         binding.recyclerDokterDataBaru.setHasFixedSize(true);
         binding.recyclerDokterDataBaru.setLayoutManager(new LinearLayoutManager(getContext()));

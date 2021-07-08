@@ -19,7 +19,7 @@ public interface DoctorDao {
     @Query("SELECT * FROM item_doctor_entity WHERE status =:status")
     LiveData<List<ItemDoctorEntity>> getDoctorData(String status);
 
-    @Query("SELECT * FROM item_doctor_entity WHERE status ='1' OR '2'")
+    @Query("SELECT * FROM item_doctor_entity WHERE status !='0'")
     LiveData<List<ItemDoctorEntity>> getDoctorData();
 
     @Query("DELETE FROM item_doctor_entity")
