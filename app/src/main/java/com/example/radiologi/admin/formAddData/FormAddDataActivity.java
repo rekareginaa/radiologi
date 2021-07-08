@@ -37,7 +37,7 @@ import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.example.radiologi.R;
-import com.example.radiologi.data.SharedPreferenceManager;
+import com.example.radiologi.data.dataSource.local.SharedPreferenceManager;
 import com.example.radiologi.admin.home.DataAdminActivity;
 
 import org.json.JSONArray;

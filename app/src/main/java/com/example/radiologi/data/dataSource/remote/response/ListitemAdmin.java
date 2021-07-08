@@ -1,4 +1,4 @@
-package com.example.radiologi.model;
+package com.example.radiologi.data.dataSource.remote.response;
 
 public class ListitemAdmin {
 

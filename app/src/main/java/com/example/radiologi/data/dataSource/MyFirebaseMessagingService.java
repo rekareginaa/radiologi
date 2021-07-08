@@ -1,4 +1,4 @@
-package com.example.radiologi.data;
+package com.example.radiologi.data.dataSource;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -11,18 +11,18 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+
 import com.example.radiologi.R;
 import com.example.radiologi.admin.home.DataAdminActivity;
-import com.example.radiologi.data.SharedPreferenceManager;
+import com.example.radiologi.data.dataSource.local.SharedPreferenceManager;
 import com.example.radiologi.dokter.home.DataDokterActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
-
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
-    private static String TAG = "MyFirebaseMessagingService";
+    private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
 
     PendingIntent pendingIntent;
 
@@ -37,7 +37,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
         if (remoteMessage.getNotification() !=null) {
             sendNotification(remoteMessage.getNotification().getBody(), remoteMessage.getNotification().getTitle());
-            Log.d("MSG", remoteMessage.toString());
+            Log.d(TAG, remoteMessage.toString());
         }
     }
 
@@ -73,6 +73,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
+            channel.canShowBadge();
             mBuilder.setChannelId(channelId);
 
             if (mNotificationManager !=null) {
@@ -80,6 +81,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
         }
         mBuilder.setFullScreenIntent(pendingIntent, true);
+        mBuilder.setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL);
         Notification notification = mBuilder.build();
 
         if (mNotificationManager !=null) {

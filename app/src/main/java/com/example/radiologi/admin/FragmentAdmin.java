@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.example.radiologi.accountsManager.LoginActivity;
 import com.example.radiologi.R;
 import com.example.radiologi.accountsManager.RegisterActivity;
-import com.example.radiologi.data.SharedPreferenceManager;
+import com.example.radiologi.data.dataSource.local.SharedPreferenceManager;
 
 public class FragmentAdmin extends Fragment {
 

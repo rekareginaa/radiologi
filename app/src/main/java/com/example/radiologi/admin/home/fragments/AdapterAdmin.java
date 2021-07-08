@@ -14,13 +14,14 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.radiologi.model.ListitemAdmin;
+import com.example.radiologi.data.dataSource.remote.response.ListitemAdmin;
 import com.example.radiologi.R;
+import com.example.radiologi.data.entitiy.ItemAdminEntity;
 
 public class AdapterAdmin extends RecyclerView.Adapter<AdapterAdmin.ViewHolder> {
 
     LayoutInflater inflater;
-    List<ListitemAdmin> listitemAdmins;
+    List<ItemAdminEntity> listitemAdmins;
     Context context;
     int status;
 
@@ -40,13 +41,13 @@ public class AdapterAdmin extends RecyclerView.Adapter<AdapterAdmin.ViewHolder> 
         return new ViewHolder(v);
     }
 
-    void add(ListitemAdmin item) {
+    void add(ItemAdminEntity item) {
         listitemAdmins.add(item);
         notifyItemInserted(listitemAdmins.size());
     }
 
-    void addAll(List<ListitemAdmin> list) {
-        for (ListitemAdmin member: list) {
+    void addAll(List<ItemAdminEntity> list) {
+        for (ItemAdminEntity member: list) {
             add(member);
         }
     }
@@ -58,15 +59,15 @@ public class AdapterAdmin extends RecyclerView.Adapter<AdapterAdmin.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final ListitemAdmin listitemAdmin = listitemAdmins.get(position);
+        final ItemAdminEntity listitemAdmin = listitemAdmins.get(position);
 
         switch (status) {
             case 0:
                 if (listitemAdmin.getStatus().equals("0")) {
-                    holder.noRekam.setText(listitemAdmin.getNoRekam());
-                    holder.namaLengkap.setText(listitemAdmin.getNamaLengkap());
+                    holder.noRekam.setText(listitemAdmin.getNorekam());
+                    holder.namaLengkap.setText(listitemAdmin.getNamaPasien());
                     holder.jenisKelamin.setText(listitemAdmin.getGender());
-                    holder.tanggalLahir.setText(listitemAdmin.getTangLahir());
+                    holder.tanggalLahir.setText(listitemAdmin.getTanggalLahir());
                     holder.itemView.setOnClickListener(view -> mListener.onItemClick(listitemAdmin));
                     holder.adminHolder.setOnClickListener(view -> mListener.onItemClick(listitemAdmin));
                 }
@@ -78,10 +79,10 @@ public class AdapterAdmin extends RecyclerView.Adapter<AdapterAdmin.ViewHolder> 
                     holder.jenisKelamin.setTextColor(Color.WHITE);
                     holder.separator.setTextColor(Color.WHITE);
                     holder.tanggalLahir.setTextColor(Color.WHITE);
-                    holder.noRekam.setText(listitemAdmin.getNoRekam());
-                    holder.namaLengkap.setText(listitemAdmin.getNamaLengkap());
+                    holder.noRekam.setText(listitemAdmin.getNorekam());
+                    holder.namaLengkap.setText(listitemAdmin.getNamaPasien());
                     holder.jenisKelamin.setText(listitemAdmin.getGender());
-                    holder.tanggalLahir.setText(listitemAdmin.getTangLahir());
+                    holder.tanggalLahir.setText(listitemAdmin.getTanggalLahir());
                     holder.itemView.setOnClickListener(view -> mListener.onItemClick(listitemAdmin));
                     holder.adminHolder.setOnClickListener(view -> mListener.onItemClick(listitemAdmin));
                 } else if (listitemAdmin.getStatus().equals("2")) {
@@ -91,10 +92,10 @@ public class AdapterAdmin extends RecyclerView.Adapter<AdapterAdmin.ViewHolder> 
                     holder.jenisKelamin.setTextColor(Color.DKGRAY);
                     holder.separator.setTextColor(Color.DKGRAY);
                     holder.tanggalLahir.setTextColor(Color.DKGRAY);
-                    holder.noRekam.setText(listitemAdmin.getNoRekam());
-                    holder.namaLengkap.setText(listitemAdmin.getNamaLengkap());
+                    holder.noRekam.setText(listitemAdmin.getNorekam());
+                    holder.namaLengkap.setText(listitemAdmin.getNamaPasien());
                     holder.jenisKelamin.setText(listitemAdmin.getGender());
-                    holder.tanggalLahir.setText(listitemAdmin.getTangLahir());
+                    holder.tanggalLahir.setText(listitemAdmin.getTanggalLahir());
                     holder.itemView.setOnClickListener(view -> mListener.onItemClick(listitemAdmin));
                     holder.adminHolder.setOnClickListener(view -> mListener.onItemClick(listitemAdmin));
                 }
@@ -132,6 +133,6 @@ public class AdapterAdmin extends RecyclerView.Adapter<AdapterAdmin.ViewHolder> 
     }
 
     public interface OnItemClickListener {
-        void onItemClick(ListitemAdmin listitemAdmin);
+        void onItemClick(ItemAdminEntity listitemAdmin);
     }
 }
