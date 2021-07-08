@@ -1,7 +1,5 @@
 package com.example.radiologi.accountsManager.viewModel;
 
-import android.content.Context;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
@@ -17,11 +15,11 @@ public class AccountViewModelFactory extends ViewModelProvider.NewInstanceFactor
         this.repository = repository;
     }
 
-    public static AccountViewModelFactory getInstance(Context context){
+    public static AccountViewModelFactory getInstance(){
         if (instance == null){
             synchronized (AccountViewModelFactory.class){
                 instance = new AccountViewModelFactory(
-                        (AccountRepositoryImpl) Injection.provideAccountRepository(context));
+                        (AccountRepositoryImpl) Injection.provideAccountRepository());
             }
         }
         return instance;

@@ -1,6 +1,5 @@
 package com.example.radiologi.networking;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.toolbox.StringRequest;
@@ -13,19 +12,16 @@ public abstract class BaseVolley<T> {
 
     private final String urlRequest;
     private final int method;
-    private final Context context;
     private T responseObj;
     private final Type type;
 
     protected BaseVolley(
-            Context context,
             int method,
             String urlRequest,
             Type type
     ) {
         this.urlRequest = urlRequest;
         this.method = method;
-        this.context = context;
         this.type = type;
 
         doRequest();
@@ -57,7 +53,7 @@ public abstract class BaseVolley<T> {
                 return setParameter();
             }
         };
-        VolleyService.getInstance(context).getQueue().add(request);
+        VolleyService.get().getQueue().add(request);
     }
 
     protected abstract void onLoading();

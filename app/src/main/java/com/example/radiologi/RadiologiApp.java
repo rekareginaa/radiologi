@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.cloudinary.android.MediaManager;
 import com.example.radiologi.data.dataSource.local.SharedPreferenceManager;
+import com.example.radiologi.networking.VolleyService;
 
 import java.util.HashMap;
 
@@ -20,5 +21,7 @@ public class RadiologiApp extends Application {
 
         MediaManager.init(getApplicationContext(), config);
         SharedPreferenceManager.saveBooleanPreferences(getApplicationContext(), "init", true);
+
+        VolleyService.getInstance(this.getApplicationContext());
     }
 }

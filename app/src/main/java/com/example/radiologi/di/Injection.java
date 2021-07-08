@@ -17,14 +17,14 @@ import com.example.radiologi.data.repository.Repository;
 import com.example.radiologi.utils.AppExecutors;
 
 public class Injection {
-    public static Repository.AccountRepository provideAccountRepository(Context context){
-        RemoteDataSource.Login remoteDataSource = LoginRemoteDataSourceImpl.getInstance(context);
+    public static Repository.AccountRepository provideAccountRepository(){
+        RemoteDataSource.Login remoteDataSource = LoginRemoteDataSourceImpl.getInstance();
         return AccountRepositoryImpl.getInstance(remoteDataSource);
     }
 
     public static Repository.AdminRepository provideAdminRepository(Context context){
         final RadiologiDatabase database = RadiologiDatabase.getInstance(context);
-        final RemoteDataSource.Admin remoteDataSource = AdminRemoteDataSourceImpl.getInstance(context);
+        final RemoteDataSource.Admin remoteDataSource = AdminRemoteDataSourceImpl.getInstance();
         final LocalDataSource.Admin localDataSource = AdminLocalDataSourceImpl.getInstance(database.adminDao());
         final AppExecutors executors = new AppExecutors();
 
@@ -33,7 +33,7 @@ public class Injection {
 
     public static Repository.DoctorRepository provideDoctorRepository(Context context){
         final RadiologiDatabase database = RadiologiDatabase.getInstance(context);
-        final RemoteDataSource.Doctor remoteDataSource = DoctorRemoteDataSourceImpl.getInstance(context);
+        final RemoteDataSource.Doctor remoteDataSource = DoctorRemoteDataSourceImpl.getInstance();
         final LocalDataSource.Doctor localDataSource = DoctorLocalDataSourceImpl.getInstance(database.doctorDao());
         final AppExecutors executors = new AppExecutors();
 

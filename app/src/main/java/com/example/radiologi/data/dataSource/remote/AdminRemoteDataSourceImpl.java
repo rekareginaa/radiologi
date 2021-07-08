@@ -1,8 +1,5 @@
 package com.example.radiologi.data.dataSource.remote;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -30,18 +27,15 @@ import static com.example.radiologi.utils.Constants.SUCCESS;
 
 public class AdminRemoteDataSourceImpl implements RemoteDataSource.Admin {
 
-    private final Context context;
-    @SuppressLint("StaticFieldLeak")
     private volatile static AdminRemoteDataSourceImpl instance;
 
-    public AdminRemoteDataSourceImpl(Context context) {
-        this.context = context;
+    public AdminRemoteDataSourceImpl() {
     }
 
-    public static AdminRemoteDataSourceImpl getInstance(Context context){
+    public static AdminRemoteDataSourceImpl getInstance(){
         if (instance == null){
             synchronized (AdminRemoteDataSourceImpl.class){
-                instance = new AdminRemoteDataSourceImpl(context);
+                instance = new AdminRemoteDataSourceImpl();
             }
         }
         return instance;
@@ -52,7 +46,6 @@ public class AdminRemoteDataSourceImpl implements RemoteDataSource.Admin {
         MutableLiveData<ApiResponse<AdminItemResponse>> result = new MutableLiveData<>();
         final Type type = new TypeToken<AdminItemResponse>(){}.getType();
         new BaseVolley<AdminItemResponse>(
-                context,
                 Request.Method.POST,
                 ADMIN_DATA,
                 type
@@ -92,7 +85,6 @@ public class AdminRemoteDataSourceImpl implements RemoteDataSource.Admin {
         Type type = new TypeToken<SimplesResponse>(){}.getType();
 
         new BaseVolley<SimplesResponse>(
-                context,
                 Request.Method.POST,
                 ADMIN_ADD_IMG,
                 type
@@ -129,7 +121,6 @@ public class AdminRemoteDataSourceImpl implements RemoteDataSource.Admin {
         final String[] resultToken = {""};
         Type type = new TypeToken<UsersResponse>(){}.getType();
         new BaseVolley<UsersResponse>(
-                context,
                 Request.Method.GET,
                 GET_TOKEN,
                 type
