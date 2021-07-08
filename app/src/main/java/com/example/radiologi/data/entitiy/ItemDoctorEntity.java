@@ -49,18 +49,18 @@ public class ItemDoctorEntity implements Parcelable {
     private String status;
 
     public ItemDoctorEntity(Parcel in) {
-        this.id = in.readString();
-        this.noregis = in.readString();
-        this.pengirim = in.readString();
-        this.tanggalLahir = in.readString();
-        this.namaPasien = in.readString();
-        this.diagnos = in.readString();
-        this.gender = in.readString();
-        this.ttd = in.readString();
-        this.penerima = in.readString();
-        this.gambar = in.readString();
-        this.norekam = in.readString();
-        this.status = in.readString();
+        id = in.readString();
+        noregis = in.readString();
+        pengirim = in.readString();
+        tanggalLahir = in.readString();
+        namaPasien = in.readString();
+        diagnos = in.readString();
+        gender = in.readString();
+        ttd = in.readString();
+        penerima = in.readString();
+        gambar = in.readString();
+        norekam = in.readString();
+        status = in.readString();
     }
 
     public ItemDoctorEntity(@NonNull String id, String noregis, String pengirim, String tanggalLahir, String namaPasien, String diagnos, String gender, String ttd, String penerima, String gambar, String norekam, String status) {
@@ -213,17 +213,17 @@ public class ItemDoctorEntity implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.noregis);
-        dest.writeString(this.pengirim);
-        dest.writeString(this.tanggalLahir);
-        dest.writeString(this.namaPasien);
-        dest.writeString(this.diagnos);
-        dest.writeString(this.gender);
-        dest.writeString(this.ttd);
-        dest.writeString(this.penerima);
-        dest.writeString(this.id);
-        dest.writeString(this.gambar);
-        dest.writeString(this.norekam);
-        dest.writeString(this.status);
+        dest.writeString(id);
+        dest.writeString(noregis);
+        dest.writeString(pengirim);
+        dest.writeString(tanggalLahir);
+        dest.writeString(namaPasien);
+        dest.writeString(diagnos);
+        dest.writeString(gender);
+        dest.writeString(ttd);
+        dest.writeString(penerima);
+        dest.writeString(gambar);
+        dest.writeString(norekam);
+        dest.writeString(status);
     }
 }

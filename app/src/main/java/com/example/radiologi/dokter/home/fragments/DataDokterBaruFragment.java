@@ -72,7 +72,6 @@ public class DataDokterBaruFragment extends Fragment {
         binding.recyclerDokterDataBaru.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyclerDokterDataBaru.setAdapter(adapterDokter);
         adapterDokter.setOnClickListener(listitemDokter -> {
-            Log.d("DATA_", listitemDokter.toString());
             Intent intent = new Intent(getContext(), FormResponseDataDokterActivity.class);
             intent.putExtra(FormResponseDataDokterActivity.EXTRA_DATA, listitemDokter);
             startActivity(intent);

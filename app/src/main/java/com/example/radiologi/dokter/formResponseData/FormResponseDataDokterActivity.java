@@ -78,7 +78,6 @@ public class FormResponseDataDokterActivity extends AppCompatActivity {
         final ItemDoctorEntity itemsData = getIntent().getParcelableExtra(EXTRA_DATA);
 
         if (itemsData != null) {
-            Log.d("DATA_", itemsData.toString());
             norekaM = itemsData.getNorekam();
             namaLengkaP = itemsData.getNamaPasien();
             tangLahiR = itemsData.getTanggalLahir();
