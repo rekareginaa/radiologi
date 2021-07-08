@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.radiologi.data.dataSource.remote.response.LoginResponse;
 import com.example.radiologi.data.dataSource.remote.response.SimpleResponse;
+import com.example.radiologi.data.dataSource.remote.response.SimplesResponse;
 import com.example.radiologi.data.entitiy.ItemAdminEntity;
 import com.example.radiologi.data.entitiy.ItemDoctorEntity;
 import com.example.radiologi.utils.Event;
@@ -19,6 +20,7 @@ public interface Repository {
 
     interface AdminRepository{
         LiveData<Resource<List<ItemAdminEntity>>> getAdminData(String nip, String status);
+        LiveData<Resource<SimplesResponse>> getResponseUpdate(Map<String, String> params);
     }
 
     interface DoctorRepository{

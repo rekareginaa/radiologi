@@ -15,8 +15,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_admin_data_baru"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="match_parent"/>
 
         <TextView
             android:id="@+id/teks_kosong"
@@ -32,12 +31,11 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         app:tint="@color/colorWhite"
         app:backgroundTint="@color/base_color"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:contentDescription="images" />
 
 </FrameLayout>

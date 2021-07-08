@@ -121,7 +121,6 @@ public class DataAdminDiagnosaFragment extends Fragment {
 
     private void showData(List<ItemAdminEntity> adminEntities){
         if (adminEntities != null){
-            Log.d("DATA_", adminEntities.toString());
             binding.teksKosong.setVisibility(View.GONE);
             binding.recyclerAdminTerdiagnosa.setVisibility(View.VISIBLE);
             adapterAdmin.clear();

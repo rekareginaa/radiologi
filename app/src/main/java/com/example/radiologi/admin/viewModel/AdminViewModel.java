@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
+import com.example.radiologi.data.dataSource.remote.response.SimpleResponse;
+import com.example.radiologi.data.dataSource.remote.response.SimplesResponse;
 import com.example.radiologi.data.entitiy.ItemAdminEntity;
 import com.example.radiologi.data.repository.Repository;
 import com.example.radiologi.utils.vo.Resource;
@@ -24,6 +26,7 @@ public class AdminViewModel extends ViewModel {
     }
 
     private final MutableLiveData<HashMap<String, String>> parameters = new MutableLiveData<>();
+    private final MutableLiveData<Map<String, String>> paramUpdate = new MutableLiveData<>();
 
     public void setParameters(String...params){
         HashMap<String, String> param = new HashMap<>();
@@ -33,7 +36,13 @@ public class AdminViewModel extends ViewModel {
         parameters.setValue(param);
     }
 
+    public void setParameters(Map<String, String> params){
+        this.paramUpdate.setValue(params);
+    }
+
     public LiveData<Resource<List<ItemAdminEntity>>> getAdminData = Transformations.switchMap(parameters, result ->
         repository.getAdminData(result.get(NIP), result.get(STATUS))
     );
+    public LiveData<Resource<SimplesResponse>> getResponse = Transformations.switchMap(paramUpdate, params ->
+            repository.getResponseUpdate(params));
 }
