@@ -153,13 +153,11 @@ public class DetailPasienActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, urlupdatestatus,
                 response -> {
                     hideDialog();
-                    Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
                     try {
                         JSONObject jsonObject = new JSONObject(response);
-                        String Response = jsonObject.getString("notice");
-                        JSONObject msg = new JSONObject(Response);
-
-                        Toast.makeText(getApplicationContext(), msg.getString("text"), Toast.LENGTH_LONG).show();
+                        JSONObject resp = jsonObject.getJSONObject("notice");
+                        String msg = resp.getString("text");
+                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(DetailPasienActivity.this, TampilkanDataPasienActivity.class);
                         intent.putExtra("noregis", noregiS);
                         intent.putExtra("norekam", norekaM);
@@ -173,7 +171,8 @@ public class DetailPasienActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }, error -> {
+                },
+                error -> {
             hideDialog();
             Toast.makeText(getApplicationContext(), "error" + error.toString(), Toast.LENGTH_LONG).show();
         }) {

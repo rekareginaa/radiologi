@@ -127,7 +127,6 @@ public class DataAdminBaruFragment extends Fragment {
 
     private void showData(List<ItemAdminEntity> adminEntities){
         if (adminEntities != null){
-            Log.d("DATA_A", adminEntities.toString());
             binding.teksKosong.setVisibility(View.GONE);
             binding.recyclerAdminDataBaru.setVisibility(View.VISIBLE);
             adapterAdmin.clear();
