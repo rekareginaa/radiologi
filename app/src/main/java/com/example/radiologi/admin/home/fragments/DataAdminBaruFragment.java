@@ -1,8 +1,9 @@
 package com.example.radiologi.admin.home.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.radiologi.R;
+import com.example.radiologi.admin.DetailPasienActivity;
+import com.example.radiologi.admin.formAddData.FormAddDataActivity;
 import com.example.radiologi.admin.viewModel.AdminViewModel;
 import com.example.radiologi.admin.viewModel.AdminViewModelFactory;
 import com.example.radiologi.data.dataSource.local.SharedPreferenceManager;
@@ -54,6 +57,8 @@ public class DataAdminBaruFragment extends Fragment {
         AdminViewModelFactory factory = AdminViewModelFactory.getInstance(requireContext());
         viewModel = new ViewModelProvider(this, factory).get(AdminViewModel.class);
 
+        adapterAdmin = new AdapterAdmin(requireContext(), 0);
+
         nip = SharedPreferenceManager.getStringPreferences(getContext(), "nip");
 
         if (nip != null){
@@ -61,15 +66,27 @@ public class DataAdminBaruFragment extends Fragment {
         }
 
         binding.swipeAdminDataBaru.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
-        binding.swipeAdminDataBaru.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+        binding.swipeAdminDataBaru.setOnRefreshListener(() -> {
             binding.swipeAdminDataBaru.setRefreshing(false);
             viewModel.setParameters(nip, "0");
-        },4000));
+        });
 
-        adapterAdmin = new AdapterAdmin(getContext(), 0);
+        adapterAdmin.setOnClickListener(itemAdmin -> {
+            Intent intent = new Intent(requireContext(), DetailPasienActivity.class);
+            intent.putExtra(DetailPasienActivity.EXTRA_DATA, itemAdmin);
+            startActivity(intent);
+        });
+
+        binding.recyclerAdminDataBaru.setAdapter(adapterAdmin);
         binding.recyclerAdminDataBaru.setHasFixedSize(true);
         binding.recyclerAdminDataBaru.setLayoutManager(new LinearLayoutManager(getContext()));
         observeResult();
+
+        binding.fab.setOnClickListener(views ->{
+            Intent intent = new Intent(requireContext(), FormAddDataActivity.class);
+            intent.putExtra(FormAddDataActivity.EXTRA_LIST_REGIS, listRegis);
+            startActivity(intent);
+        });
     }
 
     private void observeResult(){

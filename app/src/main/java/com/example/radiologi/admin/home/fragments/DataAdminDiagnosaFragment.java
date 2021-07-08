@@ -3,7 +3,6 @@ package com.example.radiologi.admin.home.fragments;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,11 +65,12 @@ public class DataAdminDiagnosaFragment extends Fragment {
 
         if (nip != null){
             viewModel.setParameters(nip, "1");
+
             binding.swipeAdminTerdiagnosa.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
-            binding.swipeAdminTerdiagnosa.setOnRefreshListener(() -> new Handler().postDelayed(() -> {
+            binding.swipeAdminTerdiagnosa.setOnRefreshListener(() -> {
                 binding.swipeAdminTerdiagnosa.setRefreshing(false);
                 viewModel.setParameters(nip, "1");
-            },4000));
+            });
 
             binding.recyclerAdminTerdiagnosa.setAdapter(adapterAdmin);
             adapterAdmin.setOnClickListener(listitemAdmin -> {
@@ -121,7 +121,6 @@ public class DataAdminDiagnosaFragment extends Fragment {
 
     private void showData(List<ItemAdminEntity> adminEntities){
         if (adminEntities != null){
-            Log.d("DATA_", adminEntities.toString());
             binding.teksKosong.setVisibility(View.GONE);
             binding.recyclerAdminTerdiagnosa.setVisibility(View.VISIBLE);
             adapterAdmin.clear();

@@ -19,7 +19,7 @@ public interface AdminDao {
     @Query("SELECT * FROM item_admin_entity WHERE status =:status")
     LiveData<List<ItemAdminEntity>> getAdminData(String status);
 
-    @Query("SELECT * FROM item_admin_entity WHERE status ='1' OR '2'")
+    @Query("SELECT * FROM item_admin_entity WHERE status !='0'")
     LiveData<List<ItemAdminEntity>> getAdminData();
 
     @Query("DELETE FROM item_admin_entity")
