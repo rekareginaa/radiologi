@@ -6,20 +6,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.radiologi.data.dataSource.remote.response.ListitemDokter;
 import com.example.radiologi.R;
+import com.example.radiologi.data.entitiy.ItemDoctorEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AdapterDokter extends RecyclerView.Adapter<AdapterDokter.ViewHolder> {
 
     private final LayoutInflater inflater;
-    private final List<ListitemDokter> listitemDokters;
+    private final List<ItemDoctorEntity> listitemDokters;
 
     private AdapterDokter.OnItemClickListener mListener = null;
 
@@ -35,13 +35,13 @@ public class AdapterDokter extends RecyclerView.Adapter<AdapterDokter.ViewHolder
         return new ViewHolder(v);
     }
 
-    void add(ListitemDokter item) {
+    void add(ItemDoctorEntity item) {
         listitemDokters.add(item);
         notifyItemInserted(listitemDokters.size());
     }
 
-    void addAll(List<ListitemDokter> list) {
-        for (ListitemDokter member: list) {
+    void addAll(List<ItemDoctorEntity> list) {
+        for (ItemDoctorEntity member: list) {
             add(member);
         }
     }
@@ -53,12 +53,12 @@ public class AdapterDokter extends RecyclerView.Adapter<AdapterDokter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final ListitemDokter listitemDokter = listitemDokters.get(position);
+        final ItemDoctorEntity listitemDokter = listitemDokters.get(position);
 
-        holder.noRekam.setText(listitemDokter.getNoRekam());
-        holder.namaLengkap.setText(listitemDokter.getNamaLengkap());
+        holder.noRekam.setText(listitemDokter.getNorekam());
+        holder.namaLengkap.setText(listitemDokter.getNamaPasien());
         holder.jenisKelamin.setText(listitemDokter.getGender());
-        holder.tanggalLahir.setText(listitemDokter.getTangLahir());
+        holder.tanggalLahir.setText(listitemDokter.getTanggalLahir());
         holder.itemView.setOnClickListener(view -> mListener.onItemClick(listitemDokter));
         holder.dokterHolder.setOnClickListener(view -> mListener.onItemClick(listitemDokter));
     }
@@ -89,6 +89,6 @@ public class AdapterDokter extends RecyclerView.Adapter<AdapterDokter.ViewHolder
     }
 
     public interface OnItemClickListener {
-        void onItemClick(ListitemDokter listitemDokter);
+        void onItemClick(ItemDoctorEntity listitemDokter);
     }
 }

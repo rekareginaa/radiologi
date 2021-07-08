@@ -18,4 +18,8 @@ public interface RemoteDataSource {
     interface Admin{
         LiveData<ApiResponse<AdminItemResponse>> getAdminData(String nip);
     }
+
+    interface Doctor{
+        LiveData<ApiResponse<AdminItemResponse>> getDoctorData(String nip);
+    }
 }

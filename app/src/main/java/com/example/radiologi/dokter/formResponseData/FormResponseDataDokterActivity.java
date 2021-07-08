@@ -68,6 +68,7 @@ public class FormResponseDataDokterActivity extends AppCompatActivity {
 
     private static final String urlupdate = "https://dbradiologi.000webhostapp.com/api/users/updatedokter";
     private static final String url_token =  "https://dbradiologi.000webhostapp.com/api/users";
+    public static final String EXTRA_DATA = "extra_data";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

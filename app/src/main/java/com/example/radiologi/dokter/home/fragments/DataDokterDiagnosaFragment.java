@@ -70,7 +70,7 @@ public class DataDokterDiagnosaFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapterDokter);
         adapterDokter.setOnClickListener(listitemDokter -> {
-            Intent intentSudahBaca = new Intent(getContext(), DetailPasienActivity.class);
+            /*Intent intentSudahBaca = new Intent(getContext(), DetailPasienActivity.class);
             intentSudahBaca.putExtra("noregis", listitemDokter.getNoRegis());
             intentSudahBaca.putExtra("norekam", listitemDokter.getNoRekam());
             intentSudahBaca.putExtra("namalengkap", listitemDokter.getNamaLengkap());
@@ -81,7 +81,7 @@ public class DataDokterDiagnosaFragment extends Fragment {
             intentSudahBaca.putExtra("diagnosa", listitemDokter.getDiagnosa());
             intentSudahBaca.putExtra("tdt", listitemDokter.getTdt());
             intentSudahBaca.putExtra("status", listitemDokter.getStatus());
-            startActivity(intentSudahBaca);
+            startActivity(intentSudahBaca);*/
         });
 
         dataDokterReq();
@@ -115,10 +115,10 @@ public class DataDokterDiagnosaFragment extends Fragment {
                             modelDokter.setDiagnosa(array.getJSONObject(i).optString("diagnosa"));
                             modelDokter.setTdt(array.getJSONObject(i).optString("ttd"));
                             if (modelDokter.getStatus().equals("1") || modelDokter.getStatus().equals("2")) {
-                                adapterDokter.add(modelDokter);
+                                //adapterDokter.add(modelDokter);
                             }
                         }
-                        adapterDokter.addAll(dokterDiagnosaList);
+                        //adapterDokter.addAll(dokterDiagnosaList);
                         adapterDokter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
