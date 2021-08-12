@@ -28,4 +28,7 @@
 
     <string name="channelId" translatable="false">fcm_default_channel</string>
     <string name="channelName">rediologi</string>
+    <string name="okay">Oke</string>
+    <string name="not">Tidak</string>
+    <string name="images">images</string>
 </resources>
