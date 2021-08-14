@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_foto"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_height="250dp"
+            tools:src="@drawable/ic_upload"
+            android:background="@drawable/dashed_line"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/images"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/iv_foto">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorBlack"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No. Registrasi"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:id="@+id/tvNoReg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="10001"
+                android:textColor="@color/font_color"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorBlack"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No. Rekam Medik"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:id="@+id/tvNoRecord"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="10001"
+                android:textColor="@color/font_color"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorBlack"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nama Lengkap"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="10001"
+                android:textColor="@color/font_color"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorBlack"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tanggal Lahir"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="10001"
+                android:textColor="@color/font_color"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/colorBlack"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Jenis Kelamin"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:id="@+id/tvGender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="10001"
+                android:textColor="@color/font_color"/>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.cloudinary.android.MediaManager;
@@ -37,10 +38,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FormAddDataActivity extends AppCompatActivity {
+public class FormAddDataActivity extends AppCompatActivity implements ConfirmDialogFragment.ConfirmDialogListener {
     DatePickerDialog picker;
     String token;
-    final int CODE_GALERI_REQUEST = 999;
 
     String tanggallahir, noRekam, namaPasien, gender, nipsaya, namagambar;
 
@@ -50,7 +50,6 @@ public class FormAddDataActivity extends AppCompatActivity {
     ArrayList<String> listRegis;
     String noRegisNew;
 
-    //
     String filePath;
 
     private AdminViewModel viewModel;
@@ -101,12 +100,15 @@ public class FormAddDataActivity extends AppCompatActivity {
             requestPermission();
         });
         binding.btnUnggah.setOnClickListener(view -> {
+
             noRegisNew = binding.etNoRegis.getText().toString();
+            noRekam = binding.etNoRekam.getText().toString().trim();
+            namaPasien = binding.etNama.getText().toString().trim();
+
             if (listRegis.contains(noRegisNew)) {
                 Toast.makeText(getApplicationContext(), "Nomor Registrasi telah digunakan", Toast.LENGTH_SHORT).show();
             } else {
-                showDialog();
-                uploadToCloudinary(filePath);
+                dialogs();
             }
         });
 
@@ -220,8 +222,6 @@ public class FormAddDataActivity extends AppCompatActivity {
     }
 
     private void uploadImage() {
-        noRekam = binding.etNoRekam.getText().toString().trim();
-        namaPasien = binding.etNama.getText().toString().trim();
 
         Map<String, String> params = new HashMap<>();
         //String gambar = imagetoString(bitmap);
@@ -271,6 +271,37 @@ public class FormAddDataActivity extends AppCompatActivity {
         if (progressDialog.isShowing()){
             progressDialog.cancel();
         }
+    }
+
+    private void dialogs(){
+        ConfirmDialogFragment dialog = new ConfirmDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(PHOTO, filePath);
+        bundle.putString(NO_REG, noRegisNew);
+        bundle.putString(NO_RECORD, noRekam);
+        bundle.putString(NAME, namaPasien);
+        bundle.putString(DATE, tanggallahir);
+        bundle.putString(GENDER, gender);
+        dialog.setArguments(bundle);
+        dialog.show(getSupportFragmentManager(), "my_fragment");
+    }
+
+    public static final String PHOTO = "photo_path";
+    public static final String NO_REG = "no_registration";
+    public static final String NO_RECORD = "no_medical_record";
+    public static final String NAME = "name";
+    public static final String DATE = "born_date";
+    public static final String GENDER = "gender";
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        showDialog();
+        uploadToCloudinary(filePath);
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        Log.d("CLICK", "NO");
     }
 
     /*private String imagetoString(Bitmap bitmap) {
