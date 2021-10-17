@@ -7,6 +7,7 @@ import com.example.radiologi.data.dataSource.local.LocalDataSource;
 import com.example.radiologi.data.dataSource.remote.RemoteDataSource;
 import com.example.radiologi.data.dataSource.remote.response.AdminItemResponse;
 import com.example.radiologi.data.dataSource.remote.response.DataItemAdmin;
+import com.example.radiologi.data.dataSource.remote.response.DoctorListResponse;
 import com.example.radiologi.data.dataSource.remote.response.SimplesResponse;
 import com.example.radiologi.data.dataSource.remote.vo.ApiResponse;
 import com.example.radiologi.data.entitiy.ItemAdminEntity;
@@ -97,5 +98,10 @@ public class AdminRepositoryImpl implements Repository.AdminRepository{
         final String tokens = remoteDataSource.getToken();
         params.put(TOKENS,tokens);
         return remoteDataSource.getResponse(params);
+    }
+
+    @Override
+    public LiveData<Resource<DoctorListResponse>> getDoctorList() {
+        return remoteDataSource.getDoctorList();
     }
 }

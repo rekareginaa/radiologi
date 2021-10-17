@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.android.volley.Request;
 import com.example.radiologi.data.dataSource.remote.response.AdminItemResponse;
 import com.example.radiologi.data.dataSource.remote.response.DataItemUsers;
+import com.example.radiologi.data.dataSource.remote.response.DoctorListResponse;
 import com.example.radiologi.data.dataSource.remote.response.SimplesResponse;
 import com.example.radiologi.data.dataSource.remote.response.UsersResponse;
 import com.example.radiologi.data.dataSource.remote.vo.ApiResponse;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 import static com.example.radiologi.utils.Constants.ADMIN_ADD_IMG;
 import static com.example.radiologi.utils.Constants.ADMIN_DATA;
+import static com.example.radiologi.utils.Constants.ADMIN_LIST_DOCTOR;
 import static com.example.radiologi.utils.Constants.EMPTY;
 import static com.example.radiologi.utils.Constants.GET_TOKEN;
 import static com.example.radiologi.utils.Constants.NIP;
@@ -114,6 +116,38 @@ public class AdminRemoteDataSourceImpl implements RemoteDataSource.Admin {
             }
         };
         return result;
+    }
+
+    @Override
+    public LiveData<Resource<DoctorListResponse>> getDoctorList() {
+        MutableLiveData<Resource<DoctorListResponse>> resource = new MutableLiveData<>();
+        Type type = new TypeToken<DoctorListResponse>(){}.getType();
+        new BaseVolley<DoctorListResponse>(
+                Request.Method.GET,
+                ADMIN_LIST_DOCTOR,
+                type
+        ){
+            @Override
+            protected void onLoading() {
+                resource.postValue(Resource.loading(null));
+            }
+
+            @Override
+            protected void onSuccess(DoctorListResponse response) {
+                resource.postValue(Resource.success(response));
+            }
+
+            @Override
+            protected void onError(String message) {
+                resource.postValue(Resource.error(message, null));
+            }
+
+            @Override
+            protected Map<String, String> setParameter() {
+                return null;
+            }
+        };
+        return resource;
     }
 
     @Override
