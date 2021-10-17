@@ -1,11 +1,14 @@
 package com.example.radiologi.admin.viewModel;
 
+import static com.example.radiologi.utils.Constants.NIP;
+import static com.example.radiologi.utils.Constants.STATUS;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
-import com.example.radiologi.data.dataSource.remote.response.SimpleResponse;
+import com.example.radiologi.data.dataSource.remote.response.DoctorListResponse;
 import com.example.radiologi.data.dataSource.remote.response.SimplesResponse;
 import com.example.radiologi.data.entitiy.ItemAdminEntity;
 import com.example.radiologi.data.repository.Repository;
@@ -15,14 +18,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.radiologi.utils.Constants.NIP;
-import static com.example.radiologi.utils.Constants.STATUS;
-
 public class AdminViewModel extends ViewModel {
     private Repository.AdminRepository repository;
 
     public AdminViewModel(Repository.AdminRepository repository) {
         this.repository = repository;
+        setGetDoctor(repository.getDoctorList());
     }
 
     private final MutableLiveData<HashMap<String, String>> parameters = new MutableLiveData<>();
@@ -45,4 +46,14 @@ public class AdminViewModel extends ViewModel {
     );
     public LiveData<Resource<SimplesResponse>> getResponse = Transformations.switchMap(paramUpdate, params ->
             repository.getResponseUpdate(params));
+
+    private LiveData<Resource<DoctorListResponse>> getDoctor;
+
+    public LiveData<Resource<DoctorListResponse>> getGetDoctor() {
+        return getDoctor;
+    }
+
+    public void setGetDoctor(LiveData<Resource<DoctorListResponse>> getDoctor) {
+        this.getDoctor = getDoctor;
+    }
 }

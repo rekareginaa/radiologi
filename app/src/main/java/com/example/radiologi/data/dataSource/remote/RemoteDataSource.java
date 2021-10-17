@@ -3,6 +3,7 @@ package com.example.radiologi.data.dataSource.remote;
 import androidx.lifecycle.LiveData;
 
 import com.example.radiologi.data.dataSource.remote.response.AdminItemResponse;
+import com.example.radiologi.data.dataSource.remote.response.DoctorListResponse;
 import com.example.radiologi.data.dataSource.remote.response.LoginResponse;
 import com.example.radiologi.data.dataSource.remote.response.SimpleResponse;
 import com.example.radiologi.data.dataSource.remote.response.SimplesResponse;
@@ -20,6 +21,7 @@ public interface RemoteDataSource {
     interface Admin{
         LiveData<ApiResponse<AdminItemResponse>> getAdminData(String nip);
         LiveData<Resource<SimplesResponse>> getResponse(Map<String, String> params);
+        LiveData<Resource<DoctorListResponse>> getDoctorList();
         String getToken();
     }
 

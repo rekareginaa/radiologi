@@ -5,29 +5,24 @@ import androidx.annotation.NonNull;
 import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
-public class AdminItemResponse{
-
+public class DoctorListResponse{
 	@SerializedName("data")
-	private List<DataItemAdmin> data;
+	private List<DataItemDoctor> data;
 
-	@SerializedName("status")
-	private String status;
-
-	public List<DataItemAdmin> getData(){
-		return data;
+	public void setData(List<DataItemDoctor> data) {
+		this.data = data;
 	}
 
-	public String getStatus(){
-		return status;
+	public List<DataItemDoctor> getData(){
+		return data;
 	}
 
 	@NonNull
 	@Override
  	public String toString(){
 		return 
-			"AdminItemResponse{" + 
+			"DoctorListResponse{" + 
 			"data = '" + data + '\'' + 
-			",status = '" + status + '\'' + 
 			"}";
 		}
 }

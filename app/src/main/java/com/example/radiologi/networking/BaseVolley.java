@@ -31,8 +31,8 @@ public abstract class BaseVolley<T> {
         onLoading();
         StringRequest request = new StringRequest(method, urlRequest,
         response -> {
+            Log.d("RESPONSE", response);
             try {
-                Log.d("RESPONSE", response);
                 Gson gson = new Gson();
                 responseObj = gson.fromJson(response, type);
                 onSuccess(responseObj);
