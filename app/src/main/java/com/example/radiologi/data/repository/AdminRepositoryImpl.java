@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.radiologi.utils.Constants.TOKENS;
-
 public class AdminRepositoryImpl implements Repository.AdminRepository{
     private final RemoteDataSource.Admin remoteDataSource;
     private final LocalDataSource.Admin localDataSource;
@@ -95,8 +93,6 @@ public class AdminRepositoryImpl implements Repository.AdminRepository{
 
     @Override
     public LiveData<Resource<SimplesResponse>> getResponseUpdate(Map<String, String> params) {
-        final String tokens = remoteDataSource.getToken();
-        params.put(TOKENS,tokens);
         return remoteDataSource.getResponse(params);
     }
 
