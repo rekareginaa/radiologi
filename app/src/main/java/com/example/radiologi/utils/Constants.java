@@ -18,5 +18,6 @@ public class Constants {
     public static final String EMPTY = "kosong";
     public static final String SUCCESS = "sukses";
     public static final String TOKENS = "token_tujuan";
+    public static final String PAGE = "page";
 
 }

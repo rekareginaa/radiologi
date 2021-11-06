@@ -33,7 +33,8 @@
         <activity android:name=".accountsManager.LoginActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"/>
         <activity android:name=".splash.SplashActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -69,7 +70,8 @@
         <meta-data
             android:name="com.android.firebase.messaging.default_notification_channel_id"
             android:value="fcm_default_channel"/>
-        <service android:name=".data.dataSource.MyFirebaseMessagingService">
+        <service android:name=".data.dataSource.MyFirebaseMessagingService"
+            android:exported="false">
             <intent-filter>
                 <action
                     android:name="com.google.firebase.MESSAGING_EVENT"/>

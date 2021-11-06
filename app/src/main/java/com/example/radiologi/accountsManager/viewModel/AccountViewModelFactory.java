@@ -15,7 +15,7 @@ public class AccountViewModelFactory extends ViewModelProvider.NewInstanceFactor
         this.repository = repository;
     }
 
-    public static AccountViewModelFactory getInstance(){
+    public static AccountViewModelFactory get(){
         if (instance == null){
             synchronized (AccountViewModelFactory.class){
                 instance = new AccountViewModelFactory(

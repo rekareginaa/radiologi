@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         binding.btnMasuk.setOnClickListener(this);
 
-        AccountViewModelFactory factory = AccountViewModelFactory.getInstance();
+        AccountViewModelFactory factory = AccountViewModelFactory.get();
         viewModel = new ViewModelProvider(this, factory).get(AccountViewModel.class);
 
         observeResult();

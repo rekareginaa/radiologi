@@ -19,7 +19,7 @@ public interface RemoteDataSource {
     }
 
     interface Admin{
-        LiveData<ApiResponse<AdminItemResponse>> getAdminData(String nip);
+        LiveData<ApiResponse<AdminItemResponse>> getAdminData(String nip, String page);
         LiveData<Resource<SimplesResponse>> getResponse(Map<String, String> params);
         LiveData<Resource<DoctorListResponse>> getDoctorList();
         String getToken();

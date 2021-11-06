@@ -62,13 +62,13 @@ public class DataAdminBaruFragment extends Fragment {
         nip = SharedPreferenceManager.getStringPreferences(getContext(), "nip");
 
         if (nip != null){
-            viewModel.setParameters(nip, "0");
+            viewModel.setParameters(nip, "0", "1");
         }
 
         binding.swipeAdminDataBaru.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
         binding.swipeAdminDataBaru.setOnRefreshListener(() -> {
             binding.swipeAdminDataBaru.setRefreshing(false);
-            viewModel.setParameters(nip, "0");
+            viewModel.setParameters(nip, "0", "1");
         });
 
         adapterAdmin.setOnClickListener(itemAdmin -> {

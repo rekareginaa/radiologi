@@ -64,12 +64,12 @@ public class DataAdminDiagnosaFragment extends Fragment {
         binding.recyclerAdminTerdiagnosa.setLayoutManager(new LinearLayoutManager(getContext()));
 
         if (nip != null){
-            viewModel.setParameters(nip, "1");
+            viewModel.setParameters(nip, "1", "1");
 
             binding.swipeAdminTerdiagnosa.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
             binding.swipeAdminTerdiagnosa.setOnRefreshListener(() -> {
                 binding.swipeAdminTerdiagnosa.setRefreshing(false);
-                viewModel.setParameters(nip, "1");
+                viewModel.setParameters(nip, "1", "1");
             });
 
             binding.recyclerAdminTerdiagnosa.setAdapter(adapterAdmin);

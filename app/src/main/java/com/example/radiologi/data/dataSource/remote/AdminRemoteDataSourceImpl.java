@@ -1,5 +1,15 @@
 package com.example.radiologi.data.dataSource.remote;
 
+import static com.example.radiologi.utils.Constants.ADMIN_ADD_IMG;
+import static com.example.radiologi.utils.Constants.ADMIN_DATA;
+import static com.example.radiologi.utils.Constants.ADMIN_LIST_DOCTOR;
+import static com.example.radiologi.utils.Constants.EMPTY;
+import static com.example.radiologi.utils.Constants.GET_TOKEN;
+import static com.example.radiologi.utils.Constants.PAGE;
+import static com.example.radiologi.utils.Constants.SUCCESS;
+
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -19,14 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.example.radiologi.utils.Constants.ADMIN_ADD_IMG;
-import static com.example.radiologi.utils.Constants.ADMIN_DATA;
-import static com.example.radiologi.utils.Constants.ADMIN_LIST_DOCTOR;
-import static com.example.radiologi.utils.Constants.EMPTY;
-import static com.example.radiologi.utils.Constants.GET_TOKEN;
-import static com.example.radiologi.utils.Constants.NIP;
-import static com.example.radiologi.utils.Constants.SUCCESS;
-
 public class AdminRemoteDataSourceImpl implements RemoteDataSource.Admin {
 
     private volatile static AdminRemoteDataSourceImpl instance;
@@ -44,12 +46,12 @@ public class AdminRemoteDataSourceImpl implements RemoteDataSource.Admin {
     }
 
     @Override
-    public LiveData<ApiResponse<AdminItemResponse>> getAdminData(String nip) {
+    public LiveData<ApiResponse<AdminItemResponse>> getAdminData(String nip, String page) {
         MutableLiveData<ApiResponse<AdminItemResponse>> result = new MutableLiveData<>();
         final Type type = new TypeToken<AdminItemResponse>(){}.getType();
         new BaseVolley<AdminItemResponse>(
-                Request.Method.POST,
-                ADMIN_DATA,
+                Request.Method.GET,
+                ADMIN_DATA+"/"+nip,
                 type
         ) {
             @Override
@@ -74,7 +76,7 @@ public class AdminRemoteDataSourceImpl implements RemoteDataSource.Admin {
             @Override
             protected Map<String, String> setParameter() {
                 Map<String, String> params = new HashMap<>();
-                params.put(NIP, nip);
+                params.put(PAGE, page);
                 return params;
             }
         };

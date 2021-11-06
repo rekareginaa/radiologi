@@ -45,7 +45,7 @@ public class AdminRepositoryImpl implements Repository.AdminRepository{
     }
 
     @Override
-    public LiveData<Resource<List<ItemAdminEntity>>> getAdminData(String nip, String status) {
+    public LiveData<Resource<List<ItemAdminEntity>>> getAdminData(String nip, String status, String page) {
         return new NetworkBoundResource<List<ItemAdminEntity>, AdminItemResponse>(appExecutors) {
             @Override
             protected LiveData<List<ItemAdminEntity>> loadFromDB() {
@@ -59,7 +59,7 @@ public class AdminRepositoryImpl implements Repository.AdminRepository{
 
             @Override
             protected LiveData<ApiResponse<AdminItemResponse>> createCall() {
-                return remoteDataSource.getAdminData(nip);
+                return remoteDataSource.getAdminData(nip, page);
             }
 
             @Override

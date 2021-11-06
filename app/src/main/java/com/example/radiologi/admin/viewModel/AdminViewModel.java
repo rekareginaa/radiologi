@@ -1,6 +1,7 @@
 package com.example.radiologi.admin.viewModel;
 
 import static com.example.radiologi.utils.Constants.NIP;
+import static com.example.radiologi.utils.Constants.PAGE;
 import static com.example.radiologi.utils.Constants.STATUS;
 
 import androidx.lifecycle.LiveData;
@@ -33,6 +34,7 @@ public class AdminViewModel extends ViewModel {
         HashMap<String, String> param = new HashMap<>();
         param.put(NIP, params[0]);
         param.put(STATUS, params[1]);
+        param.put(PAGE, params[2]);
 
         parameters.setValue(param);
     }
@@ -42,7 +44,7 @@ public class AdminViewModel extends ViewModel {
     }
 
     public LiveData<Resource<List<ItemAdminEntity>>> getAdminData = Transformations.switchMap(parameters, result ->
-        repository.getAdminData(result.get(NIP), result.get(STATUS))
+        repository.getAdminData(result.get(NIP), result.get(STATUS), result.get(PAGE))
     );
     public LiveData<Resource<SimplesResponse>> getResponse = Transformations.switchMap(paramUpdate, params ->
             repository.getResponseUpdate(params));
