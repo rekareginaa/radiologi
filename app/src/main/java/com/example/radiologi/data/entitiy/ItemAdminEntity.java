@@ -23,6 +23,7 @@ public class ItemAdminEntity implements Parcelable {
         this.gambar = in.readString();
         this.norekam = in.readString();
         this.status = in.readString();
+        this.page = in.readInt();
     }
 
     public static final Creator<ItemAdminEntity> CREATOR = new Creator<ItemAdminEntity>() {
@@ -37,7 +38,7 @@ public class ItemAdminEntity implements Parcelable {
         }
     };
 
-    public ItemAdminEntity(String noregis, String pengirim, String tanggalLahir, String namaPasien, String diagnos, String gender, String ttd, String penerima, String id, String gambar, String norekam, String status) {
+    public ItemAdminEntity(String noregis, String pengirim, String tanggalLahir, String namaPasien, String diagnos, String gender, String ttd, String penerima, @NonNull String id, String gambar, String norekam, String status, int page) {
         this.noregis = noregis;
         this.pengirim = pengirim;
         this.tanggalLahir = tanggalLahir;
@@ -50,6 +51,7 @@ public class ItemAdminEntity implements Parcelable {
         this.gambar = gambar;
         this.norekam = norekam;
         this.status = status;
+        this.page = page;
     }
 
     public String getNoregis() {
@@ -186,6 +188,9 @@ public class ItemAdminEntity implements Parcelable {
     @ColumnInfo(name = "status")
     private String status;
 
+    @ColumnInfo(name = "page")
+    private int page;
+
     @Override
     public int describeContents() {
         return 0;
@@ -224,5 +229,13 @@ public class ItemAdminEntity implements Parcelable {
                 ", norekam='" + norekam + '\'' +
                 ", status='" + status + '\'' +
                 '}';
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
     }
 }

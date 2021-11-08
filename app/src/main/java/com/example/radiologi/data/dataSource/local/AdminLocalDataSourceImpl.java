@@ -34,7 +34,6 @@ public class AdminLocalDataSourceImpl implements LocalDataSource.Admin{
 
     @Override
     public void insertDataAdmin(List<ItemAdminEntity> adminEntities) {
-        dbDao.deleteALlDataAdmin();
         dbDao.insertAdminData(adminEntities);
     }
 }

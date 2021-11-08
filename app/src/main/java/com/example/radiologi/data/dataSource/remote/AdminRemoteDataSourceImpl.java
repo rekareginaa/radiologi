@@ -47,11 +47,12 @@ public class AdminRemoteDataSourceImpl implements RemoteDataSource.Admin {
 
     @Override
     public LiveData<ApiResponse<AdminItemResponse>> getAdminData(String nip, String page) {
+        Log.d("PAGE_", page);
         MutableLiveData<ApiResponse<AdminItemResponse>> result = new MutableLiveData<>();
         final Type type = new TypeToken<AdminItemResponse>(){}.getType();
         new BaseVolley<AdminItemResponse>(
                 Request.Method.GET,
-                ADMIN_DATA+"/"+nip,
+                ADMIN_DATA+"/"+nip+"?page="+page,
                 type
         ) {
             @Override
@@ -75,9 +76,9 @@ public class AdminRemoteDataSourceImpl implements RemoteDataSource.Admin {
 
             @Override
             protected Map<String, String> setParameter() {
-                Map<String, String> params = new HashMap<>();
-                params.put(PAGE, page);
-                return params;
+               /* Map<String, String> params = new HashMap<>();
+                params.put(PAGE, page);*/
+                return null;
             }
         };
         return result;

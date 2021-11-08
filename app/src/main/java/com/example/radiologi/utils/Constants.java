@@ -19,5 +19,6 @@ public class Constants {
     public static final String SUCCESS = "sukses";
     public static final String TOKENS = "token_tujuan";
     public static final String PAGE = "page";
+    public static final String POSITION = "position";
 
 }

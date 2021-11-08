@@ -1,9 +1,10 @@
 package com.example.radiologi.admin.home.fragments;
 
+import static com.example.radiologi.utils.rv.PaginationListener.PAGE_START;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import com.example.radiologi.admin.viewModel.AdminViewModelFactory;
 import com.example.radiologi.data.dataSource.local.SharedPreferenceManager;
 import com.example.radiologi.data.entitiy.ItemAdminEntity;
 import com.example.radiologi.databinding.FragmentDataAdminBaruBinding;
+import com.example.radiologi.utils.NetworkUtil;
+import com.example.radiologi.utils.rv.PaginationListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,11 +32,18 @@ import java.util.List;
 public class DataAdminBaruFragment extends Fragment {
     String nip;
     ArrayList<String> listRegis = new ArrayList<>();
-    AdapterAdmin adapterAdmin;
 
-    ProgressDialog progressDialog;
+    private NewAdminAdapter newAdminAdapter;
+    private ProgressDialog progressDialog;
     private FragmentDataAdminBaruBinding binding;
     private AdminViewModel viewModel;
+    private LinearLayoutManager linearLayoutManager;
+
+    private int pagePosition = 0;
+    private int currentPage = PAGE_START;
+    private int totalPage = 4;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
 
     public DataAdminBaruFragment() {
     }
@@ -57,30 +67,29 @@ public class DataAdminBaruFragment extends Fragment {
         AdminViewModelFactory factory = AdminViewModelFactory.getInstance(requireContext());
         viewModel = new ViewModelProvider(this, factory).get(AdminViewModel.class);
 
-        adapterAdmin = new AdapterAdmin(requireContext(), 0);
-
         nip = SharedPreferenceManager.getStringPreferences(getContext(), "nip");
 
         if (nip != null){
-            viewModel.setParameters(nip, "0", "1");
+            requestIfNetworkAvailable();
         }
 
         binding.swipeAdminDataBaru.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
         binding.swipeAdminDataBaru.setOnRefreshListener(() -> {
             binding.swipeAdminDataBaru.setRefreshing(false);
-            viewModel.setParameters(nip, "0", "1");
+            currentPage = PAGE_START;
+            isLastPage = false;
+            pagePosition = 0;
+            newAdminAdapter.clear();
+            requestIfNetworkAvailable();
         });
 
-        adapterAdmin.setOnClickListener(itemAdmin -> {
-            Intent intent = new Intent(requireContext(), DetailPasienActivity.class);
-            intent.putExtra(DetailPasienActivity.EXTRA_DATA, itemAdmin);
-            startActivity(intent);
-        });
+        initRecyclerView();
 
-        binding.recyclerAdminDataBaru.setAdapter(adapterAdmin);
-        binding.recyclerAdminDataBaru.setHasFixedSize(true);
-        binding.recyclerAdminDataBaru.setLayoutManager(new LinearLayoutManager(getContext()));
-        observeResult();
+        if (!NetworkUtil.isNetworkAvailable(requireContext())){
+            observeLocalResult();
+        }else{
+            observeResult();
+        }
 
         binding.fab.setOnClickListener(views ->{
             Intent intent = new Intent(requireContext(), FormAddDataActivity.class);
@@ -89,8 +98,51 @@ public class DataAdminBaruFragment extends Fragment {
         });
     }
 
+    private void requestIfNetworkAvailable(){
+        if (NetworkUtil.isNetworkAvailable(requireContext())){
+            viewModel.setParameters(nip, "0", "1", "0");
+        }else{
+            viewModel.requestLocal("0");
+        }
+    }
+
+    private void initRecyclerView(){
+        newAdminAdapter = new NewAdminAdapter(new ArrayList<>(), 0);
+        linearLayoutManager = new LinearLayoutManager(getContext());
+
+        binding.recyclerAdminDataBaru.setAdapter(newAdminAdapter);
+        binding.recyclerAdminDataBaru.setHasFixedSize(true);
+        binding.recyclerAdminDataBaru.setLayoutManager(linearLayoutManager);
+
+        newAdminAdapter.setOnClickListener(itemAdmin -> {
+            Intent intent = new Intent(requireContext(), DetailPasienActivity.class);
+            intent.putExtra(DetailPasienActivity.EXTRA_DATA, itemAdmin);
+            startActivity(intent);
+        });
+
+        binding.recyclerAdminDataBaru.addOnScrollListener(new PaginationListener(linearLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage++;
+                pagePosition = pagePosition+10;
+                viewModel.setParameters(nip, "0", String.valueOf(currentPage), String.valueOf(pagePosition));
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
+    }
+
     private void observeResult(){
-        viewModel.getAdminData.observe(getViewLifecycleOwner(), result -> {
+        viewModel.getNewAdminData.observe(getViewLifecycleOwner(), result -> {
             switch (result.status){
                 case LOADING:
                     showProgressDialog();
@@ -107,6 +159,10 @@ public class DataAdminBaruFragment extends Fragment {
 
             }
         });
+    }
+
+    private void observeLocalResult(){
+        viewModel.getDataLocal.observe(getViewLifecycleOwner(), this::showDataLocal);
     }
 
     private void showProgressDialog(){
@@ -129,13 +185,28 @@ public class DataAdminBaruFragment extends Fragment {
         if (adminEntities != null){
             binding.teksKosong.setVisibility(View.GONE);
             binding.recyclerAdminDataBaru.setVisibility(View.VISIBLE);
-            adapterAdmin.clear();
-            adapterAdmin.addAll(adminEntities);
-            adapterAdmin.notifyDataSetChanged();
+            if (currentPage != PAGE_START) newAdminAdapter.removeLoading();
+            newAdminAdapter.addItems(adminEntities);
+            binding.swipeAdminDataBaru.setRefreshing(false);
 
-            for (int i = 0; i<adminEntities.size(); i++){
-                listRegis.add(adminEntities.get(i).getNoregis());
+            //check weather is last page or not
+            if (currentPage < totalPage){
+                newAdminAdapter.addLoading();
+            }else{
+                isLastPage = true;
             }
+            isLoading = false;
         }
     }
+
+    private void showDataLocal(List<ItemAdminEntity> adminEntities){
+        if (adminEntities != null){
+            binding.teksKosong.setVisibility(View.GONE);
+            binding.recyclerAdminDataBaru.setVisibility(View.VISIBLE);
+            if (currentPage != PAGE_START) newAdminAdapter.removeLoading();
+            newAdminAdapter.addItems(adminEntities);
+            binding.swipeAdminDataBaru.setRefreshing(false);
+        }
+    }
+
 }

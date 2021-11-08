@@ -2,6 +2,7 @@ package com.example.radiologi.admin.viewModel;
 
 import static com.example.radiologi.utils.Constants.NIP;
 import static com.example.radiologi.utils.Constants.PAGE;
+import static com.example.radiologi.utils.Constants.POSITION;
 import static com.example.radiologi.utils.Constants.STATUS;
 
 import androidx.lifecycle.LiveData;
@@ -29,6 +30,7 @@ public class AdminViewModel extends ViewModel {
 
     private final MutableLiveData<HashMap<String, String>> parameters = new MutableLiveData<>();
     private final MutableLiveData<Map<String, String>> paramUpdate = new MutableLiveData<>();
+    private final MutableLiveData<String> paramLocal = new MutableLiveData<>();
 
     public void setParameters(String...params){
         HashMap<String, String> param = new HashMap<>();
@@ -43,8 +45,12 @@ public class AdminViewModel extends ViewModel {
         this.paramUpdate.setValue(params);
     }
 
-    public LiveData<Resource<List<ItemAdminEntity>>> getAdminData = Transformations.switchMap(parameters, result ->
-        repository.getAdminData(result.get(NIP), result.get(STATUS), result.get(PAGE))
+    public void requestLocal(String status){
+        paramLocal.setValue(status);
+    }
+
+    public LiveData<Resource<List<ItemAdminEntity>>> getNewAdminData = Transformations.switchMap(parameters, result ->
+        repository.getNewAdminData(result.get(NIP), result.get(PAGE))
     );
     public LiveData<Resource<SimplesResponse>> getResponse = Transformations.switchMap(paramUpdate, params ->
             repository.getResponseUpdate(params));
@@ -58,4 +64,16 @@ public class AdminViewModel extends ViewModel {
     public void setGetDoctor(LiveData<Resource<DoctorListResponse>> getDoctor) {
         this.getDoctor = getDoctor;
     }
+
+    public LiveData<List<ItemAdminEntity>> getDataLocal = Transformations.switchMap(paramLocal, params ->
+            repository.getNewAdminData(params));
+
+    public LiveData<Resource<List<ItemAdminEntity>>> getAdminData = Transformations.switchMap(parameters, result ->
+            repository.getAdminData(result.get(NIP), result.get(PAGE))
+    );
+
+    public LiveData<List<ItemAdminEntity>> getDataAdminLocal = Transformations.switchMap(paramLocal, params ->
+            repository.getAdminData(params));
+
+
 }

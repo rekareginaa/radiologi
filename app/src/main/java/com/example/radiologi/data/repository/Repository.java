@@ -20,7 +20,10 @@ public interface Repository {
     }
 
     interface AdminRepository{
-        LiveData<Resource<List<ItemAdminEntity>>> getAdminData(String nip, String status, String page);
+        LiveData<Resource<List<ItemAdminEntity>>> getNewAdminData(String nip,String page);
+        LiveData<List<ItemAdminEntity>> getNewAdminData(String status);
+        LiveData<Resource<List<ItemAdminEntity>>> getAdminData(String nip,String page);
+        LiveData<List<ItemAdminEntity>> getAdminData(String status);
         LiveData<Resource<SimplesResponse>> getResponseUpdate(Map<String, String> params);
         LiveData<Resource<DoctorListResponse>> getDoctorList();
     }
