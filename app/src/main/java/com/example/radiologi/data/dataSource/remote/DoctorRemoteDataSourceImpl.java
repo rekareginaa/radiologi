@@ -1,5 +1,13 @@
 package com.example.radiologi.data.dataSource.remote;
 
+import static com.example.radiologi.utils.Constants.DOCTOR_DATA;
+import static com.example.radiologi.utils.Constants.DOCTOR_DATA_DONE;
+import static com.example.radiologi.utils.Constants.DOCTOR_UPDATE;
+import static com.example.radiologi.utils.Constants.GET_TOKEN;
+import static com.example.radiologi.utils.Constants.SUCCESS;
+
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -14,15 +22,8 @@ import com.example.radiologi.utils.vo.Resource;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.example.radiologi.utils.Constants.DOCTOR_DATA;
-import static com.example.radiologi.utils.Constants.DOCTOR_UPDATE;
-import static com.example.radiologi.utils.Constants.GET_TOKEN;
-import static com.example.radiologi.utils.Constants.NIP;
-import static com.example.radiologi.utils.Constants.SUCCESS;
 
 public class DoctorRemoteDataSourceImpl implements RemoteDataSource.Doctor{
 
@@ -41,12 +42,12 @@ public class DoctorRemoteDataSourceImpl implements RemoteDataSource.Doctor{
     }
 
     @Override
-    public LiveData<ApiResponse<AdminItemResponse>> getDoctorData(String nip) {
+    public LiveData<ApiResponse<AdminItemResponse>> getNewDoctorData(String nip, String page) {
         MutableLiveData<ApiResponse<AdminItemResponse>> result = new MutableLiveData<>();
         final Type type = new TypeToken<AdminItemResponse>(){}.getType();
         new BaseVolley<AdminItemResponse>(
-                Request.Method.POST,
-                DOCTOR_DATA,
+                Request.Method.GET,
+                DOCTOR_DATA+"/"+nip+"?page="+page,
                 type
         ) {
             @Override
@@ -69,9 +70,46 @@ public class DoctorRemoteDataSourceImpl implements RemoteDataSource.Doctor{
 
             @Override
             protected Map<String, String> setParameter() {
-                Map<String, String> params = new HashMap<>();
-                params.put(NIP, nip);
-                return params;
+                /*Map<String, String> params = new HashMap<>();
+                params.put(NIP, nip);*/
+                return null;
+            }
+        };
+        return result;
+    }
+
+    @Override
+    public LiveData<ApiResponse<AdminItemResponse>> getDoctorData(String nip, String page) {
+        MutableLiveData<ApiResponse<AdminItemResponse>> result = new MutableLiveData<>();
+        final Type type = new TypeToken<AdminItemResponse>(){}.getType();
+        new BaseVolley<AdminItemResponse>(
+                Request.Method.GET,
+                DOCTOR_DATA_DONE+"/"+nip+"?page="+page,
+                type
+        ) {
+            @Override
+            protected void onLoading() {}
+
+            @Override
+            protected void onSuccess(AdminItemResponse response) {
+                final String status = response.getStatus();
+                if (status.equals(SUCCESS)){
+                    result.postValue(ApiResponse.success(response));
+                } else {
+                    result.postValue(ApiResponse.error(response.getStatus(), null));
+                }
+            }
+
+            @Override
+            protected void onError(String message) {
+                result.postValue(ApiResponse.error(message, null));
+            }
+
+            @Override
+            protected Map<String, String> setParameter() {
+                /*Map<String, String> params = new HashMap<>();
+                params.put(NIP, nip);*/
+                return null;
             }
         };
         return result;

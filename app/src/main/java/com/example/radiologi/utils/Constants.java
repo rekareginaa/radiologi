@@ -9,6 +9,7 @@ public class Constants {
     public static final String ADMIN_LIST_DOCTOR = BuildConfig.BASE_URL+"dokter";
     public static final String ADMIN_SAVE = BuildConfig.BASE_URL+"users/simpannama";
     public static final String DOCTOR_DATA = BuildConfig.BASE_URL+"users/dokterdata";
+    public static final String DOCTOR_DATA_DONE = BuildConfig.BASE_URL+"users/dokterdatadone";
     public static final String GET_TOKEN = BuildConfig.BASE_URL+"users";
     public static final String DOCTOR_UPDATE = BuildConfig.BASE_URL+"users/updatedokter";
 

@@ -29,7 +29,10 @@ public interface Repository {
     }
 
     interface DoctorRepository{
-        LiveData<Resource<List<ItemDoctorEntity>>> getDoctorData(String nip, String status);
+        LiveData<Resource<List<ItemDoctorEntity>>> getNewDoctorData(String nip, String page);
+        LiveData<List<ItemDoctorEntity>> getNewDoctorData(String status);
+        LiveData<Resource<List<ItemDoctorEntity>>> getDoctorData(String nip, String page);
+        LiveData<List<ItemDoctorEntity>> getDoctorData(String status);
         LiveData<Resource<SimpleResponse>> getResponseUpdate(Map<String, String> params);
     }
 }

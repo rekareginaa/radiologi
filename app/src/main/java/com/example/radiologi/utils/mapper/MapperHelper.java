@@ -2,7 +2,10 @@ package com.example.radiologi.utils.mapper;
 
 import com.example.radiologi.data.dataSource.remote.response.AdminItemResponse;
 import com.example.radiologi.data.dataSource.remote.response.DataItemAdmin;
+import com.example.radiologi.data.dataSource.remote.response.DataItemDoctor;
+import com.example.radiologi.data.dataSource.remote.response.DoctorListResponse;
 import com.example.radiologi.data.entitiy.ItemAdminEntity;
+import com.example.radiologi.data.entitiy.ItemDoctorEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,5 +57,53 @@ public class MapperHelper {
             adminEntities.add(adminEntity);
         }
         return adminEntities;
+    }
+
+    public static List<ItemDoctorEntity> mapDoctorResponseToEntity(AdminItemResponse response, int page){
+        ArrayList<ItemDoctorEntity> listDoctor = new ArrayList<>();
+        for (DataItemAdmin items : response.getData()){
+            ItemDoctorEntity doctorEntity = new ItemDoctorEntity(
+                    items.getId(),
+                    items.getNoregis(),
+                    items.getPengirim(),
+                    items.getTanglahir(),
+                    items.getNamapasien(),
+                    items.getDiagnosa(),
+                    items.getGender(),
+                    items.getTtd(),
+                    items.getPenerima(),
+                    items.getGambar(),
+                    items.getNorekam(),
+                    items.getStatus(),
+                    page
+            );
+            listDoctor.add(doctorEntity);
+        }
+        return listDoctor;
+    }
+
+    public static List<ItemDoctorEntity> mapNewDoctorResponseToEntity(AdminItemResponse response, int page){
+        ArrayList<ItemDoctorEntity> listDoctor = new ArrayList<>();
+        for (DataItemAdmin items : response.getData()){
+            if (items.getStatus().equals("0")){
+                ItemDoctorEntity doctorEntity = new ItemDoctorEntity(
+                        items.getId(),
+                        items.getNoregis(),
+                        items.getPengirim(),
+                        items.getTanglahir(),
+                        items.getNamapasien(),
+                        items.getDiagnosa(),
+                        items.getGender(),
+                        items.getTtd(),
+                        items.getPenerima(),
+                        items.getGambar(),
+                        items.getNorekam(),
+                        items.getStatus(),
+                        page
+                );
+                listDoctor.add(doctorEntity);
+            }
+        }
+        return listDoctor;
     }
 }

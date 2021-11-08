@@ -47,7 +47,6 @@ public class AdminRemoteDataSourceImpl implements RemoteDataSource.Admin {
 
     @Override
     public LiveData<ApiResponse<AdminItemResponse>> getAdminData(String nip, String page) {
-        Log.d("PAGE_", page);
         MutableLiveData<ApiResponse<AdminItemResponse>> result = new MutableLiveData<>();
         final Type type = new TypeToken<AdminItemResponse>(){}.getType();
         new BaseVolley<AdminItemResponse>(

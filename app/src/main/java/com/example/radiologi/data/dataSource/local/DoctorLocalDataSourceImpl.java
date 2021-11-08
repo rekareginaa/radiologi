@@ -34,7 +34,6 @@ public class DoctorLocalDataSourceImpl implements LocalDataSource.Doctor {
 
     @Override
     public void insertDataDoctor(List<ItemDoctorEntity> doctorEntities) {
-        dbDao.deleteAllDataDoctor();
         dbDao.insertDoctorData(doctorEntities);
     }
 }

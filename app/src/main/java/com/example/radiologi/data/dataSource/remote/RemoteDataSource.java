@@ -26,7 +26,8 @@ public interface RemoteDataSource {
     }
 
     interface Doctor{
-        LiveData<ApiResponse<AdminItemResponse>> getDoctorData(String nip);
+        LiveData<ApiResponse<AdminItemResponse>> getNewDoctorData(String nip, String page);
+        LiveData<ApiResponse<AdminItemResponse>> getDoctorData(String nip, String page);
         LiveData<Resource<SimpleResponse>> getResponse(Map<String, String> params);
         String getToken();
     }

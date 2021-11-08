@@ -1,9 +1,10 @@
 package com.example.radiologi.dokter.home.fragments;
 
+import static com.example.radiologi.utils.rv.PaginationListener.PAGE_START;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,18 +23,27 @@ import com.example.radiologi.databinding.FragmentDataDokterBaruBinding;
 import com.example.radiologi.dokter.formResponseData.FormResponseDataDokterActivity;
 import com.example.radiologi.dokter.viewModel.DoctorViewModel;
 import com.example.radiologi.dokter.viewModel.DoctorViewModelFactory;
+import com.example.radiologi.utils.NetworkUtil;
+import com.example.radiologi.utils.rv.PaginationListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DataDokterBaruFragment extends Fragment {
-    ProgressDialog progressDialog;
-
-    AdapterDokter adapterDokter;
 
     String nip;
 
     private FragmentDataDokterBaruBinding binding;
     private DoctorViewModel viewModel;
+
+    private NewAdapterDokter adapterDokter;
+    private ProgressDialog progressDialog;
+    private LinearLayoutManager layoutManager;
+
+    private int currentPage = PAGE_START;
+    private int totalPage = 4;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,35 +62,78 @@ public class DataDokterBaruFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         nip = SharedPreferenceManager.getStringPreferences(getContext(), "nip");
-        adapterDokter = new AdapterDokter(requireContext());
         progressDialog = new ProgressDialog(requireContext());
 
         DoctorViewModelFactory factory = DoctorViewModelFactory.getInstance(requireContext());
         viewModel = new ViewModelProvider(this, factory).get(DoctorViewModel.class);
 
         if (nip != null){
-            viewModel.setParameters(nip, "0");
+            requestIfNetworkAvailable();
         }
+
+        initRecyclerView();
 
         binding.swipeDokterDataBaru.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
         binding.swipeDokterDataBaru.setOnRefreshListener(() -> {
             binding.swipeDokterDataBaru.setRefreshing(false);
-            viewModel.setParameters(nip, "0");
+            currentPage = PAGE_START;
+            isLastPage = false;
+            adapterDokter.clear();
+            requestIfNetworkAvailable();
         });
 
+        if (!NetworkUtil.isNetworkAvailable(requireContext())){
+            observeResultLocal();
+        }else{
+            observeResult();
+        }
+
+        observeResult();
+    }
+
+    private void requestIfNetworkAvailable(){
+        if (NetworkUtil.isNetworkAvailable(requireContext())){
+            viewModel.setParameters(nip, "0", "1");
+        }else{
+            viewModel.requestLocal("0");
+        }
+    }
+
+    private void initRecyclerView(){
+        adapterDokter = new NewAdapterDokter(new ArrayList<>(), 0);
+        layoutManager = new LinearLayoutManager(requireContext());
+
         binding.recyclerDokterDataBaru.setHasFixedSize(true);
-        binding.recyclerDokterDataBaru.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerDokterDataBaru.setLayoutManager(layoutManager);
         binding.recyclerDokterDataBaru.setAdapter(adapterDokter);
         adapterDokter.setOnClickListener(listitemDokter -> {
             Intent intent = new Intent(getContext(), FormResponseDataDokterActivity.class);
             intent.putExtra(FormResponseDataDokterActivity.EXTRA_DATA, listitemDokter);
             startActivity(intent);
         });
-        observeResult();
+
+        binding.recyclerDokterDataBaru.addOnScrollListener(new PaginationListener(layoutManager) {
+            @Override
+            protected void loadMoreItems() {
+                isLoading = true;
+                currentPage++;
+                viewModel.setParameters(nip, "0", String.valueOf(currentPage));
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
     }
 
     private void observeResult(){
-        viewModel.getDoctorData.observe(getViewLifecycleOwner(), result ->{
+        viewModel.getNewDoctorData.observe(getViewLifecycleOwner(), result ->{
             switch (result.status){
                 case LOADING:
                     showDialog();
@@ -97,11 +150,30 @@ public class DataDokterBaruFragment extends Fragment {
         });
     }
 
+    private void observeResultLocal(){
+        viewModel.getNewDoctorLocal.observe(getViewLifecycleOwner(), this::populateDataLocal);
+    }
+
     private void populateData(List<ItemDoctorEntity> doctorEntities){
         if (doctorEntities != null){
-            adapterDokter.clear();
-            adapterDokter.addAll(doctorEntities);
-            adapterDokter.notifyDataSetChanged();
+            if (currentPage != PAGE_START) adapterDokter.removeLoading();
+            adapterDokter.addItems(doctorEntities);
+            binding.swipeDokterDataBaru.setRefreshing(false);
+
+            if (currentPage < totalPage){
+                adapterDokter.addLoading();
+            }else{
+                isLastPage = true;
+            }
+            isLoading = false;
+        }
+    }
+
+    private void populateDataLocal(List<ItemDoctorEntity> doctorEntities){
+        if (doctorEntities != null){
+            if (currentPage != PAGE_START) adapterDokter.removeLoading();
+            adapterDokter.addItems(doctorEntities);
+            binding.swipeDokterDataBaru.setRefreshing(false);
         }
     }
 

@@ -48,6 +48,9 @@ public class ItemDoctorEntity implements Parcelable {
     @ColumnInfo(name = "status")
     private String status;
 
+    @ColumnInfo(name = "page")
+    private int page;
+
     public ItemDoctorEntity(Parcel in) {
         id = in.readString();
         noregis = in.readString();
@@ -61,9 +64,10 @@ public class ItemDoctorEntity implements Parcelable {
         gambar = in.readString();
         norekam = in.readString();
         status = in.readString();
+        page = in.readInt();
     }
 
-    public ItemDoctorEntity(@NonNull String id, String noregis, String pengirim, String tanggalLahir, String namaPasien, String diagnos, String gender, String ttd, String penerima, String gambar, String norekam, String status) {
+    public ItemDoctorEntity(@NonNull String id, String noregis, String pengirim, String tanggalLahir, String namaPasien, String diagnos, String gender, String ttd, String penerima, String gambar, String norekam, String status, int page) {
         this.id = id;
         this.noregis = noregis;
         this.pengirim = pengirim;
@@ -76,6 +80,7 @@ public class ItemDoctorEntity implements Parcelable {
         this.gambar = gambar;
         this.norekam = norekam;
         this.status = status;
+        this.page = page;
     }
 
     public static final Creator<ItemDoctorEntity> CREATOR = new Creator<ItemDoctorEntity>() {
@@ -225,5 +230,13 @@ public class ItemDoctorEntity implements Parcelable {
         dest.writeString(gambar);
         dest.writeString(norekam);
         dest.writeString(status);
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
     }
 }
