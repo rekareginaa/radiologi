@@ -46,7 +46,7 @@ import java.util.Map;
 
 public class FormAddDataActivity extends AppCompatActivity implements ConfirmDialogFragment.ConfirmDialogListener {
 
-    String tanggallahir, noRekam, namaPasien, gender, nipsaya, namagambar, token, noRegisNew, filePath;
+    String tanggallahir, noRekam, namaPasien, gender, nipsaya, namagambar, token, noRegisNew, filePath, idDoctor;
     ArrayList<String> listRegis;
 
     private DatePickerDialog picker;
@@ -140,6 +140,7 @@ public class FormAddDataActivity extends AppCompatActivity implements ConfirmDia
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 token = doctors.get(position).getToken();
+                idDoctor = doctors.get(position).getNip();
             }
 
             @Override
@@ -283,7 +284,7 @@ public class FormAddDataActivity extends AppCompatActivity implements ConfirmDia
         params.put("tanglahir", tanggallahir);
         params.put("gambar", namagambar);
         params.put("pengirim", nipsaya);
-        params.put("penerima", "");
+        params.put("penerima", idDoctor);
         params.put("diagnosa", "");
         params.put("ttd", "");
         params.put("token_tujuan", token);
