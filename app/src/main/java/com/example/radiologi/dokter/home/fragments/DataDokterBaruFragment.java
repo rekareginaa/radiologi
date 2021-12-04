@@ -5,6 +5,7 @@ import static com.example.radiologi.utils.rv.PaginationListener.PAGE_START;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,7 @@ public class DataDokterBaruFragment extends Fragment {
     private LinearLayoutManager layoutManager;
 
     private int currentPage = PAGE_START;
-    private int totalPage = 4;
+    private int totalPage = 2;
     private boolean isLastPage = false;
     private boolean isLoading = false;
 
@@ -87,8 +88,6 @@ public class DataDokterBaruFragment extends Fragment {
         }else{
             observeResult();
         }
-
-        observeResult();
     }
 
     private void requestIfNetworkAvailable(){
