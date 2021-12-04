@@ -53,6 +53,7 @@ public class FormAddDataActivity extends AppCompatActivity implements ConfirmDia
     private AdminViewModel viewModel;
     private ActivityRoomAdminBinding binding;
     private ProgressDialog progressDialog;
+    private Uri uriPhotos;
 
     private static final int PERMISSION_CODE = 1;
     private static final int PICK_IMAGE = 1;
@@ -211,7 +212,7 @@ public class FormAddDataActivity extends AppCompatActivity implements ConfirmDia
         //get the image's file location
         assert data != null;
         filePath = getRealPathFromUri(data.getData(), FormAddDataActivity.this);
-        Log.i("regina", filePath);
+        uriPhotos = data.getData();
 
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK) {
             try {
@@ -326,9 +327,10 @@ public class FormAddDataActivity extends AppCompatActivity implements ConfirmDia
     }
 
     private void dialogs() {
+        String photos = uriPhotos.toString();
         ConfirmDialogFragment dialog = new ConfirmDialogFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(PHOTO, filePath);
+        bundle.putString(PHOTO, photos);
         bundle.putString(NO_REG, noRegisNew);
         bundle.putString(NO_RECORD, noRekam);
         bundle.putString(NAME, namaPasien);

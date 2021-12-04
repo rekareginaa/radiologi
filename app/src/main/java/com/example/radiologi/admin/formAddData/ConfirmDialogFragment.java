@@ -10,6 +10,7 @@ import static com.example.radiologi.admin.formAddData.FormAddDataActivity.PHOTO;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -61,12 +62,14 @@ public class ConfirmDialogFragment extends DialogFragment {
         binding.tvDate.setText(args.getString(DATE, ""));
         binding.tvGender.setText(args.getString(GENDER, ""));
 
-        Log.d("PHOTO", args.getString(PHOTO, ""));
+        String photos = args.getString(PHOTO,"");
+        Uri uriPhotos = Uri.parse(photos);
+        binding.ivFoto.setImageURI(uriPhotos);
 
-        Picasso.get()
+        /*Picasso.get()
                 .load(args.getString(PHOTO, ""))
                 .placeholder(R.drawable.ic_upload)
-                .into(binding.ivFoto);
+                .into(binding.ivFoto);*/
     }
 
     @Override
