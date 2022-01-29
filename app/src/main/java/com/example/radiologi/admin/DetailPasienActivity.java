@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -53,7 +52,6 @@ public class DetailPasienActivity extends AppCompatActivity {
 
         if (getIntent().getParcelableExtra(EXTRA_DATA) instanceof ItemAdminEntity) {
             ItemAdminEntity items = getIntent().getParcelableExtra(EXTRA_DATA);
-            Log.d("DATA_A", items.toString());
             populateData(
                     items.getNoregis(),
                     items.getNorekam(),
@@ -97,9 +95,6 @@ public class DetailPasienActivity extends AppCompatActivity {
         } else {
             binding.tvDiagnosa.setText(diagnosA);
         }
-
-        Log.i("regina", status);
-        Log.i("regina", tdT);
 
         Picasso.get().setLoggingEnabled(true);
         Picasso.get()
