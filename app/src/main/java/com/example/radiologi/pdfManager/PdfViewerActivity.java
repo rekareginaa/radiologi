@@ -19,7 +19,7 @@ import java.io.File;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
-public class PdfViewerActivity extends PDFViewerActivity {
+public class PdfViewerActivity extends PDFViewerActivity implements PDFUtil.PDFUtilListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,5 +96,15 @@ public class PdfViewerActivity extends PDFViewerActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void pdfGenerationSuccess(File savedPDFFile) {
+        finish();
+    }
+
+    @Override
+    public void pdfGenerationFailure(Exception exception) {
+        Toast.makeText(this, "Failed To Generate PDF", Toast.LENGTH_SHORT).show();
     }
 }

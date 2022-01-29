@@ -12,7 +12,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -226,38 +225,31 @@ public class FormAddDataActivity extends AppCompatActivity implements ConfirmDia
     }
 
     private void uploadToCloudinary(String filePath) {
-        Log.d("regina", "sign up uploadToCloudinary- ");
         MediaManager.get().upload(filePath).callback(new UploadCallback() {
             @Override
             public void onStart(String requestId) {
-                //mText.setText("start");
-                Log.i("regina", "start");
+                //no op
             }
 
             @Override
             public void onProgress(String requestId, long bytes, long totalBytes) {
-                //mText.setText("Uploading... ");
-                Log.i("regina", "uploading...");
+                //no op
             }
 
             @Override
             public void onSuccess(String requestId, Map resultData) {
-                //mText.setText("image URL: "+resultData.get("url").toString());
-                Log.i("regina", "sukses");
                 namagambar = resultData.get("url").toString();
                 uploadImage();
             }
 
             @Override
             public void onError(String requestId, ErrorInfo error) {
-                Log.i("regina", error.getDescription());
-                //mText.setText("error "+ error.getDescription());
+                //no op
             }
 
             @Override
             public void onReschedule(String requestId, ErrorInfo error) {
-                Log.i("regina", error.getDescription());
-                // mText.setText("Reshedule "+error.getDescription());
+                //no op
             }
         }).dispatch();
     }
@@ -277,7 +269,6 @@ public class FormAddDataActivity extends AppCompatActivity implements ConfirmDia
     private void uploadImage() {
 
         Map<String, String> params = new HashMap<>();
-        //String gambar = imagetoString(bitmap);
         params.put("noregis", noRegisNew);
         params.put("norekam", noRekam);
         params.put("namapasien", namaPasien);
@@ -348,13 +339,7 @@ public class FormAddDataActivity extends AppCompatActivity implements ConfirmDia
 
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
-        Log.d("CLICK", "NO");
+
     }
 
-    /*private String imagetoString(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        byte[] imageType = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(imageType, Base64.DEFAULT);
-    }*/
 }

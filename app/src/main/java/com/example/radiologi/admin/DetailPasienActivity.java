@@ -3,7 +3,6 @@ package com.example.radiologi.admin;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -20,13 +19,15 @@ import com.example.radiologi.databinding.ActivityTerimaAdminBinding;
 import com.example.radiologi.pdfManager.TampilkanDataPasienActivity;
 import com.example.radiologi.utils.BitmapConverter;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class DetailPasienActivity extends AppCompatActivity {
 
@@ -37,7 +38,8 @@ public class DetailPasienActivity extends AppCompatActivity {
     String img, noregiS, norekaM, namaLengkaP, tangLahiR, gendeR, diagnosA;
     String untuk, tdT, status;
     Bitmap gambarradiologi, tandatangannyadokterkah;
-
+    ExecutorService executorService;
+    Picasso picasso;
     ProgressDialog progressDialog;
     private ActivityTerimaAdminBinding binding;
 
@@ -46,6 +48,8 @@ public class DetailPasienActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityTerimaAdminBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        executorService = Executors.newSingleThreadExecutor();
+        picasso = Picasso.get();
         progressDialog = new ProgressDialog(this);
 
         binding.ivBack.setOnClickListener(view -> onBackPressed());
@@ -97,10 +101,6 @@ public class DetailPasienActivity extends AppCompatActivity {
         }
 
         Picasso.get().setLoggingEnabled(true);
-        Picasso.get()
-                .load(img)
-                .into(binding.photoView);
-
 
         switch (untuk) {
             case "admin":
@@ -196,40 +196,26 @@ public class DetailPasienActivity extends AppCompatActivity {
     }
 
     private void loadImage1() {
-        Picasso.get().load(img).into(new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                gambarradiologi = bitmap;
-            }
-
-            @Override
-            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
+        executorService.execute(() -> {
+            try {
+                gambarradiologi = picasso.load(img).get();
+            }catch (IOException exception){
+                Toast.makeText(this, "Failed Load Image", Toast.LENGTH_LONG).show();
+            }finally {
+                binding.photoView.post(() -> {
+                    picasso.load(img).into(binding.photoView);
+                });
             }
         });
     }
 
     private void loadImage2() {
         if (!status.equals("0")) {
-            Picasso.get().load(tdT).into(new Target() {
-                @Override
-                public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                    tandatangannyadokterkah = bitmap;
-                }
-
-                @Override
-                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-                }
-
-                @Override
-                public void onPrepareLoad(Drawable placeHolderDrawable) {
-
+            executorService.execute(() -> {
+                try {
+                    tandatangannyadokterkah = picasso.load(tdT).get();
+                }catch (IOException exception){
+                    Toast.makeText(this, "Failed Load Image", Toast.LENGTH_LONG).show();
                 }
             });
         } else {

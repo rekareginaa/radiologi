@@ -43,12 +43,10 @@ public class DataAdminActivity extends AppCompatActivity {
 
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
-                Log.w("regina", "Fetching FCM registration token failed", task.getException());
                 return;
             }
             token = task.getResult();
             msg = getString(R.string.msg_token_fmt, token);
-            Log.d("regina", token);
 
             cekToken();
         });

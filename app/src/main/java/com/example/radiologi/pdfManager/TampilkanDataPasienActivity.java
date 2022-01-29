@@ -52,12 +52,6 @@ public class TampilkanDataPasienActivity extends PDFCreatorActivity {
         gambarradiologi = BitmapConverter.stringToBitmap(gambaR);
         tandatangannyadokterkah = BitmapConverter.stringToBitmap(tdT);
 
-        Log.d("IMG", gambaR);
-        Log.d("IMGS", tdT);
-
-        //loadImage1();
-        //loadImage2();
-
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
